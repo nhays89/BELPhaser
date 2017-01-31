@@ -3,8 +3,33 @@
 <head>
     <meta charset="utf-8">
     <title>Behind Enemy Lines</title>
-    <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-    <script src="./node_modules/phaser/build/phaser.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script>
+    var head = document.getElementsByTagName('head')[0];
+    switch (window.location.protocol) {
+        case 'http:':
+            {
+                var s = document.createElement('script');
+                s.src = "//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js";
+                head.appendChild(s);
+            }
+        case 'https:':
+            {
+                var s = document.createElement('script');
+                s.src = "//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js";
+                head.appendChild(s);
+            }
+            break;
+        case 'file:':
+            {
+                var s = document.createElement('script');
+                s.src = "./node_modules/phaser/build/phaser.min.js";
+                s.async = false;
+                head.appendChild(s);
+            }
+            break;
+    }
+    </script>
     <script type="text/javascript" src="./js/main.js"></script>
 </head>
 
