@@ -1,7 +1,6 @@
-var game = new Phaser.Game(800,600,Phaser.CANVAS, '', {preload: preload, create: create, update: update});
 
 var preload = function() {
-	// some preload code
+	
 }
 
 var create = function() {
@@ -11,3 +10,5 @@ var create = function() {
 var update = function() {
 	//TO DO
 }
+
+var game = new Phaser.Game(800,600,Phaser.CANVAS, '', {preload: preload, create: create, update: update});
