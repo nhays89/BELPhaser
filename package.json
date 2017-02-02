@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/nhays89/BELPhaser#readme",
   "dependencies": {
-    "phaser": "^2.6.2"
+    "phaser": "^2.6.2",
+    "phaser-plugin-isometric": "~0.9.2"
   }
 }
