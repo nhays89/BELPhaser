@@ -37,120 +37,120 @@
 //
 
 
-var game = new Phaser.Game(800, 400, Phaser.AUTO, 'test', null, true, false);
+var game = new Phaser.Game(1920, 1080, Phaser.CANVAS, 'test', null, true, false);
 
-var BasicGame = function (game) { };
+var BasicGame = function (game) {
+};
 
-BasicGame.Boot = function (game) { };
+BasicGame.Boot = function (game) {
+};
 
-var isoGroup, player;
+var isoGroup, player, map, layer, groundGroup, collisionGroup,
+    obstacleGroup, automapGroup, objectGroup, cursors;
 
 BasicGame.Boot.prototype =
     {
         preload: function () {
-            game.load.image('cube', 'assets/cube.png');
 
             game.time.advancedTiming = true;
 
-            // Add and enable the plug-in.
-            game.plugins.add(new Phaser.Plugin.Isometric(game));
+            // Set world size
+            game.world.setBounds(0, 0, 1920, 1080);
 
-            // Start the IsoArcade physics system.
-            game.physics.startSystem(Phaser.Plugin.Isometric.ISOARCADE);
+            game.load.tilemap('tilemap', 'assets/grassland_test.json', null, Phaser.Tilemap.TILED_JSON);
+            game.load.tilemap('mountains', 'assets/mountains.json', null, Phaser.Tilemap.TILED_JSON);
 
-            // This is used to set a game canvas-based offset for the 0, 0, 0 isometric coordinate - by default
-            // this point would be at screen coordinates 0, 0 (top left) which is usually undesirable.
-            game.iso.anchor.setTo(0.5, 0.2);
+            game.load.spritesheet('mountain_landscape', 'assets/mountain_landscape.png', 32, 32, 16);
+            game.load.spritesheet('wood_tileset', 'assets/wood_tileset.png', 32, 32, 16);
 
+            game.load.image('minimap_frame', 'assets/ui/minimap.png');
+            game.load.image('minimap_image', 'assets/map/mountains.png');
+
+            game.load.spritesheet('collision', 'assets/tiled_collision.png', 64, 32, 15);
+            game.load.spritesheet('grassland', 'assets/grassland.png', 64, 128, 128);
+            game.load.spritesheet('water', 'assets/grassland_water.png', 64, 64, 64);
+            game.load.spritesheet('tall structures', 'assets/grassland_structures.png', 64, 256, 32);
+            game.load.spritesheet('trees', 'assets/grassland_trees.png', 128, 256, 16);
+            game.load.spritesheet('set_rules', 'assets/set_rules.png', 64, 32, 8);
+            game.load.spritesheet('tiled_grassland_2x2', 'assets/tiled_grassland_2x2.png', 128, 64, 32);
+            game.load.spritesheet('rottentower', 'assets/rottentower.png', 358, 358, 1);
 
         },
-        create: function () {
-            // Create a group for our tiles, so we can use Group.sort
-            isoGroup = game.add.group();
+        create : function () {
+            var groups = [];
 
-            // Set the global gravity for IsoArcade.
-            game.physics.isoArcade.gravity.setTo(0, 0, -500);
+            //var map = game.add.tilemap('tilemap');
+            var map = game.add.tilemap('mountains');
 
-            // Let's make a load of cubes on a grid, but do it back-to-front so they get added out of order.
-            var cube;
-            for (var xx = 256; xx > 0; xx -= 80) {
-                for (var yy = 256; yy > 0; yy -= 80) {
-                    // Create a cube using the new game.add.isoSprite factory method at the specified position.
-                    // The last parameter is the group you want to add it to (just like game.add.sprite)
-                    cube = game.add.isoSprite(xx, yy, 0, 'cube', 0, isoGroup);
-                    cube.anchor.set(0.5);
 
-                    // Enable the physics body on this cube.
-                    game.physics.isoArcade.enable(cube);
+            map.addTilesetImage('mountain_landscape', 'mountain_landscape');
+            map.addTilesetImage('wood_tileset', 'wood_tileset');
+            var grassLayer = map.createLayer('grass');
+            var obstacleLayer = map.createLayer('obstacles');
+            grassLayer.resizeWorld();
+            obstacleLayer.resizeWorld();
 
-                    // Collide with the world bounds so it doesn't go falling forever or fly off the screen!
-                    cube.body.collideWorldBounds = true;
+            var minimap = game.add.sprite(-2, game.canvas.height - 270, 'minimap_frame');
+            minimap.fixedToCamera = true;
 
-                    // Add a full bounce on the x and y axes, and a bit on the z axis.
-                    cube.body.bounce.set(1, 1, 0.2);
+            var minimapImg = game.add.sprite(15, game.canvas.height - 255, 'minimap_image');
+            minimapImg.fixedToCamera = true;
+            minimapImg.scale.setTo(0.025, 0.025);
 
-                    // Add some X and Y drag to make cubes slow down after being pushed.
-                    cube.body.drag.set(100, 100, 0);
-                }
-            }
+            cursors = game.input.keyboard.createCursorKeys();
 
-            // Create another cube as our 'player', and set it up just like the cubes above.
-            player = game.add.isoSprite(128, 128, 0, 'cube', 0, isoGroup);
-            player.tint = 0x86bfda;
-            player.anchor.set(0.5);
-            game.physics.isoArcade.enable(player);
-            player.body.collideWorldBounds = true;
 
-            // Set up our controls.
-            this.cursors = game.input.keyboard.createCursorKeys();
+            // map.addTilesetImage('water', 'water');
+            //layer = map.createLayer('ground');
+            // layer.resizeWorld();
 
-            this.game.input.keyboard.addKeyCapture([
-                Phaser.Keyboard.LEFT,
-                Phaser.Keyboard.RIGHT,
-                Phaser.Keyboard.UP,
-                Phaser.Keyboard.DOWN,
-                Phaser.Keyboard.SPACEBAR
-            ]);
-
-            var space = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
-            space.onDown.add(function () {
-                player.body.velocity.z = 300;
-            }, this);
+            // var tilesetNum;
+            // var tileset;
+            // var tileIndex;
+            // var tile;
+            //
+            // for (var i = 0; i < map.layers.length; i++) {
+            //     groups[map.layers[i].name] = game.add.group();
+            //
+            //     if (map.layers[i].name == 'collision') continue;
+            //
+            //     for (var x = 0; x < map.layers[i].width; x++) {
+            //         for (var y = 0; y < map.layers[i].height; y++) {
+            //             tileIndex = map.layers[i].data[x][y].index;
+            //             if (tileIndex < 0) continue;
+            //
+            //             tilesetNum = map.tiles[tileIndex][2];
+            //             tileset = map.tilesets[tilesetNum];
+            //
+            //             tile = game.add.isoSprite(x * 32, y * 32, 0, tileset.name,
+            //                 tileIndex - tileset.firstgid, groups[map.layers[i].name]);
+            //             tile.anchor.set(0.5);
+            //         }
+            //     }
+            // }
         },
-        update: function () {
-            // Move the player at this speed.
-            var speed = 100;
+        update : function () {
 
-            if (this.cursors.up.isDown) {
-                player.body.velocity.y = -speed;
+            if (cursors.up.isDown || game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+                game.camera.y -= 12;
             }
-            else if (this.cursors.down.isDown) {
-                player.body.velocity.y = speed;
-            }
-            else {
-                player.body.velocity.y = 0;
+            else if (cursors.down.isDown || game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+                game.camera.y += 12;
             }
 
-            if (this.cursors.left.isDown) {
-                player.body.velocity.x = -speed;
+            if (cursors.left.isDown || game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+                game.camera.x -= 12;
             }
-            else if (this.cursors.right.isDown) {
-                player.body.velocity.x = speed;
+            else if (cursors.right.isDown || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+                game.camera.x += 12;
             }
-            else {
-                player.body.velocity.x = 0;
-            }
-
-            // Our collision and sorting code again.
-            game.physics.isoArcade.collide(isoGroup);
-            game.iso.topologicalSort(isoGroup);
         },
-        render: function () {
-            game.debug.text("Move with cursors, jump with space!", 2, 36, "#ffffff");
-            game.debug.text(game.time.fps || '--', 2, 14, "#a7aebe");
+        render : function () {
+            // game.debug.text("Move with cursors, jump with space!", 2, 36, "#ffffff");
+            // game.debug.text(game.time.fps || '--', 2, 14, "#a7aebe");
         }
     };
+
 
 game.state.add('Boot', BasicGame.Boot);
 game.state.start('Boot');
