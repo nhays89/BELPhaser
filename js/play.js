@@ -22,46 +22,121 @@ var playState = {
     },
 
     create: function () {
-        var groups = [];
+        //ethan map
+        //var groups = [];
 
-        var map = game.add.tilemap('mountains');
+       // var map = game.add.tilemap('mountains');
 
-        map.addTilesetImage('mountain_landscape', 'mountain_landscape');
-        map.addTilesetImage('wood_tileset', 'wood_tileset');
-        var grassLayer = map.createLayer('grass');
-        var obstacleLayer = map.createLayer('obstacles');
-        grassLayer.resizeWorld();
-        obstacleLayer.resizeWorld();
+       // map.addTilesetImage('mountain_landscape', 'mountain_landscape');
+       // map.addTilesetImage('wood_tileset', 'wood_tileset');
+       // var grassLayer = map.createLayer('grass');
+        //var obstacleLayer = map.createLayer('obstacles');
+       // grassLayer.resizeWorld();
+        //obstacleLayer.resizeWorld();
 
+        //nick map
+        game.physics.startSystem(Phaser.Physics.P2JS);
+        map = game.add.tilemap('map');
+        map.addTilesetImage('wood_tileset');
+        map.addTilesetImage('trees_plants_rocks');
+        map.addTilesetImage('town');
+        map.addTilesetImage('Castle');
+        map.addTilesetImage('mountain_landscape');
+        baselayer = map.createLayer('base');  
+        rocklayer = map.createLayer('rock');  
+        castlelayer = map.createLayer('castle');  
+        extralayer = map.createLayer('extra'); 
+        baselayer.resizeWorld();
+        american = game.add.sprite(50,50, 'american');
+        collisionLayer = game.physics.p2.convertCollisionObjects(map,"collision");  
+        american.animations.add('american-east', Phaser.Animation.generateFrameNames('american-east',0,13), 13,false,false);
+        american.animations.add('american-west', Phaser.Animation.generateFrameNames('american-west',0,13), 13,false,false);
+        american.animations.add('american-north', Phaser.Animation.generateFrameNames('american-north', 0, 13), 13, false, false);
+        american.animations.add('american-south', Phaser.Animation.generateFrameNames('american-south', 0, 13), 13, false, false);
+        american.animations.add('american-stand', Phaser.Animation.generateFrameNames('american-stand', 0, 14), 14, false, false);
+        american.animations.add('american-northwest',Phaser.Animation.generateFrameNames('american-northwest', 0, 13), 13, false, false);
+        american.animations.add('american-northeast',Phaser.Animation.generateFrameNames('american-northeast', 0, 13), 13, false, false);
+        american.animations.add('american-southweset', Phaser.Animation.generateFrameNames('american-southwest', 0, 13), 13, false, false);
+        american.animations.add('american-southeast', Phaser.Animation.generateFrameNames('american-southeast', 0, 13), 13, false, false);
+        game.physics.p2.enable(american);
+        american.body.setCircle(20);
+        american.body.damping = .5;
+        american.body.fixedRotation=true;
+       // cursors = game.input.keyboard.createCursorKeys(); 
+
+
+
+
+         
         this.setupUI();
     },
 
     update : function () {
-        if (this.cursors.up.isDown || game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
             game.camera.y -= 20;
             if (!game.camera.atLimit.y) {
                 this.minimap_loc.y -= 20 * this.minimapImg.scale.y;
             }
         }
-        else if (this.cursors.down.isDown || game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
             game.camera.y += 20;
             if (!game.camera.atLimit.y) {
                 this.minimap_loc.y += 20 * this.minimapImg.scale.y;
             }
         }
 
-        if (this.cursors.left.isDown || game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
             game.camera.x -= 20;
             if (!game.camera.atLimit.x) {
                 this.minimap_loc.x -= 20 * this.minimapImg.scale.x;
             }
         }
-        else if (this.cursors.right.isDown || game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
             game.camera.x += 20;
             if (!game.camera.atLimit.x) {
                 this.minimap_loc.x += 20 * this.minimapImg.scale.x;
             }
         }
+
+        if (this.cursors.left.isDown ){   //  Move to the left
+         if(this.cursors.up.isDown) {
+         	american.body.moveLeft(100);
+         	american.body.moveUp(100);
+         	american.animations.play('american-northwest');
+         }
+           // american.body.velocity.x = -100;
+           american.body.moveLeft(100);
+         //  american.body.thrust(50);
+           american.animations.play('american-west');  
+    }
+    else if (this.cursors.right.isDown) {//  Move to the right
+           //american.body.thrust(50);
+           american.body.moveRight(100);
+           // american.body.velocity.x= 100;
+            american.animations.play('american-east');
+    }
+    else if(this.cursors.up.isDown) { //move up
+    american.body.thrust(50);
+    	// american.body.velocity.y= 100;
+    		american.body.moveUp(100);
+         american.animations.play('american-north');
+    } else if(this.cursors.down.isDown) {// move dowm
+    	//american.body.velocity.y= -100;
+    	//american.body.thrust(50);
+    	american.animations.play('american-south');
+    	american.body.moveDown(100);
+	}
+    else {
+    	american.animations.play('american-stand');
+           
+    }
+
+
+
+
+
+
+        
     },
     setupUI: function () {
         this.minimap = game.add.sprite(-2, game.canvas.height + 2, 'minimap_frame');
