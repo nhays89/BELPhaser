@@ -16,12 +16,12 @@ var loadState = {
         //nick loaders
       	game.load.tilemap('map', './assets/bel-map.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('Castle', 'assets/Castle.png');
-       // game.load.image('mountain_landscape', 'assets/mountain_landscape.png');
+
         game.load.image('town', 'assets/town.png');
         game.load.image('trees_plants_rocks', 'assets/trees_plants_rocks.png');
-       // game.load.image('wood_tileset', 'assets/wood_tileset.png');
-       // game.load.image('bel-map', 'assets/bel-map.png');
+
         game.load.atlas('american', './assets/soldiers/american/american.png','./assets/soldiers/american/american.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
+       game.load.atlas('red', './assets/soldiers/red/soldier-red.png','./assets/soldiers/red/soldier-red.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
         game.load.image('minimap_image', 'assets/map/bel-map.png');
         
     },

@@ -48,6 +48,7 @@ var playState = {
         extralayer = map.createLayer('extra'); 
         baselayer.resizeWorld();
         american = game.add.sprite(50,50, 'american');
+        red = game.add.sprite(75,75, 'red');
         collisionLayer = game.physics.p2.convertCollisionObjects(map,"collision");  
         american.animations.add('american-east', Phaser.Animation.generateFrameNames('american-east',0,13), 13,false,false);
         american.animations.add('american-west', Phaser.Animation.generateFrameNames('american-west',0,13), 13,false,false);
@@ -58,13 +59,27 @@ var playState = {
         american.animations.add('american-northeast',Phaser.Animation.generateFrameNames('american-northeast', 0, 13), 13, false, false);
         american.animations.add('american-southweset', Phaser.Animation.generateFrameNames('american-southwest', 0, 13), 13, false, false);
         american.animations.add('american-southeast', Phaser.Animation.generateFrameNames('american-southeast', 0, 13), 13, false, false);
+        red.animations.add('red-run-east', Phaser.Animation.generateFrameNames('red-run-east',0,5), 6,false,false);
+        red.animations.add('red-run-west', Phaser.Animation.generateFrameNames('red-run-west',0,5), 6,false,false);
+        red.animations.add('red-run-north', Phaser.Animation.generateFrameNames('red-run-north', 0, 5), 6, false, false);
+        red.animations.add('red-run-south', Phaser.Animation.generateFrameNames('red-run-south', 0, 5), 6, false, false);
+        red.animations.add('red-stand', Phaser.Animation.generateFrameNames('red-stand', 0, 5), 14, false, false);
+        red.animations.add('red-run-northwest',Phaser.Animation.generateFrameNames('red-run-northwest', 0, 5), 6, false, false);
+        red.animations.add('red-run-northeast',Phaser.Animation.generateFrameNames('red-run-northeast', 0, 5), 6, false, false);
+        red.animations.add('red-run-southweset', Phaser.Animation.generateFrameNames('red-run-southwest', 0, 5), 6, false, false);
+        red.animations.add('red-run-southeast', Phaser.Animation.generateFrameNames('red-run-southeast', 0, 5), 6, false, false);
         game.physics.p2.enable(american);
+        game.physics.p2.enable(red);
         american.body.setCircle(20);
         american.body.damping = .5;
         american.body.fixedRotation=true;
+        red.body.setCircle(20);
+        red.body.damping = .5;
+        red.body.fixedRotation=true;
        // cursors = game.input.keyboard.createCursorKeys(); 
-
-
+        
+        currentPlayer = red; //debug purposes
+        currentPlayer.name = "red";
 
 
          
@@ -75,59 +90,73 @@ var playState = {
         if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
             game.camera.y -= 20;
             if (!game.camera.atLimit.y) {
-                this.minimap_loc.y -= 20 * this.minimapImg.scale.y;
+               // this.minimap_loc.y -= 20 * this.minimapImg.scale.y; //expensive
             }
         }
         else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
             game.camera.y += 20;
             if (!game.camera.atLimit.y) {
-                this.minimap_loc.y += 20 * this.minimapImg.scale.y;
+               // this.minimap_loc.y += 20 * this.minimapImg.scale.y; //expensive
             }
         }
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
             game.camera.x -= 20;
             if (!game.camera.atLimit.x) {
-                this.minimap_loc.x -= 20 * this.minimapImg.scale.x;
+               // this.minimap_loc.x -= 20 * this.minimapImg.scale.x; //expensive
             }
         }
         else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
             game.camera.x += 20;
             if (!game.camera.atLimit.x) {
-                this.minimap_loc.x += 20 * this.minimapImg.scale.x;
+              //  this.minimap_loc.x += 20 * this.minimapImg.scale.x; //expensive
             }
         }
 
-        if (this.cursors.left.isDown ){   //  Move to the left
-         if(this.cursors.up.isDown) {
-         	american.body.moveLeft(100);
-         	american.body.moveUp(100);
-         	american.animations.play('american-northwest');
-         }
-           // american.body.velocity.x = -100;
+        if (this.cursors.left.isDown ){
+              if(currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
            american.body.moveLeft(100);
-         //  american.body.thrust(50);
            american.animations.play('american-west');  
-    }
+             } else if(currentPlayer.name === 'red'){
+           red.body.moveLeft(100);
+           red.animations.play('red-run-west');  
+             }
+         }
+          
     else if (this.cursors.right.isDown) {//  Move to the right
-           //american.body.thrust(50);
+        if(currentPlayer.name === 'american') {
            american.body.moveRight(100);
-           // american.body.velocity.x= 100;
             american.animations.play('american-east');
+        } else if(currentPlayer.name == "red") {
+            red.body.moveRight(100);
+            red.animations.play('red-run-east');  
+        }
     }
     else if(this.cursors.up.isDown) { //move up
-    american.body.thrust(50);
-    	// american.body.velocity.y= 100;
-    		american.body.moveUp(100);
+    if(currentPlayer.name === 'american') {
+        american.body.moveUp(100);
          american.animations.play('american-north');
-    } else if(this.cursors.down.isDown) {// move dowm
-    	//american.body.velocity.y= -100;
-    	//american.body.thrust(50);
-    	american.animations.play('american-south');
+    }else if(currentPlayer.name === 'red') {
+        red.body.moveUp(100);
+        red.animations.play('red-run-north');
+    }
+    }  else if(this.cursors.down.isDown) {// move dowm
+        if(currentPlayer.name === 'american') {
+            american.animations.play('american-south');
     	american.body.moveDown(100);
+        } else if(currentPlayer.name === 'red') {
+              red.animations.play('red-run-south');
+    	red.body.moveDown(100);
+        }
+    	
 	}
     else {
-    	american.animations.play('american-stand');
+        if(currentPlayer.name === 'american') {
+            american.animations.play('american-stand');
+        } else if(currentPlayer.name === 'red') {
+            red.animations.play('red-stand-north');
+        }
+    	
            
     }
 
