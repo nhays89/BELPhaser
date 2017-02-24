@@ -1,15 +1,31 @@
-<!doctype html>
-
+<html>
 <head>
-    <meta charset="utf-8">
+
     <title>Behind Enemy Lines</title>
-    <!-- <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script> -->
-    <!-- <script type="text/javascript" src="js/phaser.min.js"></script> -->
-    <script src="./node_modules/phaser/build/phaser.min.js"></script>
-    <script type="text/javascript" src="./js/main.js"></script>
+
+    <style>
+    #selection-box {
+        background-color: rgba(255, 255, 0, 0.15);
+        border: 1px solid #e0e000;
+        display: none;
+        pointer-events: none;
+        position: absolute;
+    }
+
+    #selection-box.active {
+        display: inline-block;
+    }
+    </style>
+
 </head>
 
 <body>
-</body>
+    <div id="playground">
+        <div id="selection-box"></div>
+    </div>
 
+    <script src="./js/phaser.js"></script>
+    <!-- <script type="text/javascript" src="./js/main.js"></script> -->
+    <script type="text/javascript" src="./js/selection.js"></script>
+</body>
 </html>

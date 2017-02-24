@@ -48,15 +48,8 @@ function create() {
 
 function update() {
 
-	// draw a rectangle
-    // graphics.lineStyle(1, 0x0000FF, 1);
-    // graphics.drawRect(player.x, player.y, 76, 97);
-
-
 	// controlWithArrowKeys();
 	controlWithMouse();
-
-
 }
 
 
