@@ -21,7 +21,8 @@ var loadState = {
         game.load.image('trees_plants_rocks', 'assets/trees_plants_rocks.png');
 
         game.load.atlas('american', './assets/soldiers/american/american.png','./assets/soldiers/american/american.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
-       game.load.atlas('red', './assets/soldiers/red/soldier-red.png','./assets/soldiers/red/soldier-red.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
+       game.load.atlas('red', './assets/soldiers/red/red-soldier.png','./assets/soldiers/red/red-soldier.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
+       game.load.atlas('green', './assets/soldiers/green/green-soldier.png','./assets/soldiers/green/green-soldier.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
         game.load.image('minimap_image', 'assets/map/bel-map.png');
         
     },
