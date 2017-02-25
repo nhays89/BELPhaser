@@ -1,0 +1,37 @@
+<!-- <!doctype html> -->
+<html>
+
+<head>
+    <!-- <meta charset="utf-8"> -->
+    <title>Behind Enemy Lines</title>
+    <style>
+    #selection-box {
+        background-color: rgba(255, 255, 0, 0.15);
+        border: 1px solid #e0e000;
+        display: none;
+        pointer-events: none;
+        position: absolute;
+    }
+
+    #selection-box.active {
+        display: inline-block;
+    }
+    </style>
+
+</head>
+
+<body>
+    <div id="playground">
+        <div id="selection-box"></div>
+    </div>
+
+    <script src="node_modules/phaser/build/phaser.js"></script>
+    <script type="text/javascript" src="js/boot.js"></script>
+    <script type="text/javascript" src="js/load.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
+    <script type="text/javascript" src="js/play.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</body>
+
+</html>

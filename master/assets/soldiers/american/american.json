@@ -1,0 +1,1028 @@
+{"frames": [
+
+{
+	"filename": "american-east0",
+	"frame": {"x":94,"y":107,"w":44,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":62,"w":44,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east1",
+	"frame": {"x":174,"y":142,"w":44,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":62,"w":44,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east2",
+	"frame": {"x":209,"y":45,"w":46,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":62,"w":46,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east3",
+	"frame": {"x":40,"y":145,"w":48,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":61,"w":48,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east4",
+	"frame": {"x":38,"y":189,"w":48,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":60,"w":48,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east5",
+	"frame": {"x":101,"y":1,"w":51,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":60,"w":51,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east6",
+	"frame": {"x":154,"y":1,"w":50,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":60,"w":50,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east7",
+	"frame": {"x":42,"y":100,"w":50,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":60,"w":50,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east8",
+	"frame": {"x":42,"y":54,"w":50,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":60,"w":50,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east9",
+	"frame": {"x":85,"y":238,"w":47,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":61,"w":47,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east10",
+	"frame": {"x":45,"y":434,"w":43,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":62,"y":61,"w":43,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east11",
+	"frame": {"x":47,"y":673,"w":43,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":61,"w":43,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east12",
+	"frame": {"x":167,"y":506,"w":42,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":61,"w":42,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-east13",
+	"frame": {"x":43,"y":847,"w":45,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":60,"w":45,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north0",
+	"frame": {"x":94,"y":54,"w":34,"h":51},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":57,"w":34,"h":51},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north1",
+	"frame": {"x":174,"y":47,"w":33,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":57,"w":33,"h":48},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north2",
+	"frame": {"x":81,"y":379,"w":35,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":57,"w":35,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north3",
+	"frame": {"x":37,"y":912,"w":36,"h":50},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":56,"w":36,"h":50},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north4",
+	"frame": {"x":1,"y":231,"w":35,"h":56},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":53,"w":35,"h":56},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north5",
+	"frame": {"x":1,"y":172,"w":35,"h":57},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":53,"w":35,"h":57},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north6",
+	"frame": {"x":1,"y":53,"w":39,"h":59},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":52,"w":39,"h":59},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north7",
+	"frame": {"x":1,"y":114,"w":37,"h":56},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":53,"w":37,"h":56},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north8",
+	"frame": {"x":1,"y":289,"w":37,"h":54},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":54,"w":37,"h":54},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north9",
+	"frame": {"x":49,"y":964,"w":37,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":57,"w":37,"h":48},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north10",
+	"frame": {"x":220,"y":184,"w":35,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":57,"w":35,"h":49},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north11",
+	"frame": {"x":220,"y":131,"w":35,"h":51},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":56,"w":35,"h":51},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north12",
+	"frame": {"x":45,"y":379,"w":34,"h":53},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":56,"w":34,"h":53},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-north13",
+	"frame": {"x":1,"y":912,"w":34,"h":54},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":56,"w":34,"h":54},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast0",
+	"frame": {"x":1,"y":608,"w":44,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":59,"w":44,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast1",
+	"frame": {"x":38,"y":233,"w":45,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":59,"w":45,"h":45},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast2",
+	"frame": {"x":85,"y":282,"w":44,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":59,"w":44,"h":45},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast3",
+	"frame": {"x":1,"y":558,"w":44,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":58,"w":44,"h":48},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast4",
+	"frame": {"x":1,"y":453,"w":41,"h":51},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":57,"w":41,"h":51},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast5",
+	"frame": {"x":1,"y":345,"w":40,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":56,"w":40,"h":52},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast6",
+	"frame": {"x":1,"y":399,"w":42,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":55,"w":42,"h":52},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast7",
+	"frame": {"x":1,"y":706,"w":41,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":57,"w":41,"h":49},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast8",
+	"frame": {"x":40,"y":280,"w":43,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":58,"w":43,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast9",
+	"frame": {"x":1,"y":968,"w":46,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":58,"w":46,"h":46},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast10",
+	"frame": {"x":1,"y":657,"w":44,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":58,"w":44,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast11",
+	"frame": {"x":86,"y":329,"w":42,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":58,"w":42,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast12",
+	"frame": {"x":1,"y":809,"w":40,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":60,"y":57,"w":40,"h":49},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northeast13",
+	"frame": {"x":1,"y":860,"w":39,"h":50},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":57,"w":39,"h":50},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest0",
+	"frame": {"x":43,"y":329,"w":41,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":58,"w":41,"h":48},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest1",
+	"frame": {"x":47,"y":576,"w":38,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":58,"w":38,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest2",
+	"frame": {"x":118,"y":378,"w":36,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":58,"w":36,"h":46},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest3",
+	"frame": {"x":90,"y":428,"w":36,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":57,"w":36,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest4",
+	"frame": {"x":47,"y":526,"w":38,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":57,"w":38,"h":48},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest5",
+	"frame": {"x":1,"y":757,"w":40,"h":50},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":56,"w":40,"h":50},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest6",
+	"frame": {"x":130,"y":47,"w":42,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":57,"w":42,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest7",
+	"frame": {"x":47,"y":625,"w":41,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":57,"w":41,"h":46},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest8",
+	"frame": {"x":89,"y":477,"w":39,"h":46},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":58,"w":39,"h":46},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest9",
+	"frame": {"x":128,"y":426,"w":37,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":37,"h":45},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest10",
+	"frame": {"x":47,"y":477,"w":40,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":58,"w":40,"h":47},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest11",
+	"frame": {"x":1,"y":506,"w":44,"h":50},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":57,"w":44,"h":50},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest12",
+	"frame": {"x":52,"y":1,"w":47,"h":51},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":57,"w":47,"h":51},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-northwest13",
+	"frame": {"x":1,"y":1,"w":49,"h":50},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":55,"y":57,"w":49,"h":50},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south0",
+	"frame": {"x":140,"y":96,"w":32,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":64,"w":32,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south1",
+	"frame": {"x":140,"y":140,"w":32,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":64,"w":32,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south2",
+	"frame": {"x":203,"y":975,"w":33,"h":36},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":64,"w":33,"h":36},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south3",
+	"frame": {"x":204,"y":935,"w":34,"h":38},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":64,"w":34,"h":38},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south4",
+	"frame": {"x":221,"y":850,"w":34,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":63,"w":34,"h":39},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south5",
+	"frame": {"x":221,"y":323,"w":34,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":63,"w":34,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south6",
+	"frame": {"x":220,"y":235,"w":35,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":63,"w":35,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south7",
+	"frame": {"x":130,"y":473,"w":35,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":63,"w":35,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south8",
+	"frame": {"x":221,"y":367,"w":34,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":64,"w":34,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south9",
+	"frame": {"x":166,"y":934,"w":36,"h":38},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":64,"w":36,"h":38},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south10",
+	"frame": {"x":130,"y":519,"w":35,"h":38},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":64,"w":35,"h":38},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south11",
+	"frame": {"x":220,"y":675,"w":35,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":63,"w":35,"h":39},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south12",
+	"frame": {"x":220,"y":549,"w":35,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":63,"w":35,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-south13",
+	"frame": {"x":138,"y":224,"w":34,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":63,"w":34,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast0",
+	"frame": {"x":174,"y":97,"w":33,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":63,"w":33,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast1",
+	"frame": {"x":140,"y":182,"w":32,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":64,"w":32,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast2",
+	"frame": {"x":183,"y":680,"w":35,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":64,"w":35,"h":39},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast3",
+	"frame": {"x":134,"y":269,"w":38,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":63,"w":38,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast4",
+	"frame": {"x":183,"y":765,"w":39,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":63,"w":39,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast5",
+	"frame": {"x":183,"y":721,"w":39,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":62,"w":39,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast6",
+	"frame": {"x":92,"y":840,"w":39,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":62,"w":39,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast7",
+	"frame": {"x":174,"y":890,"w":38,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":63,"w":38,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast8",
+	"frame": {"x":136,"y":649,"w":37,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":63,"w":37,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast9",
+	"frame": {"x":220,"y":591,"w":35,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":61,"y":64,"w":35,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast10",
+	"frame": {"x":220,"y":280,"w":35,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":59,"y":63,"w":35,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast11",
+	"frame": {"x":88,"y":964,"w":37,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":63,"w":37,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast12",
+	"frame": {"x":131,"y":312,"w":41,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":62,"w":41,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southeast13",
+	"frame": {"x":174,"y":323,"w":45,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":50,"y":62,"w":45,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest0",
+	"frame": {"x":181,"y":808,"w":41,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":41,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest1",
+	"frame": {"x":179,"y":850,"w":40,"h":38},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":55,"y":63,"w":40,"h":38},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest2",
+	"frame": {"x":75,"y":923,"w":37,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":37,"h":39},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest3",
+	"frame": {"x":220,"y":633,"w":35,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":35,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest4",
+	"frame": {"x":127,"y":964,"w":37,"h":40},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":37,"h":40},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest5",
+	"frame": {"x":131,"y":559,"w":40,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":55,"y":62,"w":40,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest6",
+	"frame": {"x":87,"y":526,"w":41,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":63,"w":41,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest7",
+	"frame": {"x":134,"y":604,"w":39,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":39,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest8",
+	"frame": {"x":214,"y":891,"w":38,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":64,"w":38,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest9",
+	"frame": {"x":114,"y":923,"w":36,"h":39},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":55,"y":64,"w":36,"h":39},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest10",
+	"frame": {"x":166,"y":974,"w":35,"h":37},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":64,"w":35,"h":37},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest11",
+	"frame": {"x":90,"y":884,"w":38,"h":37},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":38,"h":37},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest12",
+	"frame": {"x":93,"y":800,"w":41,"h":38},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":63,"w":41,"h":38},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-southwest13",
+	"frame": {"x":137,"y":781,"w":42,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":62,"w":42,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand0",
+	"frame": {"x":167,"y":414,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand1",
+	"frame": {"x":167,"y":414,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand2",
+	"frame": {"x":92,"y":662,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand3",
+	"frame": {"x":93,"y":708,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand4",
+	"frame": {"x":93,"y":754,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand5",
+	"frame": {"x":174,"y":277,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand6",
+	"frame": {"x":156,"y":368,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand7",
+	"frame": {"x":211,"y":411,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand8",
+	"frame": {"x":211,"y":457,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand9",
+	"frame": {"x":211,"y":503,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand10",
+	"frame": {"x":174,"y":185,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand11",
+	"frame": {"x":174,"y":231,"w":44,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":57,"y":59,"w":44,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand12",
+	"frame": {"x":167,"y":460,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand13",
+	"frame": {"x":87,"y":570,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-stand14",
+	"frame": {"x":90,"y":616,"w":42,"h":44},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":58,"y":59,"w":42,"h":44},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west0",
+	"frame": {"x":173,"y":549,"w":45,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":55,"y":60,"w":45,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west1",
+	"frame": {"x":175,"y":593,"w":43,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":60,"w":43,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west2",
+	"frame": {"x":136,"y":824,"w":41,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":60,"w":41,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west3",
+	"frame": {"x":175,"y":637,"w":43,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":60,"w":43,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west4",
+	"frame": {"x":44,"y":716,"w":47,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":60,"w":47,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west5",
+	"frame": {"x":90,"y":150,"w":48,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":60,"w":48,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west6",
+	"frame": {"x":88,"y":194,"w":48,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":60,"w":48,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west7",
+	"frame": {"x":43,"y":760,"w":48,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":61,"w":48,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west8",
+	"frame": {"x":43,"y":803,"w":47,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":61,"w":47,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west9",
+	"frame": {"x":137,"y":737,"w":44,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":52,"y":61,"w":44,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west10",
+	"frame": {"x":133,"y":867,"w":39,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":61,"w":39,"h":42},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west11",
+	"frame": {"x":137,"y":692,"w":44,"h":43},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":53,"y":60,"w":44,"h":43},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west12",
+	"frame": {"x":209,"y":88,"w":46,"h":41},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":60,"w":46,"h":41},
+	"sourceSize": {"w":160,"h":160}
+},
+{
+	"filename": "american-west13",
+	"frame": {"x":206,"y":1,"w":49,"h":42},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":54,"y":59,"w":49,"h":42},
+	"sourceSize": {"w":160,"h":160}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "american.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":1015},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:917f6d6f5eb283cdb45ba253ef02d4dc:877c0eddedbfacd808a357d5a46e499f:4eecd7a5972579d0145cffcd6f12cbf2$"
+}
+}
