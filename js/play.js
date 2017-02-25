@@ -1,16 +1,7 @@
 WebFontConfig = {
-
-    //  'active' means all requested fonts have finished loading
-    //  We set a 1 second delay before calling 'createText'.
-    // active: function () {
-    //     game.time.events.add(Phaser.Timer.SECOND, createText, this);
-    // },
-
-    //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
         families: ['Roboto']
     }
-
 };
 
 var text = null;
@@ -50,28 +41,6 @@ var playState = {
         this.baselayer.resizeWorld();
         this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
 
-        // this.american = game.add.sprite(100, 100, 'american');
-        //
-        // this.american.animations.add('american-east', Phaser.Animation.generateFrameNames('american-east', 0, 13), 13, false, false);
-        // this.american.animations.add('american-west', Phaser.Animation.generateFrameNames('american-west', 0, 13), 13, false, false);
-        // this.american.animations.add('american-north', Phaser.Animation.generateFrameNames('american-north', 0, 13), 13, false, false);
-        // this.american.animations.add('american-south', Phaser.Animation.generateFrameNames('american-south', 0, 13), 13, false, false);
-        // this.american.animations.add('american-stand', Phaser.Animation.generateFrameNames('american-stand', 0, 14), 14, false, false);
-        // this.american.animations.add('american-northwest', Phaser.Animation.generateFrameNames('american-northwest', 0, 13), 13, false, false);
-        // this.american.animations.add('american-northeast', Phaser.Animation.generateFrameNames('american-northeast', 0, 13), 13, false, false);
-        // this.american.animations.add('american-southweset', Phaser.Animation.generateFrameNames('american-southwest', 0, 13), 13, false, false);
-        // this.american.animations.add('american-southeast', Phaser.Animation.generateFrameNames('american-southeast', 0, 13), 13, false, false);
-        //
-        // game.physics.p2.enable(this.american);
-        // this.american.body.setCircle(20);
-        // this.american.body.damping = .5;
-        // this.american.body.fixedRotation = true;
-
-        //
-        // this.red = this.newSoviet(150, 150);
-        // this.currentPlayer = this.red; //debug purposes
-        //
-        // this.currentPlayer.name = "red";
         this.setupUnits();
         this.cursors = game.input.keyboard.createCursorKeys();
         this.setupUI();
@@ -118,16 +87,6 @@ var playState = {
         }
 
         this.red.sprite.body.debug = true;
-        // var counter = 10000000;
-        //
-        // if (counter) {
-        //     this.red.body.moveRight(100);
-        //     this.red.body.moveDown(100);
-        //     this.red.animations.play('red-run-southeast');
-        //     counter--;
-        //     console.log('angle to american: ' + game.physics.arcade.angleBetween(this.red, this.american));
-        // }
-
 
         if (this.cursors.left.isDown) {
             if (this.currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
@@ -423,13 +382,13 @@ function Soldier(x, y, sprite) {
     this.viewRadius = 250;
     this.attackRadius = 150;
 
-    //this.sprite.health = 100;
+    this.health = 100;
     this._damage = 20;
 }
 
 Soldier.prototype.shoot = function (enemy) {
     var radians = game.physics.arcade.angleBetween(this.sprite, enemy);
-
+    var direction = playState.getDirection(radians);
     // find direction
     // determine animation
     // play animation
