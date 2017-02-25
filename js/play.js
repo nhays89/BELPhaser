@@ -86,8 +86,6 @@ var playState = {
             console.log('Num enemies: ' + this.getNearbyEnemies(this.red));
         }
 
-        this.red.sprite.body.debug = true;
-
         if (this.cursors.left.isDown) {
             if (this.currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
                 this.american.sprite.body.moveLeft(100);
@@ -175,9 +173,10 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
     render : function () {
-        game.debug.spriteInfo(this.red.sprite, 32, 32);
-        game.debug.quadTree(this.quadTree);
-        game.debug.geom(this.viewCircle, '#00bff3', false);
+        // this.red.sprite.body.debug = true;
+        // game.debug.spriteInfo(this.red.sprite, 32, 32);
+        // game.debug.quadTree(this.quadTree);
+        // game.debug.geom(this.viewCircle, '#00bff3', false);
     },
 
     setupUnits      : function () {
