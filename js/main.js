@@ -1,13 +1,6 @@
 
 var preload = function() {
-	game.load.tilemap('map', './assets/bel-map.json', null, Phaser.Tilemap.TILED_JSON);
-  game.load.image('Castle', 'assets/Castle.png');
-  game.load.image('mountain_landscape', 'assets/mountain_landscape.png');
-  game.load.image('town', 'assets/town.png');
-  game.load.image('trees_plants_rocks', 'assets/trees_plants_rocks.png');
-	game.load.image('wood_tileset', 'assets/wood_tileset.png');
-	game.load.image('bel-map', 'assets/bel-map.png');
-	game.load.atlas('american', './assets/soldiers/american/american.png','./assets/soldiers/american/american.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
+
 }
 var init = function() {
 	game.physics.startSystem(Phaser.Physics.P2JS);
@@ -86,6 +79,3 @@ var bgHeight;
 var game;
 var loader;
 
-window.onload = function() {
-    game = new Phaser.Game("100%", "100%", Phaser.CANVAS, '', { preload: preload, create: create, update: update });
-}

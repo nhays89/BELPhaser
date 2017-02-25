@@ -21,54 +21,133 @@ var playState = {
     },
 
     create: function () {
-        this.map = game.add.tilemap('map');
-        this.map.addTilesetImage('wood_tileset');
-        this.map.addTilesetImage('trees_plants_rocks');
-        this.map.addTilesetImage('town');
-        this.map.addTilesetImage('Castle');
-        this.map.addTilesetImage('mountain_landscape');
-        this.baselayer = this.map.createLayer('base');
-        this.rocklayer = this.map.createLayer('rock');
-        this.castlelayer = this.map.createLayer('castle');
-        this.extralayer = this.map.createLayer('extra');
-        this.baselayer.resizeWorld();
-        this.american = game.add.sprite(50, 50, 'american');
-        this.red = game.add.sprite(75, 75, 'red');
-        this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
-        this.american.animations.add('american-east', Phaser.Animation.generateFrameNames('american-east', 0, 13), 13, false, false);
-        this.american.animations.add('american-west', Phaser.Animation.generateFrameNames('american-west', 0, 13), 13, false, false);
-        this.american.animations.add('american-north', Phaser.Animation.generateFrameNames('american-north', 0, 13), 13, false, false);
-        this.american.animations.add('american-south', Phaser.Animation.generateFrameNames('american-south', 0, 13), 13, false, false);
-        this.american.animations.add('american-stand', Phaser.Animation.generateFrameNames('american-stand', 0, 14), 14, false, false);
-        this.american.animations.add('american-northwest', Phaser.Animation.generateFrameNames('american-northwest', 0, 13), 13, false, false);
-        this.american.animations.add('american-northeast', Phaser.Animation.generateFrameNames('american-northeast', 0, 13), 13, false, false);
-        this.american.animations.add('american-southweset', Phaser.Animation.generateFrameNames('american-southwest', 0, 13), 13, false, false);
-        this.american.animations.add('american-southeast', Phaser.Animation.generateFrameNames('american-southeast', 0, 13), 13, false, false);
-        this.red.animations.add('red-run-east', Phaser.Animation.generateFrameNames('red-run-east', 0, 5), 6, false, false);
-        this.red.animations.add('red-run-west', Phaser.Animation.generateFrameNames('red-run-west', 0, 5), 6, false, false);
-        this.red.animations.add('red-run-north', Phaser.Animation.generateFrameNames('red-run-north', 0, 5), 6, false, false);
-        this.red.animations.add('red-run-south', Phaser.Animation.generateFrameNames('red-run-south', 0, 5), 6, false, false);
-        this.red.animations.add('red-stand', Phaser.Animation.generateFrameNames('red-stand', 0, 5), 14, false, false);
-        this.red.animations.add('red-run-northwest', Phaser.Animation.generateFrameNames('red-run-northwest', 0, 5), 6, false, false);
-        this.red.animations.add('red-run-northeast', Phaser.Animation.generateFrameNames('red-run-northeast', 0, 5), 6, false, false);
-        this.red.animations.add('red-run-southweset', Phaser.Animation.generateFrameNames('red-run-southwest', 0, 5), 6, false, false);
-        this.red.animations.add('red-run-southeast', Phaser.Animation.generateFrameNames('red-run-southeast', 0, 5), 6, false, false);
-        game.physics.p2.enable(this.american);
-        game.physics.p2.enableBody(this.red, true);
-        this.american.body.setCircle(20);
-        this.american.body.damping = .5;
-        this.american.body.fixedRotation = true;
-        this.red.scale.setTo(1.25, 1.25);
-        this.red.body.setCircle(20);
-        this.red.body.damping = .9;
-        this.red.body.fixedRotation = true;
-        this.red.body.data.gravityScale = 0;
+        var groups = [];
+
+        var map = game.add.tilemap('mountains');
+
+        map.addTilesetImage('mountain_landscape', 'mountain_landscape');
+        map.addTilesetImage('wood_tileset', 'wood_tileset');
+        var grassLayer = map.createLayer('grass');
+        var obstacleLayer = map.createLayer('obstacles');
+        grassLayer.resizeWorld();
+        obstacleLayer.resizeWorld();
 
 
-        // cursors = game.input.keyboard.createCursorKeys();
+        map = game.add.tilemap('map');
 
-        this.currentPlayer = this.red; //debug purposes
-        this.currentPlayer.name = "red";
+        map.addTilesetImage('wood_tileset');
+        map.addTilesetImage('trees_plants_rocks');
+        map.addTilesetImage('town');
+        map.addTilesetImage('Castle');
+        map.addTilesetImage('mountain_landscape');
+
+        baselayer = map.createLayer('base');
+        rocklayer = map.createLayer('rock');
+        castlelayer = map.createLayer('castle');
+        extralayer = map.createLayer('extra');
+
+        baselayer.resizeWorld();
+
+        american = game.add.sprite(50,50, 'american');
+        red = game.add.sprite(75,75, 'red');
+        green = game.add.sprite(125,125, 'green');
+
+        collisionLayer = game.physics.p2.convertCollisionObjects(map,"collision");
+
+
+
+        american.animations.add('american-east', Phaser.Animation.generateFrameNames('american-east',0,13), 13,false,false);
+        american.animations.add('american-west', Phaser.Animation.generateFrameNames('american-west',0,13), 13,false,false);
+        american.animations.add('american-north', Phaser.Animation.generateFrameNames('american-north', 0, 13), 13, false, false);
+        american.animations.add('american-south', Phaser.Animation.generateFrameNames('american-south', 0, 13), 13, false, false);
+        american.animations.add('american-stand', Phaser.Animation.generateFrameNames('american-stand', 0, 14), 14, false, false);
+        american.animations.add('american-northwest',Phaser.Animation.generateFrameNames('american-northwest', 0, 13), 13, false, false);
+        american.animations.add('american-northeast',Phaser.Animation.generateFrameNames('american-northeast', 0, 13), 13, false, false);
+        american.animations.add('american-southweset', Phaser.Animation.generateFrameNames('american-southwest', 0, 13), 13, false, false);
+        american.animations.add('american-southeast', Phaser.Animation.generateFrameNames('american-southeast', 0, 13), 13, false, false);
+
+        red.animations.add('red-stand-north', ['red-stand-north'],1, false, false);
+        red.animations.add('red-stand-northwest', ['red-stand-northwest'],1, false, false);
+        red.animations.add('red-stand-west', ['red-stand-west'],1, false, false);
+        red.animations.add('red-stand-southwest', ['red-stand-southwest'],1, false, false);
+        red.animations.add('red-stand-south', ['red-stand-south'],1, false, false);
+        red.animations.add('red-stand-southeast', ['red-stand-southeast'],1, false, false);
+        red.animations.add('red-stand-east', ['red-stand-east'],1, false, false);
+        red.animations.add('red-stand-northeast', ['red-stand-northeast'],1, false, false);
+
+        red.animations.add('red-run-east', Phaser.Animation.generateFrameNames('red-run-east',0,5), 6,false,false);
+        red.animations.add('red-run-west', Phaser.Animation.generateFrameNames('red-run-west',0,5), 6,false,false);
+        red.animations.add('red-run-north', Phaser.Animation.generateFrameNames('red-run-north', 0, 5), 6, false, false);
+        red.animations.add('red-run-south', Phaser.Animation.generateFrameNames('red-run-south', 0, 5), 6, false, false);
+        red.animations.add('red-run-northwest',Phaser.Animation.generateFrameNames('red-run-northwest', 0, 5), 6, false, false);
+        red.animations.add('red-run-northeast',Phaser.Animation.generateFrameNames('red-run-northeast', 0, 5), 6, false, false);
+        red.animations.add('red-run-southweset', Phaser.Animation.generateFrameNames('red-run-southwest', 0, 5), 6, false, false);
+        red.animations.add('red-run-southeast', Phaser.Animation.generateFrameNames('red-run-southeast', 0, 5), 6, false, false);
+
+        red.animations.add('red-fire-north', Phaser.Animation.generateFrameNames('red-fire-north', 0,5), 6, false, false);
+        red.animations.add('red-fire-south', Phaser.Animation.generateFrameNames('red-fire-south', 0,5), 6, false, false);
+        red.animations.add('red-fire-west', Phaser.Animation.generateFrameNames('red-fire-west', 0,5), 6, false, false);
+        red.animations.add('red-fire-east', Phaser.Animation.generateFrameNames('red-fire-east', 0,5), 6, false, false);
+        red.animations.add('red-fire-northwest', Phaser.Animation.generateFrameNames('red-fire-northwest', 0,5), 6, false, false);
+        red.animations.add('red-fire-northeast', Phaser.Animation.generateFrameNames('red-fire-northeast', 0,5), 6, false, false);
+        red.animations.add('red-fire-southwest', Phaser.Animation.generateFrameNames('red-fire-southwest', 0,5), 6, false, false);
+        red.animations.add('red-fire-southeast', Phaser.Animation.generateFrameNames('red-fire-southeast', 0,5), 6, false, false);
+
+        red.animations.add('red-die-west', Phaser.Animation.generateFrameNames('red-die-west', 0, 14), 14, false, false);
+        red.animations.add('red-die-east', Phaser.Animation.generateFrameNames('red-die-east', 0, 14), 14, false, false);
+
+        green.animations.add('green-stand-north', ['green-stand-north'],1, false, false);
+        green.animations.add('green-stand-northwest', ['green-stand-northwest'],1, false, false);
+        green.animations.add('green-stand-west', ['green-stand-west'],1, false, false);
+        green.animations.add('green-stand-southwest', ['green-stand-southwest'],1, false, false);
+        green.animations.add('green-stand-south', ['green-stand-south'],1, false, false);
+        green.animations.add('green-stand-southeast', ['green-stand-southeast'],1, false, false);
+        green.animations.add('green-stand-east', ['green-stand-east'],1, false, false);
+        green.animations.add('green-stand-northeast', ['green-stand-northeast'],1, false, false);
+
+        green.animations.add('green-run-east', Phaser.Animation.generateFrameNames('green-run-east',0,5), 6,false,false);
+        green.animations.add('green-run-west', Phaser.Animation.generateFrameNames('green-run-west',0,5), 6,false,false);
+        green.animations.add('green-run-north', Phaser.Animation.generateFrameNames('green-run-north', 0, 5), 6, false, false);
+        green.animations.add('green-run-south', Phaser.Animation.generateFrameNames('green-run-south', 0, 5), 6, false, false);
+
+        green.animations.add('green-run-northwest',Phaser.Animation.generateFrameNames('green-run-northwest', 0, 5), 6, false, false);
+        green.animations.add('green-run-northeast',Phaser.Animation.generateFrameNames('green-run-northeast', 0, 5), 6, false, false);
+        green.animations.add('green-run-southweset', Phaser.Animation.generateFrameNames('green-run-southwest', 0, 5), 6, false, false);
+        green.animations.add('green-run-southeast', Phaser.Animation.generateFrameNames('green-run-southeast', 0, 5), 6, false, false);
+
+        green.animations.add('green-fire-north', Phaser.Animation.generateFrameNames('green-fire-north', 0,5), 6, false, false);
+        green.animations.add('green-fire-south', Phaser.Animation.generateFrameNames('green-fire-south', 0,5), 6, false, false);
+        green.animations.add('green-fire-west', Phaser.Animation.generateFrameNames('green-fire-west', 0,5), 6, false, false);
+        green.animations.add('green-fire-east', Phaser.Animation.generateFrameNames('green-fire-east', 0,5), 6, false, false);
+        green.animations.add('green-fire-northwest', Phaser.Animation.generateFrameNames('green-fire-northwest', 0,5), 6, false, false);
+        green.animations.add('green-fire-northeast', Phaser.Animation.generateFrameNames('green-fire-northeast', 0,5), 6, false, false);
+        green.animations.add('green-fire-southwest', Phaser.Animation.generateFrameNames('green-fire-southwest', 0,5), 6, false, false);
+        green.animations.add('green-fire-southeast', Phaser.Animation.generateFrameNames('green-fire-southeast', 0,5), 6, false, false);
+
+        green.animations.add('green-die-west', Phaser.Animation.generateFrameNames('green-die-west', 0, 14), 14, false, false);
+        green.animations.add('green-die-east', Phaser.Animation.generateFrameNames('green-die-east', 0, 14), 14, false, false);
+
+        cursors = game.input.keyboard.createCursorKeys();
+        currentPlayer = red; //debug purposes
+        currentPlayer.name = "red";
+
+        game.physics.p2.enable(american);
+        game.physics.p2.enable(red);
+        game.physics.p2.enable(green);
+        american.body.setCircle(20);
+        american.body.damping = .5;
+        american.body.fixedRotation=true;
+        red.body.setCircle(20);
+        red.body.damping = .999;
+        red.body.fixedRotation=true;
+        green.body.setCircle(20);
+        green.body.damping = .999;
+        green.body.fixedRotation=true;
+
+
+
+
+
 
         this.setupUI();
     },
@@ -108,50 +187,59 @@ var playState = {
             }
         }
 
-        if (this.cursors.left.isDown) {
-            if (this.currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
-                this.american.body.moveLeft(100);
-                this.american.animations.play('american-west');
-            } else if (this.currentPlayer.name === 'red') {
-                this.red.body.moveLeft(100);
-                this.red.animations.play('red-run-west');
-            }
+        if (cursors.left.isDown ){
+              if(currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
+           american.body.moveLeft(100);
+           american.animations.play('american-west');
+             } else if(currentPlayer.name === 'red'){
+           red.body.moveLeft(100);
+           red.animations.play('red-run-west');
+             }
+         }
+
+    else if (cursors.right.isDown) {//  Move to the right
+        if(currentPlayer.name === 'american') {
+           american.body.moveRight(100);
+            american.animations.play('american-east');
+        } else if(currentPlayer.name == "red") {
+            red.body.moveRight(100);
+            red.animations.play('red-run-east');
+        }
+    }
+    else if(cursors.up.isDown) { //move up
+    if(currentPlayer.name === 'american') {
+        american.body.moveUp(100);
+         american.animations.play('american-north');
+    }else if(currentPlayer.name === 'red') {
+        red.body.moveUp(100);
+        red.animations.play('red-run-north');
+    }
+    }  else if(cursors.down.isDown) {// move dowm
+        if(currentPlayer.name === 'american') {
+            american.animations.play('american-south');
+    	american.body.moveDown(100);
+        } else if(currentPlayer.name === 'red') {
+              red.animations.play('red-run-south');
+    	red.body.moveDown(100);
         }
 
-        else if (this.cursors.right.isDown) {//  Move to the right
-            if (this.currentPlayer.name === 'american') {
-                this.american.body.moveRight(100);
-                this.american.animations.play('american-east');
-            } else if (this.currentPlayer.name == "red") {
-                this.red.body.moveRight(100);
-                this.red.animations.play('red-run-east');
-            }
+	}
+    else {
+        if(currentPlayer.name === 'american') {
+            american.animations.play('american-stand');
+        } else if(currentPlayer.name === 'red') {
+            red.animations.play('red-stand-north');
         }
-        else if (this.cursors.up.isDown) { //move up
-            if (this.currentPlayer.name === 'american') {
-                this.american.body.moveUp(100);
-                this.american.animations.play('american-north');
-            } else if (this.currentPlayer.name === 'red') {
-                this.red.body.moveUp(100);
-                this.red.animations.play('red-run-north');
-            }
-        } else if (this.cursors.down.isDown) {// move dowm
-            if (this.currentPlayer.name === 'american') {
-                this.american.animations.play('american-south');
-                this.american.body.moveDown(100);
-            } else if (this.currentPlayer.name === 'red') {
-                this.red.animations.play('red-run-south');
-                this.red.body.moveDown(100);
-            }
 
-        }
-        else {
-            if (this.currentPlayer.name === 'american') {
-                this.american.animations.play('american-stand');
-            } else if (this.currentPlayer.name === 'red') {
-                this.red.animations.play('red-stand-north');
-            }
-        }
+
+    }
+
+
+
+
+
+
+
     },
     setupUI: function () {
         this.minimap = game.add.sprite(-2, game.canvas.height + 2, 'minimap_frame');
@@ -201,7 +289,7 @@ var playState = {
             game.camera.width * this.minimapImg.scale.x,
             game.camera.height * this.minimapImg.scale.y);
 
-        this.cursors = game.input.keyboard.createCursorKeys();
+        //this.cursors = game.input.keyboard.createCursorKeys();
 
         var pKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
         pKey.onDown.add(this.pauseGame, this);
