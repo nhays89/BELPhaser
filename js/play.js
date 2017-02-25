@@ -166,9 +166,9 @@ var playState = {
     },
     render : function () {
         this.red.sprite.body.debug = true;
-        game.debug.spriteInfo(this.red.sprite, 32, 32);
-         game.debug.quadTree(this.quadTree);
-         game.debug.geom(this.viewCircle, '#00bff3', false);
+     //   game.debug.spriteInfo(this.red.sprite, 32, 32);
+       //  game.debug.quadTree(this.quadTree);
+       //  game.debug.geom(this.viewCircle, '#00bff3', false);
     },
 
     setupUnits      : function () {
@@ -334,7 +334,7 @@ var playState = {
 
         game.physics.p2.enable(soviet);
         soviet.body.setCircle(20);
-        soviet.body.damping = .999;
+        soviet.body.damping = .999999999;
         soviet.body.fixedRotation = true;
 
         //return soviet;
