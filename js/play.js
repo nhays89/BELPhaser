@@ -13,19 +13,11 @@ var playState = {
 
     create: function () {
         var groups = [];
-
+         this.map = game.add.tilemap('map');
         game.physics.arcade.skipQuadTree = false;
+     
 
-        this.map = game.add.tilemap('mountains');
-
-        this.map.addTilesetImage('mountain_landscape', 'mountain_landscape');
-        this.map.addTilesetImage('wood_tileset', 'wood_tileset');
-        this.grassLayer = this.map.createLayer('grass');
-        this.obstacleLayer = this.map.createLayer('obstacles');
-        this.grassLayer.resizeWorld();
-        this.obstacleLayer.resizeWorld();
-
-        this.map = game.add.tilemap('map');
+      
 
         this.map.addTilesetImage('wood_tileset');
         this.map.addTilesetImage('trees_plants_rocks');
@@ -173,10 +165,10 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
     render : function () {
-        // this.red.sprite.body.debug = true;
-        // game.debug.spriteInfo(this.red.sprite, 32, 32);
-        // game.debug.quadTree(this.quadTree);
-        // game.debug.geom(this.viewCircle, '#00bff3', false);
+        this.red.sprite.body.debug = true;
+        game.debug.spriteInfo(this.red.sprite, 32, 32);
+         game.debug.quadTree(this.quadTree);
+         game.debug.geom(this.viewCircle, '#00bff3', false);
     },
 
     setupUnits      : function () {
@@ -301,7 +293,7 @@ var playState = {
 
         game.physics.p2.enable(american);
         american.body.setCircle(20);
-        american.body.damping = .999;
+        american.body.damping = .9999999999;
         american.body.fixedRotation = true;
 
         //return american;
