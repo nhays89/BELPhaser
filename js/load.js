@@ -5,6 +5,7 @@ var loadState = {
             { font: '30px Courier', fill: '#ffffff' });
 
         game.physics.startSystem(Phaser.Physics.P2JS);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
 
         game.load.tilemap('mountains', 'assets/mountains.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.spritesheet('mountain_landscape', 'assets/mountain_landscape.png', 32, 32, 16);
