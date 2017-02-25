@@ -165,7 +165,7 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
     render : function () {
-        this.red.sprite.body.debug = true;
+      //  this.red.sprite.body.debug = true;
      //   game.debug.spriteInfo(this.red.sprite, 32, 32);
        //  game.debug.quadTree(this.quadTree);
        //  game.debug.geom(this.viewCircle, '#00bff3', false);
