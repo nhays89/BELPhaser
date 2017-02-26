@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "red-die-east0",
+	"filename": "soviet-die-east0",
 	"frame": {"x":844,"y":44,"w":30,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east1",
+	"filename": "soviet-die-east1",
 	"frame": {"x":1,"y":1,"w":48,"h":49},
 	"rotated": false,
 	"trimmed": false,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east2",
+	"filename": "soviet-die-east2",
 	"frame": {"x":1,"y":52,"w":52,"h":48},
 	"rotated": false,
 	"trimmed": false,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east3",
+	"filename": "soviet-die-east3",
 	"frame": {"x":60,"y":96,"w":56,"h":31},
 	"rotated": false,
 	"trimmed": false,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east4",
+	"filename": "soviet-die-east4",
 	"frame": {"x":502,"y":91,"w":56,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east5",
+	"filename": "soviet-die-east5",
 	"frame": {"x":1475,"y":1,"w":60,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east6",
+	"filename": "soviet-die-east6",
 	"frame": {"x":322,"y":94,"w":63,"h":33},
 	"rotated": false,
 	"trimmed": false,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east7",
+	"filename": "soviet-die-east7",
 	"frame": {"x":1431,"y":75,"w":65,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -65,7 +65,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east8",
+	"filename": "soviet-die-east8",
 	"frame": {"x":186,"y":95,"w":66,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -73,7 +73,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east9",
+	"filename": "soviet-die-east9",
 	"frame": {"x":254,"y":95,"w":66,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east10",
+	"filename": "soviet-die-east10",
 	"frame": {"x":118,"y":95,"w":66,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -89,7 +89,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east11",
+	"filename": "soviet-die-east11",
 	"frame": {"x":1447,"y":36,"w":64,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -97,7 +97,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east12",
+	"filename": "soviet-die-east12",
 	"frame": {"x":1537,"y":1,"w":65,"h":26},
 	"rotated": false,
 	"trimmed": false,
@@ -105,7 +105,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east13",
+	"filename": "soviet-die-east13",
 	"frame": {"x":1545,"y":69,"w":65,"h":26},
 	"rotated": false,
 	"trimmed": false,
@@ -113,7 +113,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-east14",
+	"filename": "soviet-die-east14",
 	"frame": {"x":1545,"y":97,"w":65,"h":26},
 	"rotated": false,
 	"trimmed": false,
@@ -121,7 +121,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west0",
+	"filename": "soviet-die-west0",
 	"frame": {"x":377,"y":1,"w":25,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -129,7 +129,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west1",
+	"filename": "soviet-die-west1",
 	"frame": {"x":121,"y":1,"w":38,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -137,7 +137,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west2",
+	"filename": "soviet-die-west2",
 	"frame": {"x":430,"y":1,"w":46,"h":43},
 	"rotated": false,
 	"trimmed": false,
@@ -145,7 +145,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west3",
+	"filename": "soviet-die-west3",
 	"frame": {"x":468,"y":46,"w":43,"h":43},
 	"rotated": false,
 	"trimmed": false,
@@ -153,7 +153,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west4",
+	"filename": "soviet-die-west4",
 	"frame": {"x":765,"y":44,"w":41,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -161,7 +161,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west5",
+	"filename": "soviet-die-west5",
 	"frame": {"x":721,"y":44,"w":42,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -169,7 +169,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west6",
+	"filename": "soviet-die-west6",
 	"frame": {"x":729,"y":1,"w":42,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -177,7 +177,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west7",
+	"filename": "soviet-die-west7",
 	"frame": {"x":682,"y":1,"w":45,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -185,7 +185,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west8",
+	"filename": "soviet-die-west8",
 	"frame": {"x":419,"y":47,"w":47,"h":43},
 	"rotated": false,
 	"trimmed": false,
@@ -193,7 +193,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west9",
+	"filename": "soviet-die-west9",
 	"frame": {"x":672,"y":45,"w":47,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -201,7 +201,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west10",
+	"filename": "soviet-die-west10",
 	"frame": {"x":1498,"y":70,"w":45,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -209,7 +209,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west11",
+	"filename": "soviet-die-west11",
 	"frame": {"x":1430,"y":1,"w":43,"h":33},
 	"rotated": false,
 	"trimmed": false,
@@ -217,7 +217,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west12",
+	"filename": "soviet-die-west12",
 	"frame": {"x":1513,"y":35,"w":42,"h":32},
 	"rotated": false,
 	"trimmed": false,
@@ -225,7 +225,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west13",
+	"filename": "soviet-die-west13",
 	"frame": {"x":416,"y":93,"w":48,"h":33},
 	"rotated": false,
 	"trimmed": false,
@@ -233,7 +233,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-die-west14",
+	"filename": "soviet-die-west14",
 	"frame": {"x":1,"y":102,"w":57,"h":24},
 	"rotated": false,
 	"trimmed": false,
@@ -241,7 +241,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-east0",
+	"filename": "soviet-fire-east0",
 	"frame": {"x":143,"y":48,"w":36,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -249,7 +249,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-east1",
+	"filename": "soviet-fire-east1",
 	"frame": {"x":55,"y":49,"w":43,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -257,7 +257,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-east2",
+	"filename": "soviet-fire-east2",
 	"frame": {"x":285,"y":48,"w":36,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -265,7 +265,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-east3",
+	"filename": "soviet-fire-east3",
 	"frame": {"x":100,"y":48,"w":41,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -273,7 +273,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-east4",
+	"filename": "soviet-fire-east4",
 	"frame": {"x":301,"y":1,"w":36,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -281,7 +281,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-east5",
+	"filename": "soviet-fire-east5",
 	"frame": {"x":77,"y":1,"w":42,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -289,7 +289,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-north0",
+	"filename": "soviet-fire-north0",
 	"frame": {"x":808,"y":44,"w":34,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -297,7 +297,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-north1",
+	"filename": "soviet-fire-north1",
 	"frame": {"x":532,"y":1,"w":34,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -305,7 +305,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-north2",
+	"filename": "soviet-fire-north2",
 	"frame": {"x":810,"y":1,"w":34,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -313,7 +313,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-north3",
+	"filename": "soviet-fire-north3",
 	"frame": {"x":513,"y":46,"w":36,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -321,7 +321,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-north4",
+	"filename": "soviet-fire-north4",
 	"frame": {"x":1050,"y":43,"w":33,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -329,7 +329,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-north5",
+	"filename": "soviet-fire-north5",
 	"frame": {"x":551,"y":45,"w":34,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -337,7 +337,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northeast0",
+	"filename": "soviet-fire-northeast0",
 	"frame": {"x":975,"y":43,"w":36,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -345,7 +345,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northeast1",
+	"filename": "soviet-fire-northeast1",
 	"frame": {"x":888,"y":87,"w":37,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -353,7 +353,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northeast2",
+	"filename": "soviet-fire-northeast2",
 	"frame": {"x":976,"y":1,"w":35,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -361,7 +361,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northeast3",
+	"filename": "soviet-fire-northeast3",
 	"frame": {"x":927,"y":87,"w":37,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -369,7 +369,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northeast4",
+	"filename": "soviet-fire-northeast4",
 	"frame": {"x":1005,"y":85,"w":35,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -377,7 +377,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northeast5",
+	"filename": "soviet-fire-northeast5",
 	"frame": {"x":936,"y":44,"w":37,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -385,7 +385,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northwest0",
+	"filename": "soviet-fire-northwest0",
 	"frame": {"x":618,"y":45,"w":25,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -393,7 +393,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northwest1",
+	"filename": "soviet-fire-northwest1",
 	"frame": {"x":568,"y":1,"w":32,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -401,7 +401,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northwest2",
+	"filename": "soviet-fire-northwest2",
 	"frame": {"x":633,"y":1,"w":25,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -409,7 +409,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northwest3",
+	"filename": "soviet-fire-northwest3",
 	"frame": {"x":361,"y":47,"w":29,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -417,7 +417,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northwest4",
+	"filename": "soviet-fire-northwest4",
 	"frame": {"x":645,"y":45,"w":25,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -425,7 +425,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-northwest5",
+	"filename": "soviet-fire-northwest5",
 	"frame": {"x":587,"y":45,"w":29,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -433,7 +433,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-south0",
+	"filename": "soviet-fire-south0",
 	"frame": {"x":161,"y":1,"w":36,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -441,7 +441,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-south1",
+	"filename": "soviet-fire-south1",
 	"frame": {"x":323,"y":47,"w":36,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -449,7 +449,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-south2",
+	"filename": "soviet-fire-south2",
 	"frame": {"x":217,"y":48,"w":33,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -457,7 +457,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-south3",
+	"filename": "soviet-fire-south3",
 	"frame": {"x":339,"y":1,"w":36,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -465,7 +465,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-south4",
+	"filename": "soviet-fire-south4",
 	"frame": {"x":181,"y":48,"w":34,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -473,7 +473,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-south5",
+	"filename": "soviet-fire-south5",
 	"frame": {"x":199,"y":1,"w":34,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -481,7 +481,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southeast0",
+	"filename": "soviet-fire-southeast0",
 	"frame": {"x":51,"y":1,"w":24,"h":46},
 	"rotated": false,
 	"trimmed": false,
@@ -489,7 +489,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southeast1",
+	"filename": "soviet-fire-southeast1",
 	"frame": {"x":235,"y":1,"w":32,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -497,7 +497,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southeast2",
+	"filename": "soviet-fire-southeast2",
 	"frame": {"x":404,"y":1,"w":24,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -505,7 +505,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southeast3",
+	"filename": "soviet-fire-southeast3",
 	"frame": {"x":252,"y":48,"w":31,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -513,7 +513,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southeast4",
+	"filename": "soviet-fire-southeast4",
 	"frame": {"x":392,"y":47,"w":25,"h":44},
 	"rotated": false,
 	"trimmed": false,
@@ -521,7 +521,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southeast5",
+	"filename": "soviet-fire-southeast5",
 	"frame": {"x":269,"y":1,"w":30,"h":45},
 	"rotated": false,
 	"trimmed": false,
@@ -529,7 +529,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southwest0",
+	"filename": "soviet-fire-southwest0",
 	"frame": {"x":720,"y":88,"w":36,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -537,7 +537,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southwest1",
+	"filename": "soviet-fire-southwest1",
 	"frame": {"x":680,"y":88,"w":38,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -545,7 +545,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southwest2",
+	"filename": "soviet-fire-southwest2",
 	"frame": {"x":1042,"y":85,"w":34,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -553,7 +553,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southwest3",
+	"filename": "soviet-fire-southwest3",
 	"frame": {"x":966,"y":86,"w":37,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -561,7 +561,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southwest4",
+	"filename": "soviet-fire-southwest4",
 	"frame": {"x":773,"y":1,"w":35,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -569,7 +569,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-southwest5",
+	"filename": "soviet-fire-southwest5",
 	"frame": {"x":937,"y":1,"w":37,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -577,7 +577,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-west0",
+	"filename": "soviet-fire-west0",
 	"frame": {"x":1013,"y":1,"w":35,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -585,7 +585,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-west1",
+	"filename": "soviet-fire-west1",
 	"frame": {"x":802,"y":87,"w":41,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -593,7 +593,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-west2",
+	"filename": "soviet-fire-west2",
 	"frame": {"x":1013,"y":43,"w":35,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -601,7 +601,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-west3",
+	"filename": "soviet-fire-west3",
 	"frame": {"x":758,"y":87,"w":42,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -609,7 +609,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-west4",
+	"filename": "soviet-fire-west4",
 	"frame": {"x":1050,"y":1,"w":34,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -617,7 +617,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-fire-west5",
+	"filename": "soviet-fire-west5",
 	"frame": {"x":845,"y":87,"w":41,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -625,7 +625,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-run-east0",
+	"filename": "soviet-run-east0",
 	"frame": {"x":560,"y":89,"w":31,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -633,7 +633,7 @@
 	"sourceSize": {"w":31,"h":38}
 },
 {
-	"filename": "red-run-east1",
+	"filename": "soviet-run-east1",
 	"frame": {"x":1369,"y":1,"w":30,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -641,7 +641,7 @@
 	"sourceSize": {"w":30,"h":35}
 },
 {
-	"filename": "red-run-east2",
+	"filename": "soviet-run-east2",
 	"frame": {"x":1401,"y":1,"w":27,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -649,7 +649,7 @@
 	"sourceSize": {"w":27,"h":35}
 },
 {
-	"filename": "red-run-east3",
+	"filename": "soviet-run-east3",
 	"frame": {"x":1306,"y":1,"w":30,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -657,7 +657,7 @@
 	"sourceSize": {"w":30,"h":36}
 },
 {
-	"filename": "red-run-east4",
+	"filename": "soviet-run-east4",
 	"frame": {"x":1271,"y":41,"w":34,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -665,7 +665,7 @@
 	"sourceSize": {"w":34,"h":36}
 },
 {
-	"filename": "red-run-east5",
+	"filename": "soviet-run-east5",
 	"frame": {"x":1338,"y":1,"w":29,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -673,7 +673,7 @@
 	"sourceSize": {"w":29,"h":36}
 },
 {
-	"filename": "red-run-north0",
+	"filename": "soviet-run-north0",
 	"frame": {"x":1111,"y":1,"w":20,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -681,7 +681,7 @@
 	"sourceSize": {"w":20,"h":40}
 },
 {
-	"filename": "red-run-north1",
+	"filename": "soviet-run-north1",
 	"frame": {"x":1133,"y":1,"w":18,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -689,7 +689,7 @@
 	"sourceSize": {"w":18,"h":40}
 },
 {
-	"filename": "red-run-north2",
+	"filename": "soviet-run-north2",
 	"frame": {"x":1269,"y":81,"w":17,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -697,7 +697,7 @@
 	"sourceSize": {"w":17,"h":38}
 },
 {
-	"filename": "red-run-north3",
+	"filename": "soviet-run-north3",
 	"frame": {"x":1128,"y":85,"w":18,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -705,7 +705,7 @@
 	"sourceSize": {"w":18,"h":40}
 },
 {
-	"filename": "red-run-north4",
+	"filename": "soviet-run-north4",
 	"frame": {"x":1106,"y":85,"w":20,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -713,7 +713,7 @@
 	"sourceSize": {"w":20,"h":40}
 },
 {
-	"filename": "red-run-north5",
+	"filename": "soviet-run-north5",
 	"frame": {"x":1249,"y":41,"w":20,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -721,7 +721,7 @@
 	"sourceSize": {"w":20,"h":38}
 },
 {
-	"filename": "red-run-northeast0",
+	"filename": "soviet-run-northeast0",
 	"frame": {"x":1200,"y":1,"w":23,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -729,7 +729,7 @@
 	"sourceSize": {"w":23,"h":38}
 },
 {
-	"filename": "red-run-northeast1",
+	"filename": "soviet-run-northeast1",
 	"frame": {"x":1220,"y":82,"w":23,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -737,7 +737,7 @@
 	"sourceSize": {"w":23,"h":38}
 },
 {
-	"filename": "red-run-northeast2",
+	"filename": "soviet-run-northeast2",
 	"frame": {"x":1366,"y":39,"w":22,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -745,7 +745,7 @@
 	"sourceSize": {"w":22,"h":36}
 },
 {
-	"filename": "red-run-northeast3",
+	"filename": "soviet-run-northeast3",
 	"frame": {"x":1148,"y":85,"w":21,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -753,7 +753,7 @@
 	"sourceSize": {"w":21,"h":39}
 },
 {
-	"filename": "red-run-northeast4",
+	"filename": "soviet-run-northeast4",
 	"frame": {"x":1153,"y":1,"w":22,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -761,7 +761,7 @@
 	"sourceSize": {"w":22,"h":39}
 },
 {
-	"filename": "red-run-northeast5",
+	"filename": "soviet-run-northeast5",
 	"frame": {"x":1347,"y":77,"w":23,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -769,7 +769,7 @@
 	"sourceSize": {"w":23,"h":36}
 },
 {
-	"filename": "red-run-northwest0",
+	"filename": "soviet-run-northwest0",
 	"frame": {"x":1078,"y":85,"w":26,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -777,7 +777,7 @@
 	"sourceSize": {"w":26,"h":40}
 },
 {
-	"filename": "red-run-northwest1",
+	"filename": "soviet-run-northwest1",
 	"frame": {"x":624,"y":89,"w":26,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -785,7 +785,7 @@
 	"sourceSize": {"w":26,"h":38}
 },
 {
-	"filename": "red-run-northwest2",
+	"filename": "soviet-run-northwest2",
 	"frame": {"x":1320,"y":77,"w":25,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -793,7 +793,7 @@
 	"sourceSize": {"w":25,"h":36}
 },
 {
-	"filename": "red-run-northwest3",
+	"filename": "soviet-run-northwest3",
 	"frame": {"x":1085,"y":43,"w":26,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -801,7 +801,7 @@
 	"sourceSize": {"w":26,"h":40}
 },
 {
-	"filename": "red-run-northwest4",
+	"filename": "soviet-run-northwest4",
 	"frame": {"x":593,"y":89,"w":29,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -809,7 +809,7 @@
 	"sourceSize": {"w":29,"h":38}
 },
 {
-	"filename": "red-run-northwest5",
+	"filename": "soviet-run-northwest5",
 	"frame": {"x":1193,"y":83,"w":25,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -817,7 +817,7 @@
 	"sourceSize": {"w":25,"h":38}
 },
 {
-	"filename": "red-run-south0",
+	"filename": "soviet-run-south0",
 	"frame": {"x":660,"y":1,"w":20,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -825,7 +825,7 @@
 	"sourceSize": {"w":20,"h":42}
 },
 {
-	"filename": "red-run-south1",
+	"filename": "soviet-run-south1",
 	"frame": {"x":1135,"y":43,"w":18,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -833,7 +833,7 @@
 	"sourceSize": {"w":18,"h":40}
 },
 {
-	"filename": "red-run-south2",
+	"filename": "soviet-run-south2",
 	"frame": {"x":1178,"y":42,"w":18,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -841,7 +841,7 @@
 	"sourceSize": {"w":18,"h":39}
 },
 {
-	"filename": "red-run-south3",
+	"filename": "soviet-run-south3",
 	"frame": {"x":1113,"y":43,"w":20,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -849,7 +849,7 @@
 	"sourceSize": {"w":20,"h":40}
 },
 {
-	"filename": "red-run-south4",
+	"filename": "soviet-run-south4",
 	"frame": {"x":1171,"y":83,"w":20,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -857,7 +857,7 @@
 	"sourceSize": {"w":20,"h":39}
 },
 {
-	"filename": "red-run-south5",
+	"filename": "soviet-run-south5",
 	"frame": {"x":1155,"y":42,"w":21,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -865,7 +865,7 @@
 	"sourceSize": {"w":21,"h":39}
 },
 {
-	"filename": "red-run-southeast0",
+	"filename": "soviet-run-southeast0",
 	"frame": {"x":652,"y":89,"w":26,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -873,7 +873,7 @@
 	"sourceSize": {"w":26,"h":38}
 },
 {
-	"filename": "red-run-southeast1",
+	"filename": "soviet-run-southeast1",
 	"frame": {"x":1339,"y":39,"w":25,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -881,7 +881,7 @@
 	"sourceSize": {"w":25,"h":36}
 },
 {
-	"filename": "red-run-southeast2",
+	"filename": "soviet-run-southeast2",
 	"frame": {"x":1422,"y":38,"w":23,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -889,7 +889,7 @@
 	"sourceSize": {"w":23,"h":35}
 },
 {
-	"filename": "red-run-southeast3",
+	"filename": "soviet-run-southeast3",
 	"frame": {"x":1198,"y":42,"w":25,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -897,7 +897,7 @@
 	"sourceSize": {"w":25,"h":38}
 },
 {
-	"filename": "red-run-southeast4",
+	"filename": "soviet-run-southeast4",
 	"frame": {"x":1288,"y":79,"w":30,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -905,7 +905,7 @@
 	"sourceSize": {"w":30,"h":36}
 },
 {
-	"filename": "red-run-southeast5",
+	"filename": "soviet-run-southeast5",
 	"frame": {"x":1404,"y":75,"w":25,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -913,7 +913,7 @@
 	"sourceSize": {"w":25,"h":35}
 },
 {
-	"filename": "red-run-southwest0",
+	"filename": "soviet-run-southwest0",
 	"frame": {"x":1086,"y":1,"w":23,"h":40},
 	"rotated": false,
 	"trimmed": false,
@@ -921,7 +921,7 @@
 	"sourceSize": {"w":23,"h":40}
 },
 {
-	"filename": "red-run-southwest1",
+	"filename": "soviet-run-southwest1",
 	"frame": {"x":1225,"y":1,"w":22,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -929,7 +929,7 @@
 	"sourceSize": {"w":22,"h":38}
 },
 {
-	"filename": "red-run-southwest2",
+	"filename": "soviet-run-southwest2",
 	"frame": {"x":1225,"y":41,"w":22,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -937,7 +937,7 @@
 	"sourceSize": {"w":22,"h":38}
 },
 {
-	"filename": "red-run-southwest3",
+	"filename": "soviet-run-southwest3",
 	"frame": {"x":1177,"y":1,"w":21,"h":39},
 	"rotated": false,
 	"trimmed": false,
@@ -945,7 +945,7 @@
 	"sourceSize": {"w":21,"h":39}
 },
 {
-	"filename": "red-run-southwest4",
+	"filename": "soviet-run-southwest4",
 	"frame": {"x":1245,"y":81,"w":22,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -953,7 +953,7 @@
 	"sourceSize": {"w":22,"h":38}
 },
 {
-	"filename": "red-run-southwest5",
+	"filename": "soviet-run-southwest5",
 	"frame": {"x":1249,"y":1,"w":22,"h":38},
 	"rotated": false,
 	"trimmed": false,
@@ -961,7 +961,7 @@
 	"sourceSize": {"w":22,"h":38}
 },
 {
-	"filename": "red-run-west0",
+	"filename": "soviet-run-west0",
 	"frame": {"x":1273,"y":1,"w":31,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -969,7 +969,7 @@
 	"sourceSize": {"w":31,"h":36}
 },
 {
-	"filename": "red-run-west1",
+	"filename": "soviet-run-west1",
 	"frame": {"x":1372,"y":77,"w":30,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -977,7 +977,7 @@
 	"sourceSize": {"w":30,"h":35}
 },
 {
-	"filename": "red-run-west2",
+	"filename": "soviet-run-west2",
 	"frame": {"x":387,"y":93,"w":27,"h":34},
 	"rotated": false,
 	"trimmed": false,
@@ -985,7 +985,7 @@
 	"sourceSize": {"w":27,"h":34}
 },
 {
-	"filename": "red-run-west3",
+	"filename": "soviet-run-west3",
 	"frame": {"x":1307,"y":39,"w":30,"h":36},
 	"rotated": false,
 	"trimmed": false,
@@ -993,7 +993,7 @@
 	"sourceSize": {"w":30,"h":36}
 },
 {
-	"filename": "red-run-west4",
+	"filename": "soviet-run-west4",
 	"frame": {"x":466,"y":92,"w":34,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -1001,7 +1001,7 @@
 	"sourceSize": {"w":34,"h":35}
 },
 {
-	"filename": "red-run-west5",
+	"filename": "soviet-run-west5",
 	"frame": {"x":1390,"y":38,"w":30,"h":35},
 	"rotated": false,
 	"trimmed": false,
@@ -1009,7 +1009,7 @@
 	"sourceSize": {"w":30,"h":35}
 },
 {
-	"filename": "red-stand-east",
+	"filename": "soviet-stand-east",
 	"frame": {"x":602,"y":1,"w":29,"h":42},
 	"rotated": false,
 	"trimmed": false,
@@ -1017,7 +1017,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-north",
+	"filename": "soviet-stand-north",
 	"frame": {"x":907,"y":44,"w":27,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -1025,7 +1025,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-northeast",
+	"filename": "soviet-stand-northeast",
 	"frame": {"x":909,"y":1,"w":26,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -1033,7 +1033,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-northwest",
+	"filename": "soviet-stand-northwest",
 	"frame": {"x":876,"y":44,"w":29,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -1041,7 +1041,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-south",
+	"filename": "soviet-stand-south",
 	"frame": {"x":478,"y":1,"w":26,"h":43},
 	"rotated": false,
 	"trimmed": false,
@@ -1049,7 +1049,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-southeast",
+	"filename": "soviet-stand-southeast",
 	"frame": {"x":846,"y":1,"w":30,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -1057,7 +1057,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-southwest",
+	"filename": "soviet-stand-southwest",
 	"frame": {"x":506,"y":1,"w":24,"h":43},
 	"rotated": false,
 	"trimmed": false,
@@ -1065,7 +1065,7 @@
 	"sourceSize": {"w":150,"h":92}
 },
 {
-	"filename": "red-stand-west",
+	"filename": "soviet-stand-west",
 	"frame": {"x":878,"y":1,"w":29,"h":41},
 	"rotated": false,
 	"trimmed": false,
@@ -1075,7 +1075,7 @@
 "meta": {
 	"app": "http://www.codeandweb.com/texturepacker",
 	"version": "1.0",
-	"image": "red-soldier.png",
+	"image": "soviet-soldier.png",
 	"format": "RGBA8888",
 	"size": {"w":1611,"h":128},
 	"scale": "1.3",
