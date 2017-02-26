@@ -14,8 +14,8 @@ var loadState = {
       	 game.load.tilemap('map', './assets/map/bel-map.json', null, Phaser.Tilemap.TILED_JSON);
          
          //atlas spritesheet  
-         game.load.atlas('red', './assets/soldiers/red/red-soldier.png','./assets/soldiers/red/red-soldier.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
-         game.load.atlas('green', './assets/soldiers/green/green-soldier.png','./assets/soldiers/green/green-soldier.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
+         game.load.atlas('soviet', './assets/soldiers/soviet/soviet-soldier.png','./assets/soldiers/soviet/soviet-soldier.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
+         game.load.atlas('american', './assets/soldiers/american/american-soldier.png','./assets/soldiers/american/american-soldier.json', null, Phaser.Loader.TEXTURE_ATLAS_JSON_ARRAY);
         
          //load needed physics
          game.physics.startSystem(Phaser.Physics.P2JS);
