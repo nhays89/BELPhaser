@@ -80,54 +80,54 @@ var playState = {
         });
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-            // this.red.sprite.animations.play('red-die-west');
-            // var found = this.getNearbyEnemies(this.red);
-            // console.log('Num enemies: ' + this.getNearbyEnemies(this.red));
+            // this.soviet.sprite.animations.play('soviet-die-west');
+            // var found = this.getNearbyEnemies(this.soviet);
+            // console.log('Num enemies: ' + this.getNearbyEnemies(this.soviet));
         }
 
-        if (this.red && this.red.alive) {
+        if (this.soviet && this.soviet.alive) {
             if (this.cursors.left.isDown) {
                 if (this.currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
                     this.american.sprite.body.moveLeft(100);
                     this.american.sprite.animations.play('american-west');
-                } else if (this.currentPlayer.name === 'red') {
-                    this.red.sprite.body.moveLeft(100);
-                    this.red.sprite.animations.play('red-run-west');
-                    this.red.direction = 'west';
+                } else if (this.currentPlayer.name === 'soviet') {
+                    this.soviet.sprite.body.moveLeft(100);
+                    this.soviet.sprite.animations.play('soviet-run-west');
+                    this.soviet.direction = 'west';
                 }
             } else if (this.cursors.right.isDown) { // Move to the right
                 if (this.currentPlayer.name === 'american') {
                     this.american.sprite.body.moveRight(100);
                     this.american.sprite.animations.play('american-east');
-                } else if (this.currentPlayer.name == "red") {
-                    this.red.sprite.body.moveRight(100);
-                    this.red.sprite.animations.play('red-run-east');
-                    this.red.direction = 'east';
+                } else if (this.currentPlayer.name == "soviet") {
+                    this.soviet.sprite.body.moveRight(100);
+                    this.soviet.sprite.animations.play('soviet-run-east');
+                    this.soviet.direction = 'east';
                 }
             } else if (this.cursors.up.isDown) { //move up
                 if (this.currentPlayer.name === 'american') {
                     this.american.sprite.body.moveUp(100);
                     this.american.sprite.animations.play('american-north');
-                } else if (this.currentPlayer.name === 'red') {
-                    this.red.sprite.body.moveUp(100);
-                    this.red.sprite.animations.play('red-run-north');
-                    this.red.direction = 'north';
+                } else if (this.currentPlayer.name === 'soviet') {
+                    this.soviet.sprite.body.moveUp(100);
+                    this.soviet.sprite.animations.play('soviet-run-north');
+                    this.soviet.direction = 'north';
                 }
             } else if (this.cursors.down.isDown) { // move dowm
                 if (this.currentPlayer.name === 'american') {
                     this.american.sprite.animations.play('american-south');
                     this.american.sprite.body.moveDown(100);
-                } else if (this.currentPlayer.name === 'red') {
-                    this.red.sprite.animations.play('red-run-south');
-                    this.red.sprite.body.moveDown(100);
-                    this.red.direction = 'south';
+                } else if (this.currentPlayer.name === 'soviet') {
+                    this.soviet.sprite.animations.play('soviet-run-south');
+                    this.soviet.sprite.body.moveDown(100);
+                    this.soviet.direction = 'south';
                 }
             } else {
                 if (this.currentPlayer.name === 'american') {
                     this.american.sprite.animations.play('american-stand');
-                } else if (this.currentPlayer.name === 'red') {
-                    this.red.sprite.animations.play('red-stand-north');
-                    this.red.direction = 'north';
+                } else if (this.currentPlayer.name === 'soviet') {
+                    this.soviet.sprite.animations.play('soviet-stand-north');
+                    this.soviet.direction = 'north';
                 }
             }
         }
@@ -179,17 +179,11 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
     render : function () {
-<<<<<<< HEAD
-     //   this.red.sprite.body.debug = true;
-     //   game.debug.spriteInfo(this.red.sprite, 32, 32);
-       //  game.debug.quadTree(this.quadTree);
-       //  game.debug.geom(this.viewCircle, '#00bff3', false);
-=======
-        // this.red.sprite.body.debug = true;
-        // game.debug.spriteInfo(this.red.sprite, 32, 32);
+
+        // this.soviet.sprite.body.debug = true;
+        // game.debug.spriteInfo(this.soviet.sprite, 32, 32);
         // game.debug.quadTree(this.quadTree);
         // game.debug.geom(this.viewCircle, '#00bff3', false);
->>>>>>> 04846b193754f9cc91cb2bf84de57a4e3d6328e3
     },
 
     setupUnits: function () {
@@ -202,8 +196,8 @@ var playState = {
 
         this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
 
-        this.red = new Soviet(275, 275);
-        this.sovietsGroup.push(this.red);
+        this.soviet = new Soviet(275, 275);
+        this.sovietsGroup.push(this.soviet);
 
         for (var i = 0; i < 20; i++) {
 
@@ -219,7 +213,7 @@ var playState = {
         this.alliesGroup.push(this.american);
         this.quadTree.insert(this.american);
 
-        this.quadTree.insert(this.red);
+        this.quadTree.insert(this.soviet);
 
 
         // sprite that's used with quadtree to find a circle around the target sprite
@@ -228,8 +222,8 @@ var playState = {
         // for debugging view distance
         this.viewCircle = new Phaser.Circle(0, 0, 200);
 
-        this.currentPlayer = this.red.sprite; //debug purposes
-        this.currentPlayer.name = "red";
+        this.currentPlayer = this.soviet.sprite; //debug purposes
+        this.currentPlayer.name = "soviet";
     },
     pauseGame : function () {
         if (game.paused) {
@@ -252,38 +246,38 @@ var playState = {
     },
 
     // newAmerican: function (x, y) {
-    //     var american = game.add.sprite(x, y, 'green');
+    //     var american = game.add.sprite(x, y, 'american');
     //
-    //     american.animations.add('green-stand-north', ['green-stand-north'], 1, false, false);
-    //     american.animations.add('green-stand-northwest', ['green-stand-northwest'], 1, false, false);
-    //     american.animations.add('green-stand-west', ['green-stand-west'], 1, false, false);
-    //     american.animations.add('green-stand-southwest', ['green-stand-southwest'], 1, false, false);
-    //     american.animations.add('green-stand-south', ['green-stand-south'], 1, false, false);
-    //     american.animations.add('green-stand-southeast', ['green-stand-southeast'], 1, false, false);
-    //     american.animations.add('green-stand-east', ['green-stand-east'], 1, false, false);
-    //     american.animations.add('green-stand-northeast', ['green-stand-northeast'], 1, false, false);
+    //     american.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
+    //     american.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
+    //     american.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);
+    //     american.animations.add('american-stand-southwest', ['american-stand-southwest'], 1, false, false);
+    //     american.animations.add('american-stand-south', ['american-stand-south'], 1, false, false);
+    //     american.animations.add('american-stand-southeast', ['american-stand-southeast'], 1, false, false);
+    //     american.animations.add('american-stand-east', ['american-stand-east'], 1, false, false);
+    //     american.animations.add('american-stand-northeast', ['american-stand-northeast'], 1, false, false);
     //
-    //     american.animations.add('green-run-east', Phaser.Animation.generateFrameNames('green-run-east', 0, 5), 6, false, false);
-    //     american.animations.add('green-run-west', Phaser.Animation.generateFrameNames('green-run-west', 0, 5), 6, false, false);
-    //     american.animations.add('green-run-north', Phaser.Animation.generateFrameNames('green-run-north', 0, 5), 6, false, false);
-    //     american.animations.add('green-run-south', Phaser.Animation.generateFrameNames('green-run-south', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-east', Phaser.Animation.generateFrameNames('american-run-east', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-west', Phaser.Animation.generateFrameNames('american-run-west', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-north', Phaser.Animation.generateFrameNames('american-run-north', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-south', Phaser.Animation.generateFrameNames('american-run-south', 0, 5), 6, false, false);
     //
-    //     american.animations.add('green-run-northwest', Phaser.Animation.generateFrameNames('green-run-northwest', 0, 5), 6, false, false);
-    //     american.animations.add('green-run-northeast', Phaser.Animation.generateFrameNames('green-run-northeast', 0, 5), 6, false, false);
-    //     american.animations.add('green-run-southweset', Phaser.Animation.generateFrameNames('green-run-southwest', 0, 5), 6, false, false);
-    //     american.animations.add('green-run-southeast', Phaser.Animation.generateFrameNames('green-run-southeast', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-northwest', Phaser.Animation.generateFrameNames('american-run-northwest', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-northeast', Phaser.Animation.generateFrameNames('american-run-northeast', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-southweset', Phaser.Animation.generateFrameNames('american-run-southwest', 0, 5), 6, false, false);
+    //     american.animations.add('american-run-southeast', Phaser.Animation.generateFrameNames('american-run-southeast', 0, 5), 6, false, false);
     //
-    //     american.animations.add('green-fire-north', Phaser.Animation.generateFrameNames('green-fire-north', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-south', Phaser.Animation.generateFrameNames('green-fire-south', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-west', Phaser.Animation.generateFrameNames('green-fire-west', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-east', Phaser.Animation.generateFrameNames('green-fire-east', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-northwest', Phaser.Animation.generateFrameNames('green-fire-northwest', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-northeast', Phaser.Animation.generateFrameNames('green-fire-northeast', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-southwest', Phaser.Animation.generateFrameNames('green-fire-southwest', 0, 5), 6, false, false);
-    //     american.animations.add('green-fire-southeast', Phaser.Animation.generateFrameNames('green-fire-southeast', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-north', Phaser.Animation.generateFrameNames('american-fire-north', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-south', Phaser.Animation.generateFrameNames('american-fire-south', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-west', Phaser.Animation.generateFrameNames('american-fire-west', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-east', Phaser.Animation.generateFrameNames('american-fire-east', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-northwest', Phaser.Animation.generateFrameNames('american-fire-northwest', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-northeast', Phaser.Animation.generateFrameNames('american-fire-northeast', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-southwest', Phaser.Animation.generateFrameNames('american-fire-southwest', 0, 5), 6, false, false);
+    //     american.animations.add('american-fire-southeast', Phaser.Animation.generateFrameNames('american-fire-southeast', 0, 5), 6, false, false);
     //
-    //     american.animations.add('green-die-west', Phaser.Animation.generateFrameNames('green-die-west', 0, 14), 14, false, false);
-    //     american.animations.add('green-die-east', Phaser.Animation.generateFrameNames('green-die-east', 0, 14), 14, false, false);
+    //     american.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
+    //     american.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
     //
     //     game.physics.p2.enable(american);
     //     american.body.setCircle(20);
@@ -294,37 +288,37 @@ var playState = {
     //     return new American(x, y, american);
     // },
     // newSoviet  : function (x, y) {
-    //     var soviet = game.add.sprite(x, y, 'red');
+    //     var soviet = game.add.sprite(x, y, 'soviet');
     //
-    //     soviet.animations.add('red-stand-north', ['red-stand-north'], 1, false, false);
-    //     soviet.animations.add('red-stand-northwest', ['red-stand-northwest'], 1, false, false);
-    //     soviet.animations.add('red-stand-west', ['red-stand-west'], 1, false, false);
-    //     soviet.animations.add('red-stand-southwest', ['red-stand-southwest'], 1, false, false);
-    //     soviet.animations.add('red-stand-south', ['red-stand-south'], 1, false, false);
-    //     soviet.animations.add('red-stand-southeast', ['red-stand-southeast'], 1, false, false);
-    //     soviet.animations.add('red-stand-east', ['red-stand-east'], 1, false, false);
-    //     soviet.animations.add('red-stand-northeast', ['red-stand-northeast'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-north', ['soviet-stand-north'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-northwest', ['soviet-stand-northwest'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-west', ['soviet-stand-west'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-southwest', ['soviet-stand-southwest'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-south', ['soviet-stand-south'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-southeast', ['soviet-stand-southeast'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-east', ['soviet-stand-east'], 1, false, false);
+    //     soviet.animations.add('soviet-stand-northeast', ['soviet-stand-northeast'], 1, false, false);
     //
-    //     soviet.animations.add('red-run-east', Phaser.Animation.generateFrameNames('red-run-east', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-west', Phaser.Animation.generateFrameNames('red-run-west', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-north', Phaser.Animation.generateFrameNames('red-run-north', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-south', Phaser.Animation.generateFrameNames('red-run-south', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-northwest', Phaser.Animation.generateFrameNames('red-run-northwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-northeast', Phaser.Animation.generateFrameNames('red-run-northeast', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-southwest', Phaser.Animation.generateFrameNames('red-run-southwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-run-southeast', Phaser.Animation.generateFrameNames('red-run-southeast', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-east', Phaser.Animation.generateFrameNames('soviet-run-east', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-west', Phaser.Animation.generateFrameNames('soviet-run-west', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-north', Phaser.Animation.generateFrameNames('soviet-run-north', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-south', Phaser.Animation.generateFrameNames('soviet-run-south', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-northwest', Phaser.Animation.generateFrameNames('soviet-run-northwest', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-northeast', Phaser.Animation.generateFrameNames('soviet-run-northeast', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-southwest', Phaser.Animation.generateFrameNames('soviet-run-southwest', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-run-southeast', Phaser.Animation.generateFrameNames('soviet-run-southeast', 0, 5), 6, false, false);
     //
-    //     soviet.animations.add('red-fire-north', Phaser.Animation.generateFrameNames('red-fire-north', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-south', Phaser.Animation.generateFrameNames('red-fire-south', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-west', Phaser.Animation.generateFrameNames('red-fire-west', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-east', Phaser.Animation.generateFrameNames('red-fire-east', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-northwest', Phaser.Animation.generateFrameNames('red-fire-northwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-northeast', Phaser.Animation.generateFrameNames('red-fire-northeast', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-southwest', Phaser.Animation.generateFrameNames('red-fire-southwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('red-fire-southeast', Phaser.Animation.generateFrameNames('red-fire-southeast', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-north', Phaser.Animation.generateFrameNames('soviet-fire-north', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-south', Phaser.Animation.generateFrameNames('soviet-fire-south', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-west', Phaser.Animation.generateFrameNames('soviet-fire-west', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-east', Phaser.Animation.generateFrameNames('soviet-fire-east', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-northwest', Phaser.Animation.generateFrameNames('soviet-fire-northwest', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-northeast', Phaser.Animation.generateFrameNames('soviet-fire-northeast', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-southwest', Phaser.Animation.generateFrameNames('soviet-fire-southwest', 0, 5), 6, false, false);
+    //     soviet.animations.add('soviet-fire-southeast', Phaser.Animation.generateFrameNames('soviet-fire-southeast', 0, 5), 6, false, false);
     //
-    //     soviet.animations.add('red-die-west', Phaser.Animation.generateFrameNames('red-die-west', 0, 14), 14, false, false);
-    //     soviet.animations.add('red-die-east', Phaser.Animation.generateFrameNames('red-die-east', 0, 14), 14, false, false);
+    //     soviet.animations.add('soviet-die-west', Phaser.Animation.generateFrameNames('soviet-die-west', 0, 14), 14, false, false);
+    //     soviet.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
     //
     //     game.physics.p2.enable(soviet);
     //     soviet.body.setCircle(15);
