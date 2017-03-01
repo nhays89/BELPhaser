@@ -6,144 +6,88 @@ WebFontConfig = {
 
 var text = null;
 var playState = {
-    preload: function () {
+    preload: function() {
         //  Load the Google WebFont Loader script
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },
 
-    create: function () {
-        var groups = [];
-        this.map = game.add.tilemap('map');
-
-        this.map.addTilesetImage('wood_tileset');
-        this.map.addTilesetImage('trees_plants_rocks');
-        this.map.addTilesetImage('town');
-        this.map.addTilesetImage('Castle');
-        this.map.addTilesetImage('mountain_landscape');
-
-        this.baselayer = this.map.createLayer('base');
-        this.rocklayer = this.map.createLayer('rock');
-        this.castlelayer = this.map.createLayer('castle');
-        this.extralayer = this.map.createLayer('extra');
-
-        this.baselayer.resizeWorld();
-        this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
-
-        this.setupUnits();
+    create: function() {
+        this.createMap();
+        this.createGameObjects();
         this.setupUI();
         this.cursors = game.input.keyboard.createCursorKeys();
+        this.setUpEventListeners();
     },
 
-    update : function () {
+    update: function() {
         // Used to check if the camera's coordinates were changed.
         // The camera's coordinates won't change if they have reached the bounds of the world.
-        var tempCamera;
+        this.detectCameraMove();
+        //this.updateGameObjects();
+        this.updateSelectionRect();
+        var mousePointer = game.input.mousePointer;
+        if (mousePointer.leftButton.isDown) {
+            console.log("mouse down");
 
-        if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
-            tempCamera = game.camera.y;
-            game.camera.y -= 20;
-            if (tempCamera != game.camera.y) {
-                this.minimap_loc.y -= 20 * this.minimapImg.scale.y;
-            }
         }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
-            tempCamera = game.camera.y;
-            game.camera.y += 20;
-            if (tempCamera != game.camera.y) {
-                this.minimap_loc.y += 20 * this.minimapImg.scale.y;
-            }
-        }
-
-        if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            tempCamera = game.camera.x;
-            game.camera.x -= 20;
-            if (tempCamera != game.camera.x) {
-                this.minimap_loc.x -= 20 * this.minimapImg.scale.x;
-            }
-        }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
-            tempCamera = game.camera.x;
-            game.camera.x += 20;
-            if (tempCamera != game.camera.x) {
-                this.minimap_loc.x += 20 * this.minimapImg.scale.x;
-            }
-        }
-
-        this.soldierGroups.forEach(function(group) {
-            group.forEach(function (soldier) {
-                soldier.update();
-
-                if (soldier.alive) {
-                    soldier.getNearbyEnemies();
-                }
-            })
-        });
-
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
             // this.soviet.sprite.animations.play('soviet-die-west');
             // var found = this.getNearbyEnemies(this.soviet);
             // console.log('Num enemies: ' + this.getNearbyEnemies(this.soviet));
         }
 
-        if (this.soviet && this.soviet.alive) {
+
+        if (this.currentPlayer) {
             if (this.cursors.left.isDown) {
-                if (this.currentPlayer.name === 'american') {   // debug purposes set currentPlayer to be whatever player in the console at runtime
-                    this.american.sprite.body.moveLeft(100);
-                    this.american.sprite.animations.play('american-west');
-                } else if (this.currentPlayer.name === 'soviet') {
-                    this.soviet.sprite.body.moveLeft(100);
-                    this.soviet.sprite.animations.play('soviet-run-west');
-                    this.soviet.direction = 'west';
-                }
+                this.currentPlayer.direction = "west";
+                this.currentPlayer.body.moveLeft(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
             } else if (this.cursors.right.isDown) { // Move to the right
-                if (this.currentPlayer.name === 'american') {
-                    this.american.sprite.body.moveRight(100);
-                    this.american.sprite.animations.play('american-east');
-                } else if (this.currentPlayer.name == "soviet") {
-                    this.soviet.sprite.body.moveRight(100);
-                    this.soviet.sprite.animations.play('soviet-run-east');
-                    this.soviet.direction = 'east';
-                }
+                this.currentPlayer.direction = "east";
+                this.currentPlayer.body.moveRight(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
             } else if (this.cursors.up.isDown) { //move up
-                if (this.currentPlayer.name === 'american') {
-                    this.american.sprite.body.moveUp(100);
-                    this.american.sprite.animations.play('american-north');
-                } else if (this.currentPlayer.name === 'soviet') {
-                    this.soviet.sprite.body.moveUp(100);
-                    this.soviet.sprite.animations.play('soviet-run-north');
-                    this.soviet.direction = 'north';
-                }
+                this.currentPlayer.direction = "north";
+                this.currentPlayer.body.moveUp(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
             } else if (this.cursors.down.isDown) { // move dowm
-                if (this.currentPlayer.name === 'american') {
-                    this.american.sprite.animations.play('american-south');
-                    this.american.sprite.body.moveDown(100);
-                } else if (this.currentPlayer.name === 'soviet') {
-                    this.soviet.sprite.animations.play('soviet-run-south');
-                    this.soviet.sprite.body.moveDown(100);
-                    this.soviet.direction = 'south';
-                }
+                this.currentPlayer.direction = "south";
+                this.currentPlayer.body.moveDown(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
             } else {
-                if (this.currentPlayer.name === 'american') {
-                    this.american.sprite.animations.play('american-stand');
-                } else if (this.currentPlayer.name === 'soviet') {
-                    this.soviet.sprite.animations.play('soviet-stand-north');
-                    this.soviet.direction = 'north';
-                }
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
             }
         }
     },
-    setupUI: function () {
-        this.minimap = game.add.sprite(-2, game.canvas.height + 2, 'minimap_frame');
-        this.minimap.scale.setTo(2, 2);
-        this.minimap.y = this.minimap.y - this.minimap.height;
-        this.minimap.fixedToCamera = true;
+    setupUI: function() {
+        var cameraViewPort = game.camera.view;
 
-        this.minimapImg = game.add.sprite(this.minimap.x + 35, this.minimap.y + 35, 'minimap_image');
+
+        var graphics = new Phaser.Graphics(game, 0, 0);
+        graphics.lineStyle(2, 0xd9d9d9, 1);
+
+        graphics.drawRect(0, cameraViewPort.height - (cameraViewPort.height * .25), (cameraViewPort.width * .25), cameraViewPort.height * .25);
+
+        graphics.fixedToCamera = true;
+
+        game.world.add(graphics);
+
+        this.selectRect = { //stores data about mouse events for the rectangle selection
+            "origin": new Phaser.Point(),
+            "current": new Phaser.Point(),
+            "topLeft": new Phaser.Point(),
+            "width": 0,
+            "height": 0,
+            "isActive": false,
+            "rect": new Phaser.Graphics(game, 0, 0)
+        };
+
+        var minimapImg;
+        this.minimapImg = game.add.sprite(0, cameraViewPort.height - (cameraViewPort.height * .25), 'minimap_image');
         this.minimapImg.fixedToCamera = true;
-        // 166 and 132 are the number of pixels (width / height) of the minimap frame
-        // multiplied by the scale of the minimap frame
-        this.minimapImg.scale.setTo(168 * this.minimap.scale.x / this.minimapImg.width,
-            132 * this.minimap.scale.y / this.minimapImg.height);
+        var scaleWidth = cameraViewPort.width * .25 / this.minimapImg.width
+        var scaleHeight = cameraViewPort.height * .25 / this.minimapImg.height;
+        this.minimapImg.scale.setTo(scaleWidth, scaleHeight);
 
         this.info_panel = game.add.sprite(game.canvas.width / 2, 0, 'info_panel');
         this.info_panel.scale.setTo(2, 2);
@@ -164,13 +108,14 @@ var playState = {
         this.action_menu.y = this.action_menu.y - this.action_menu.height;
         this.action_menu.fixedToCamera = true;
 
+
         this.minimap_loc_sprite = game.add.sprite(this.minimapImg.x, this.minimapImg.y);
         this.minimap_loc = game.add.graphics(0, 0);
 
         this.minimap_loc_sprite.addChild(this.minimap_loc);
         this.minimap_loc_sprite.fixedToCamera = true;
 
-        this.minimap_loc.lineStyle(2, 0xFFFFFF, 1);
+        this.minimap_loc.lineStyle(1, 0xd9d9d9, 1);
         this.minimap_loc.drawRect(0, 0,
             game.camera.width * this.minimapImg.scale.x,
             game.camera.height * this.minimapImg.scale.y);
@@ -178,7 +123,59 @@ var playState = {
         var pKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
         pKey.onDown.add(this.pauseGame, this);
     },
-    render : function () {
+
+    setUpEventListeners: function() {
+        game.input.mousePointer.leftButton.onDown.add(this.onLeftButtonDown, this);
+        game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
+        game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
+        game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
+    },
+
+    updateSelectionRect: function() {
+        var mousePointer = game.input.mousePointer;
+        if (mousePointer.leftButton.isDown) {
+
+            if (this.selectRect.isActive) { //if we have a point stored from a recent down event
+
+                this.selectRect.height = (Math.abs(this.selectRect.origin.y - this.selectRect.current.y));
+                this.selectRect.width = (Math.abs(this.selectRect.origin.x - this.selectRect.current.x));
+
+                var width = this.selectRect.width;
+                var height = this.selectRect.height;
+
+                if (this.selectRect.origin.x === this.selectRect.current.x && this.selectRect.origin.y === this.selectRect.current.y) {
+                    return;
+                }
+
+                if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y < this.selectRect.origin.y) { //its to the right and above 
+                    this.selectRect.topLeft.setTo(this.selectRect.origin.x, this.selectRect.current.y);
+                } else if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the right and below 
+                    this.selectRect.topLeft.setTo(this.selectRect.origin.x, this.selectRect.origin.y);
+                } else if (this.selectRect.origin.x > this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the left and below
+                    this.selectRect.topLeft.setTo(this.selectRect.current.x, this.selectRect.origin.y);
+                } else { //its to the left and above
+
+                    this.selectRect.topLeft.setTo(this.selectRect.current.x, this.selectRect.current.y);
+                }
+                var graphics = this.selectRect.rect;
+                graphics.clear();
+                graphics.lineStyle(1, 0x80ff00, 1);
+                graphics.drawRect(this.selectRect.topLeft.x, this.selectRect.topLeft.y, this.selectRect.width, this.selectRect.height);
+                game.world.add(graphics);
+            } else { //capture the coordinate and store   
+                this.selectRect.origin.setTo(mousePointer.position.x, mousePointer.position.y);
+                this.selectRect.isActive = true;
+
+            }
+
+
+        }
+    },
+
+
+
+
+    render: function() {
 
         // this.soviet.sprite.body.debug = true;
         // game.debug.spriteInfo(this.soviet.sprite, 32, 32);
@@ -186,15 +183,13 @@ var playState = {
         // game.debug.geom(this.viewCircle, '#00bff3', false);
     },
 
-    setupUnits: function () {
+    setupUnits: function() {
         this.soldierGroups = [];
         this.alliesGroup = [];
         this.soldierGroups.push(this.alliesGroup);
 
         this.sovietsGroup = [];
         this.soldierGroups.push(this.sovietsGroup);
-
-        this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
 
         this.soviet = new Soviet(275, 275);
         this.sovietsGroup.push(this.soviet);
@@ -225,7 +220,7 @@ var playState = {
         this.currentPlayer = this.soviet.sprite; //debug purposes
         this.currentPlayer.name = "soviet";
     },
-    pauseGame : function () {
+    pauseGame: function() {
         if (game.paused) {
             this.pause_menu.destroy();
             game.paused = false;
@@ -241,96 +236,178 @@ var playState = {
         }
     },
 
-    pauseMenuListener: function (sprite, pointer) {
+    pauseMenuListener: function(sprite, pointer) {
         console.log('in here');
     },
 
-    // newAmerican: function (x, y) {
-    //     var american = game.add.sprite(x, y, 'american');
-    //
-    //     american.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
-    //     american.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
-    //     american.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);
-    //     american.animations.add('american-stand-southwest', ['american-stand-southwest'], 1, false, false);
-    //     american.animations.add('american-stand-south', ['american-stand-south'], 1, false, false);
-    //     american.animations.add('american-stand-southeast', ['american-stand-southeast'], 1, false, false);
-    //     american.animations.add('american-stand-east', ['american-stand-east'], 1, false, false);
-    //     american.animations.add('american-stand-northeast', ['american-stand-northeast'], 1, false, false);
-    //
-    //     american.animations.add('american-run-east', Phaser.Animation.generateFrameNames('american-run-east', 0, 5), 6, false, false);
-    //     american.animations.add('american-run-west', Phaser.Animation.generateFrameNames('american-run-west', 0, 5), 6, false, false);
-    //     american.animations.add('american-run-north', Phaser.Animation.generateFrameNames('american-run-north', 0, 5), 6, false, false);
-    //     american.animations.add('american-run-south', Phaser.Animation.generateFrameNames('american-run-south', 0, 5), 6, false, false);
-    //
-    //     american.animations.add('american-run-northwest', Phaser.Animation.generateFrameNames('american-run-northwest', 0, 5), 6, false, false);
-    //     american.animations.add('american-run-northeast', Phaser.Animation.generateFrameNames('american-run-northeast', 0, 5), 6, false, false);
-    //     american.animations.add('american-run-southweset', Phaser.Animation.generateFrameNames('american-run-southwest', 0, 5), 6, false, false);
-    //     american.animations.add('american-run-southeast', Phaser.Animation.generateFrameNames('american-run-southeast', 0, 5), 6, false, false);
-    //
-    //     american.animations.add('american-fire-north', Phaser.Animation.generateFrameNames('american-fire-north', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-south', Phaser.Animation.generateFrameNames('american-fire-south', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-west', Phaser.Animation.generateFrameNames('american-fire-west', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-east', Phaser.Animation.generateFrameNames('american-fire-east', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-northwest', Phaser.Animation.generateFrameNames('american-fire-northwest', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-northeast', Phaser.Animation.generateFrameNames('american-fire-northeast', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-southwest', Phaser.Animation.generateFrameNames('american-fire-southwest', 0, 5), 6, false, false);
-    //     american.animations.add('american-fire-southeast', Phaser.Animation.generateFrameNames('american-fire-southeast', 0, 5), 6, false, false);
-    //
-    //     american.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
-    //     american.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
-    //
-    //     game.physics.p2.enable(american);
-    //     american.body.setCircle(20);
-    //     american.body.damping = .9999999999;
-    //     american.body.fixedRotation = true;
-    //
-    //     //return american;
-    //     return new American(x, y, american);
-    // },
-    // newSoviet  : function (x, y) {
-    //     var soviet = game.add.sprite(x, y, 'soviet');
-    //
-    //     soviet.animations.add('soviet-stand-north', ['soviet-stand-north'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-northwest', ['soviet-stand-northwest'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-west', ['soviet-stand-west'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-southwest', ['soviet-stand-southwest'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-south', ['soviet-stand-south'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-southeast', ['soviet-stand-southeast'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-east', ['soviet-stand-east'], 1, false, false);
-    //     soviet.animations.add('soviet-stand-northeast', ['soviet-stand-northeast'], 1, false, false);
-    //
-    //     soviet.animations.add('soviet-run-east', Phaser.Animation.generateFrameNames('soviet-run-east', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-west', Phaser.Animation.generateFrameNames('soviet-run-west', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-north', Phaser.Animation.generateFrameNames('soviet-run-north', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-south', Phaser.Animation.generateFrameNames('soviet-run-south', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-northwest', Phaser.Animation.generateFrameNames('soviet-run-northwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-northeast', Phaser.Animation.generateFrameNames('soviet-run-northeast', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-southwest', Phaser.Animation.generateFrameNames('soviet-run-southwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-run-southeast', Phaser.Animation.generateFrameNames('soviet-run-southeast', 0, 5), 6, false, false);
-    //
-    //     soviet.animations.add('soviet-fire-north', Phaser.Animation.generateFrameNames('soviet-fire-north', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-south', Phaser.Animation.generateFrameNames('soviet-fire-south', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-west', Phaser.Animation.generateFrameNames('soviet-fire-west', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-east', Phaser.Animation.generateFrameNames('soviet-fire-east', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-northwest', Phaser.Animation.generateFrameNames('soviet-fire-northwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-northeast', Phaser.Animation.generateFrameNames('soviet-fire-northeast', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-southwest', Phaser.Animation.generateFrameNames('soviet-fire-southwest', 0, 5), 6, false, false);
-    //     soviet.animations.add('soviet-fire-southeast', Phaser.Animation.generateFrameNames('soviet-fire-southeast', 0, 5), 6, false, false);
-    //
-    //     soviet.animations.add('soviet-die-west', Phaser.Animation.generateFrameNames('soviet-die-west', 0, 14), 14, false, false);
-    //     soviet.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
-    //
-    //     game.physics.p2.enable(soviet);
-    //     soviet.body.setCircle(15);
-    //     soviet.body.damping = .9999999999;
-    //     soviet.body.fixedRotation = true;
-    //
-    //     //return soviet;
-    //     return new Soviet(x, y, soviet);
-    // },
+    detectCameraMove: function() {
+        var tempCamera;
 
-    // raycasting line of sight
-    // https://gamemechanicexplorer.com/#raycasting-1
+        if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+            tempCamera = game.camera.y;
+            game.camera.y -= 20;
+            if (tempCamera != game.camera.y) {
+                this.minimap_loc.y -= 20 * this.minimapImg.scale.y;
+            }
+        } else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            tempCamera = game.camera.y;
+            game.camera.y += 20;
+            if (tempCamera != game.camera.y) {
+                this.minimap_loc.y += 20 * this.minimapImg.scale.y;
+            }
+        }
+
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+            tempCamera = game.camera.x;
+            game.camera.x -= 20;
+            if (tempCamera != game.camera.x) {
+                this.minimap_loc.x -= 20 * this.minimapImg.scale.x;
+            }
+        } else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            tempCamera = game.camera.x;
+            game.camera.x += 20;
+            if (tempCamera != game.camera.x) {
+                this.minimap_loc.x += 20 * this.minimapImg.scale.x;
+            }
+        }
+    },
+
+    updateGameObjects: function() {
+//         this.soldierGroups.forEach(function(group) {
+//             group.forEach(function(soldier) {
+//                 soldier.update();
+
+//                 if (soldier.alive) {
+//                     soldier.getNearbyEnemies();
+//                 }
+//             })
+//         });
+
+    },
+
+
+    createAmericans: function(numOfAmericans) {
+        var americanGroup = new Phaser.Group(game, game.world, "americans", false);
+        americanGroup.classType = American; //sets the type of object to create when group.create is called
+        //         americanGroup.alignIn(game.world.bounds, Phaser.CENTER);    
+        for (var i = 0; i < 10; i++) {
+
+            var x = 1000; //default
+            var y = 1000;
+            var american = americanGroup.create(x, y, "american"); // creates a new American
+            this.quadTree.insert(american.body);
+            american.name = american.key;
+
+            //game.debug.spriteInfo(american, 32, 32);
+        }
+
+        americanGroup.align(5, 2, 40, 40);
+        //work around for p2 physics movement of body relative to sprite
+
+        //         game.world.getByName("americans").children.forEach(function(child) {
+        //             child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
+        //             child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
+        //             child.body.x = child.x;
+        //             child.body.y = child.y;
+        //             console.log(child.x);
+        //             console.log(child.body.x);
+        //         }, this);
+
+        //         // 
+        //americanGroup.enableBodyDebug = true;
+
+        //
+
+        return americanGroup;
+
+    },
+
+
+    createSoviets: function() {
+
+
+
+    },
+
+
+
+    createMap: function() {
+        this.map = game.add.tilemap('map');
+        this.map.addTilesetImage('wood_tileset');
+        this.map.addTilesetImage('trees_plants_rocks');
+        this.map.addTilesetImage('town');
+        this.map.addTilesetImage('Castle');
+        this.map.addTilesetImage('mountain_landscape');
+
+        this.baselayer = this.map.createLayer('base');
+        this.rocklayer = this.map.createLayer('rock');
+        this.castlelayer = this.map.createLayer('castle');
+        this.extralayer = this.map.createLayer('extra');
+
+        this.baselayer.resizeWorld();
+        //this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
+        this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
+        var offset = 100;
+        this.spawnPoint = new Phaser.Point(game.world.centerX - offset, game.world.centerY - offset);
+    },
+
+
+    createGameObjects: function() {
+        
+        //TODO
+        //Make Soviets
+        //Make Tank
+
+        //Make Americans            
+        var americans = this.createAmericans();
+        this.currentPlayer = game.world.getByName("americans").children[0]; //will soon no longer be under user cursor control (selection via mouse only)
+    },
+
+    onLeftButtonDown: function(pointer, mouseEvent) {
+        console.log("on left button down");
+        console.log(pointer);
+        console.log(mouseEvent);
+    },
+
+    onLeftButtonUp: function(pointer, mouseEvent) {
+
+        //TODO
+        //determine soldiers in rect area
+        //set selected prop
+        //process logic
+
+        //reset
+        this.selectRect.isActive = false;
+        this.selectRect.origin.setTo(0, 0);
+        this.selectRect.current.setTo(0, 0);
+        this.selectRect.topLeft.setTo(0, 0);
+        this.selectRect.width = 0;
+        this.selectRect.height = 0;
+        this.selectRect.rect.clear();
+    },
+    onRightButtonUp: function(pointer, mouseEvent) {
+
+
+        //TODO 
+        //on right click
+        //if soldiers selected
+        //capture phaser.point xy
+        //call func A*
+        //get return coords
+        //convert coords to sequential commands on stack for each soldier
+        
+
+
+        console.log("on right button up");
+        console.log(pointer);
+        console.log(mouseEvent);
+    },
+
+    onRightButtonDown: function(pointer, mouseEvent) {
+        console.log("on right button down");
+        console.log(pointer);
+        console.log(mouseEvent);
+    },
+
 
 };
-
