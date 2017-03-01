@@ -1,5 +1,5 @@
 Soldier = function(game,x,y,key, frame) {
-    Phaser.Sprite.call(this, game, x, y, key);
+    Phaser.Sprite.call(this, game, x, y, key); //extend
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;

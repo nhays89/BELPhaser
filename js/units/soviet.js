@@ -1,4 +1,4 @@
-function Soviet(x, y) {
+/*function Soviet(x, y) {
     this.faction = 'soviet';
 
     this.sprite = game.add.sprite(x, y, 'soviet');
@@ -48,3 +48,4 @@ Soviet.prototype.init = function () {
 Soviet.prototype = new Soldier();
 Soviet.constructor = Soviet;
 
+*/
