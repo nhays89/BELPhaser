@@ -69,6 +69,8 @@ var playState = {
         graphics.drawRect(0, cameraViewPort.height - (cameraViewPort.height * .25), (cameraViewPort.width * .25), cameraViewPort.height * .25);
 
         graphics.fixedToCamera = true;
+        //this.minimap.y = this.minimap.y - this.minimap.height;
+        //this.minimap.fixedToCamera = true;
 
         game.world.add(graphics);
 
@@ -117,8 +119,8 @@ var playState = {
 
         this.minimap_loc.lineStyle(1, 0xd9d9d9, 1);
         this.minimap_loc.drawRect(0, 0,
-            game.camera.width * this.minimapImg.scale.x,
-            game.camera.height * this.minimapImg.scale.y);
+          game.camera.width * this.minimapImg.scale.x,
+         game.camera.height * this.minimapImg.scale.y);
 
         var pKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
         pKey.onDown.add(this.pauseGame, this);
@@ -129,6 +131,9 @@ var playState = {
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
+
+
+
     },
 
     updateSelectionRect: function() {
@@ -136,6 +141,12 @@ var playState = {
         if (mousePointer.leftButton.isDown) {
 
             if (this.selectRect.isActive) { //if we have a point stored from a recent down event
+                console.log(mousePointer.position.x + " : " + mousePointer.position.y);
+                console.log("origin: " + this.selectRect.origin.x + ": " + this.selectRect.origin.y);
+                this.selectRect.current = mousePointer.position;
+                console.log(this.selectRect.current.x + " : " + this.selectRect.current.y);
+
+
 
                 this.selectRect.height = (Math.abs(this.selectRect.origin.y - this.selectRect.current.y));
                 this.selectRect.width = (Math.abs(this.selectRect.origin.x - this.selectRect.current.x));
@@ -144,6 +155,7 @@ var playState = {
                 var height = this.selectRect.height;
 
                 if (this.selectRect.origin.x === this.selectRect.current.x && this.selectRect.origin.y === this.selectRect.current.y) {
+                    console.log("same");
                     return;
                 }
 
@@ -159,6 +171,7 @@ var playState = {
                 }
                 var graphics = this.selectRect.rect;
                 graphics.clear();
+
                 graphics.lineStyle(1, 0x80ff00, 1);
                 graphics.drawRect(this.selectRect.topLeft.x, this.selectRect.topLeft.y, this.selectRect.width, this.selectRect.height);
                 game.world.add(graphics);
@@ -176,7 +189,16 @@ var playState = {
 
 
     render: function() {
+        //        var americans = game.world.getByName("americans");
 
+        //game.debug.game.debug.spriteInfo(americans.children[0], 200, 200);
+
+        //         americans.forEach(function(child) {
+        //            // game.debug.body(child, 200,  200);
+        //             game.debug.spriteInfo(child, 50, 50);
+
+
+        // }, this);
         // this.soviet.sprite.body.debug = true;
         // game.debug.spriteInfo(this.soviet.sprite, 32, 32);
         // game.debug.quadTree(this.quadTree);
@@ -190,6 +212,8 @@ var playState = {
 
         this.sovietsGroup = [];
         this.soldierGroups.push(this.sovietsGroup);
+
+
 
         this.soviet = new Soviet(275, 275);
         this.sovietsGroup.push(this.soviet);
@@ -273,15 +297,15 @@ var playState = {
     },
 
     updateGameObjects: function() {
-//         this.soldierGroups.forEach(function(group) {
-//             group.forEach(function(soldier) {
-//                 soldier.update();
+        this.soldierGroups.forEach(function(group) {
+            group.forEach(function(soldier) {
+                soldier.update();
 
-//                 if (soldier.alive) {
-//                     soldier.getNearbyEnemies();
-//                 }
-//             })
-//         });
+                if (soldier.alive) {
+                    soldier.getNearbyEnemies();
+                }
+            })
+        });
 
     },
 
@@ -302,7 +326,6 @@ var playState = {
         }
 
         americanGroup.align(5, 2, 40, 40);
-        //work around for p2 physics movement of body relative to sprite
 
         //         game.world.getByName("americans").children.forEach(function(child) {
         //             child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
@@ -353,14 +376,22 @@ var playState = {
 
 
     createGameObjects: function() {
-        
-        //TODO
-        //Make Soviets
-        //Make Tank
 
-        //Make Americans            
+        //var spriteTest = new Phaser.Sprite(50,50, "american");
+        //  var americanGroup = this.createAmericans();
+        //var sovietGroup = this.createSoviets();
+        //  game.world.add(americanGroup);
         var americans = this.createAmericans();
-        this.currentPlayer = game.world.getByName("americans").children[0]; //will soon no longer be under user cursor control (selection via mouse only)
+        this.currentPlayer = game.world.getByName("americans").children[0]
+            //  var american = new American(game,10,10,"american");
+            //american.addAnimation('american-stand-north', ['american-stand-north'], 1, false, false);
+
+        //american.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
+        //   american.animations.play('american-stand-north');
+        //  game.world.add(american);
+
+
+
     },
 
     onLeftButtonDown: function(pointer, mouseEvent) {
@@ -371,33 +402,22 @@ var playState = {
 
     onLeftButtonUp: function(pointer, mouseEvent) {
 
-        //TODO
+
         //determine soldiers in rect area
-        //set selected prop
         //process logic
 
-        //reset
+
         this.selectRect.isActive = false;
         this.selectRect.origin.setTo(0, 0);
         this.selectRect.current.setTo(0, 0);
         this.selectRect.topLeft.setTo(0, 0);
         this.selectRect.width = 0;
         this.selectRect.height = 0;
+        console.log("on left button up");
+
         this.selectRect.rect.clear();
     },
     onRightButtonUp: function(pointer, mouseEvent) {
-
-
-        //TODO 
-        //on right click
-        //if soldiers selected
-        //capture phaser.point xy
-        //call func A*
-        //get return coords
-        //convert coords to sequential commands on stack for each soldier
-        
-
-
         console.log("on right button up");
         console.log(pointer);
         console.log(mouseEvent);
