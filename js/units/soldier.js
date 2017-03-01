@@ -1,7 +1,9 @@
-function Soldier(sprite) {
+Soldier = function(game,x,y,key, frame) {
+    Phaser.Sprite.call(this, game, x, y, key);
+    this.type = "Soldier";
     this.alive = true;
     this.selected = false;
-    this.sprite = sprite;
+    //this.sprite = sprite;
     this.viewRadius = 250;
     this.attackRadius = 150;
 
@@ -24,7 +26,13 @@ function Soldier(sprite) {
 
     this.weaponCooldownDuration = 1500;
     this.shootAnimation = {};
+    
+    
 }
+
+
+Soldier.prototype = Object.create(Phaser.Sprite.prototype);
+Soldier.prototype.constructor = Soldier;
 
 
 Soldier.prototype.shoot = function (enemy) {
