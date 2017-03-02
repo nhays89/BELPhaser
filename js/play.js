@@ -15,7 +15,7 @@ var playState = {
         this.createMap();
         this.createGameObjects();
         this.setupUI();
-        this.setUpEventListeners();
+        this.setupInput();
     },
 
     update: function() {
@@ -25,11 +25,11 @@ var playState = {
         this.detectCameraMove();
         //this.updateGameObjects();
         this.updateSelectionRect();
-        var mousePointer = game.input.mousePointer;
-        if (mousePointer.leftButton.isDown) {
-            console.log("mouse down");
-
-        }
+        this.updateSelectedGroup(game.world.getByName("americans"));
+        //this.updateSelectedGroup(game.world.getByName("tanks")); //TODO
+        console.log("updating");
+       
+       
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
             // 9, 4
@@ -143,30 +143,27 @@ var playState = {
     },
 
 
-    setUpEventListeners: function() {
-        game.input.mousePointer.leftButton.onDown.add(this.onLeftButtonDown, this);
+    setupInput: function() {
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
-
-
 
     },
 
     updateSelectionRect: function() {
         var mousePointer = game.input.mousePointer;
         if (mousePointer.leftButton.isDown) {
-
+                this.select.current.setTo(mousePointer.position.x + game.camera.x, mousePointer.position.y + game.camera.y);
             if (this.select.isActive) { //if we have a point stored from a recent down event
                 console.log(mousePointer.position.x + " : " + mousePointer.position.y);
                 console.log("origin: " + this.select.origin.x + ": " + this.select.origin.y);
-                this.select.current.setTo(mousePointer.position.x + game.camera.x, mousePointer.position.y + game.camera.y);
+                
                 console.log(this.select.current.x + " : " + this.select.current.y);
-                this.select.height = (Math.abs(this.select.origin.y - this.select.current.y));
-                this.select.width = (Math.abs(this.select.origin.x - this.select.current.x));
+               // this.select.height = (Math.abs(this.select.origin.y - this.select.current.y));
+               // this.select.width = (Math.abs(this.select.origin.x - this.select.current.x));
 
-                var width = this.select.width;
-                var height = this.select.height;
+               // var width = this.select.width;
+              //  var height = this.select.height;
                 var gameCamX = game.camera.x;
                 var gameCamY = game.camera.y;
                 if (this.select.origin.x === this.select.current.x && this.select.origin.y === this.select.current.y) {
@@ -184,14 +181,20 @@ var playState = {
 
                     this.select.topLeft.setTo(this.select.current.x, this.select.current.y);
                 }
+                var width = (Math.abs(this.select.origin.x - this.select.current.x));
+                var height = (Math.abs(this.select.origin.y - this.select.current.y));
                 var graphics = this.select.rect;
                 graphics.clear();
 
                 graphics.lineStyle(1, 0x80ff00, 1);
-                graphics.drawRect(this.select.topLeft.x, this.select.topLeft.y, this.select.width, this.select.height);
+                graphics.drawRect(this.select.topLeft.x, this.select.topLeft.y, width, height);
                 game.world.add(graphics);
-            } else { //capture the coordinate and store
-                this.select.origin.setTo(mousePointer.position.x + game.camera.x, mousePointer.position.y + game.camera.y);
+            } else { //capture the current coordinate and store as origin
+                var graphics = this.select.rect;
+                this.select.origin.setTo(this.select.current.x, this.select.current.y);
+                graphics.lineStyle(1, 0x80ff00, 1);
+                graphics.drawRect(this.select.origin.x, this.select.origin.y, 1,1); //print the press to the screen
+                game.world.add(graphics);
                 this.select.isActive = true;
 
             }
@@ -423,18 +426,47 @@ var playState = {
 
     },
 
-    onLeftButtonDown: function(pointer, mouseEvent) {
-        console.log("on left button down");
-        console.log(pointer);
-        console.log(mouseEvent);
+
+    //@param - Phaser.Group - each member of the group must have a physics body
+    updateSelectedGroup: function(group) {
+        if(game.input.mousePointer.leftButton.isDown) {
+            group.forEach(function(member) {
+            
+            
+            var wasSelectedPreviously = member.selected;
+            var nowSelected =  member.isSelected(this.select.rect.getLocalBounds());
+            
+            console.log("member wasSelectedPreviously: " + wasSelectedPreviously);
+            console.log("member nowSelected: " + nowSelected);
+
+
+            if(wasSelectedPreviously && nowSelected) {//then no need to set body ring
+                return;
+            }else if(wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
+                member.removeBodyRing();
+            } else if(!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
+                member.setBodyRing();
+            }else {
+                return;
+            }
+
+        },this);
+
+
+
+        }
+     
+
+        console.log("left button down");
+      
     },
 
+    
+
+
     onLeftButtonUp: function(pointer, mouseEvent) {
-
-
-        //determine soldiers in rect area
-        //process logic
-
+        this.updateSelectedGroup(game.world.getByName("americans"));
+        console.log("in left button up");
 
         this.select.isActive = false;
         this.select.origin.setTo(0, 0);
@@ -459,4 +491,4 @@ var playState = {
     },
 
 
-};
+};  

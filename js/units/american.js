@@ -43,6 +43,3 @@ function American(game, x, y) {
 American.prototype = Object.create(Soldier.prototype);
 American.prototype.constructor = American;
 
-American.prototype.init = function () {
-
-};
