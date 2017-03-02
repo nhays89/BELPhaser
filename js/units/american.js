@@ -1,12 +1,6 @@
-American = function(game,x, y, key, frame) {
-     
-    Soldier.call(this, game, x, y, key, frame);
-
-   
-        this.type = "American";
-     this.americanProp = "prop";
-
-
+function American(game, x, y) {
+    Soldier.call(this, game, x, y, 'american');
+    this.type = "American";
     this.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
     this.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
     this.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);
@@ -37,6 +31,8 @@ American = function(game,x, y, key, frame) {
 
     this.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
     this.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
+}
+
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
  //  this.body.debug = true;
     this.body.collideWorldBounds = true;
@@ -49,13 +45,6 @@ American = function(game,x, y, key, frame) {
 American.prototype = Object.create(Soldier.prototype);
 American.prototype.constructor = American;
 
-
 American.prototype.init = function () {
 
 };
-
-American.prototype.addAnimation = function(name,frames,frameRate,loop,useNumericIndex) {
-    this.animations.add(name,frames,frameRate,loop,useNumericIndex);
-}
-
-

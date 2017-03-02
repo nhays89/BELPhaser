@@ -14,12 +14,11 @@ var playState = {
     create: function() {
         this.createMap();
         this.createGameObjects();
-        this.setupUI();
-        this.cursors = game.input.keyboard.createCursorKeys();
         this.setUpEventListeners();
     },
 
     update: function() {
+
         // Used to check if the camera's coordinates were changed.
         // The camera's coordinates won't change if they have reached the bounds of the world.
         this.detectCameraMove();
@@ -31,6 +30,22 @@ var playState = {
 
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+
+            var path = this.finder.findPath(0, 0, 4, 4, this.collisionGrid.clone());
+            console.log(path);
+            // this.pathfinding.findPath(0, 0, 7, 80, function (path) {
+            //     if (path === null) {
+            //         console.log("The path to the destination" +
+            //             "point was not found.");
+            //     } else {
+            //
+            //         for (var i = 0; i < path.length; i++) {
+            //             console.log("P: " + i + ", X: " + path[i].x + ",Y: " + path[i].y);
+            //         }
+            //
+            //     }
+            // });
+
             // this.soviet.sprite.animations.play('soviet-die-west');
             // var found = this.getNearbyEnemies(this.soviet);
             // console.log('Num enemies: ' + this.getNearbyEnemies(this.soviet));
@@ -126,6 +141,7 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
 
+
     setUpEventListeners: function() {
         game.input.mousePointer.leftButton.onDown.add(this.onLeftButtonDown, this);
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
@@ -180,8 +196,6 @@ var playState = {
                 this.selectRect.isActive = true;
 
             }
-
-
         }
     },
 
@@ -205,45 +219,18 @@ var playState = {
         // game.debug.geom(this.viewCircle, '#00bff3', false);
     },
 
-    setupUnits: function() {
-        this.soldierGroups = [];
-        this.alliesGroup = [];
-        this.soldierGroups.push(this.alliesGroup);
 
-        this.sovietsGroup = [];
-        this.soldierGroups.push(this.sovietsGroup);
-
-
-
-        this.soviet = new Soviet(275, 275);
-        this.sovietsGroup.push(this.soviet);
-
-        for (var i = 0; i < 20; i++) {
-
-            var x = game.world.randomX;
-            var y = game.world.randomY;
-
-            this.american = new American(x, y);
-            this.alliesGroup.push(this.american);
-            this.quadTree.insert(this.american);
-        }
-
-        this.american = new American(150, 150);
-        this.alliesGroup.push(this.american);
-        this.quadTree.insert(this.american);
-
-        this.quadTree.insert(this.soviet);
-
-
+    setupUnits: function () {
         // sprite that's used with quadtree to find a circle around the target sprite
         // this.viewSprite = game.add.sprite(0, 0);
+
         this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
         // for debugging view distance
         this.viewCircle = new Phaser.Circle(0, 0, 200);
 
-        this.currentPlayer = this.soviet.sprite; //debug purposes
-        this.currentPlayer.name = "soviet";
-    },
+},
+
+
     pauseGame: function() {
         if (game.paused) {
             this.pause_menu.destroy();
@@ -262,6 +249,8 @@ var playState = {
 
     pauseMenuListener: function(sprite, pointer) {
         console.log('in here');
+
+    
     },
 
     detectCameraMove: function() {
@@ -343,6 +332,7 @@ var playState = {
 
         return americanGroup;
 
+
     },
 
 
@@ -355,17 +345,57 @@ var playState = {
 
 
     createMap: function() {
-        this.map = game.add.tilemap('map');
+      
+      
+      
+      
+      
+      
+      
+       this.map = game.add.tilemap('map');
+
         this.map.addTilesetImage('wood_tileset');
         this.map.addTilesetImage('trees_plants_rocks');
         this.map.addTilesetImage('town');
         this.map.addTilesetImage('Castle');
         this.map.addTilesetImage('mountain_landscape');
+        this.map.addTilesetImage('tiled_collision');
 
         this.baselayer = this.map.createLayer('base');
         this.rocklayer = this.map.createLayer('rock');
         this.castlelayer = this.map.createLayer('castle');
         this.extralayer = this.map.createLayer('extra');
+
+        this.collisionLayer = this.map.createLayer('collision');
+        this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
+       // this.collisionLayer2 = game.physics.p2.convertCollisionObjects(this.map, "collision2");
+
+
+      
+
+        // this.pathfinding = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
+        // this.pathfinding.setGrid(this.collisionLayer.layer.data);
+        // this.pathfinding.setAcceptableTiles([0, 1291]);
+        // this.pathfinding.enableDiagonals();
+        // this.pathfinding.enableCornerCutting();
+
+        this.finder = new PF.AStarFinder();
+        //this.collisionGrid = new PF.Grid(this.collisionLayer.layer.data);
+        this.collisionGrid = new PF.Grid([
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ]);
+
+
+        // this.easystar = new EasyStar.js();
+        // this.easystar.setGrid(this.collisionLayer.layer.data);
+        // this.easystar.setAcceptableTiles([0, 1291]);
+        // this.easystar.enableDiagonals();
+        // this.easystar.enableCornerCutting();
+      
 
         this.baselayer.resizeWorld();
         //this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
