@@ -1,8 +1,9 @@
 function Soldier(game, x, y, key) {
     Phaser.Sprite.call(this, game, x, y, key);
-
+    this.type = "Soldier";
     this.alive = true;
     this.selected = false;
+
     this.viewRadius = 250;
     this.attackRadius = 150;
 
@@ -25,6 +26,7 @@ function Soldier(game, x, y, key) {
 
     this.weaponCooldownDuration = 1500;
     this.shootAnimation = {};
+
 
     game.add.existing(this);
 };
