@@ -51,6 +51,8 @@ var playState = {
             [0, 0, 0, 0, 0]
         ]);
 
+        this.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
+
 
         // this.easystar = new EasyStar.js();
         // this.easystar.setGrid(this.collisionLayer.layer.data);
@@ -105,8 +107,9 @@ var playState = {
         });
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-
-            var path = this.finder.findPath(0, 0, 4, 4, this.collisionGrid.clone());
+            
+            // 9, 4
+            var path = this.pathfinder.findPath(0, 0, 9 * 32, 4 * 32);
             console.log(path);
             // this.pathfinding.findPath(0, 0, 7, 80, function (path) {
             //     if (path === null) {
