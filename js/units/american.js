@@ -1,10 +1,6 @@
 function American(game, x, y) {
     Soldier.call(this, game, x, y, 'american');
-
-    this.faction = 'american';
-
-    //this.sprite = game.add.sprite(x, y, 'american');
-
+    this.type = "American";
     this.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
     this.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
     this.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);
@@ -35,22 +31,20 @@ function American(game, x, y) {
 
     this.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
     this.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
-
-    game.physics.p2.enable(this);
-    this.body.setCircle(20);
-    this.body.damping = .9999999999;
-    this.body.fixedRotation = true;
 }
 
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+ //  this.body.debug = true;
+    this.body.collideWorldBounds = true;
+    this.body.setCircle(20);
+   //this.body.damping = .9999999999;
+   //this.body.fixedRotation = true;
 
+}
 
 American.prototype = Object.create(Soldier.prototype);
 American.prototype.constructor = American;
 
 American.prototype.init = function () {
-
-};
-
-American.prototype.aTestFunction = function () {
 
 };
