@@ -1,7 +1,8 @@
-function Soldier(sprite) {
+function Soldier(game, x, y, key) {
+    Phaser.Sprite.call(this, game, x, y, key);
+
     this.alive = true;
     this.selected = false;
-    this.sprite = sprite;
     this.viewRadius = 250;
     this.attackRadius = 150;
 
@@ -11,7 +12,7 @@ function Soldier(sprite) {
     this.health = 100;
     this.damage = 20;
 
-    this.direction = 'north';
+    this.direction = 'south';
 
     this.cooldowns = {
         'weapon': false
@@ -24,7 +25,12 @@ function Soldier(sprite) {
 
     this.weaponCooldownDuration = 1500;
     this.shootAnimation = {};
-}
+
+    game.add.existing(this);
+};
+
+Soldier.prototype = Object.create(Phaser.Sprite.prototype);
+Soldier.prototype.constructor = Soldier;
 
 
 Soldier.prototype.shoot = function (enemy) {
@@ -32,11 +38,11 @@ Soldier.prototype.shoot = function (enemy) {
     //     this.bulletSplash = game.add.sprite(0, 0, 'bulletSplash');
     //     this.bulletSplash.animations.add('bulletSplash');
     // }
-    var radians = game.physics.arcade.angleBetween(enemy.sprite, this.sprite);
+    var radians = game.physics.arcade.angleBetween(enemy, this);
     this.direction = this.getDirection(radians);
 
     if (!this.cooldowns['weapon']) {
-        this.shootAnimation = this.sprite.animations.play(this.faction + '-fire-' + this.direction);
+        this.shootAnimation = this.animations.play(this.faction + '-fire-' + this.direction);
         //enemy.bulletSplash.animations.play('bulletSplash');
 
         this.cooldowns['weapon'] = true;
@@ -45,7 +51,7 @@ Soldier.prototype.shoot = function (enemy) {
         }, this);
 
         this.shootAnimation.onComplete.add(function () {
-            this.sprite.animations.play(this.faction + '-stand-' + this.direction);
+            this.animations.play(this.faction + '-stand-' + this.direction);
         }, this);
 
         enemy.health -= this.damage;
@@ -71,9 +77,9 @@ Soldier.prototype.die = function () {
     }
 
     this.alive = false;
-    this.sprite.animations.play(this.faction + '-die-' + deathDir);
+    this.animations.play(this.faction + '-die-' + deathDir);
     game.time.events.add(7000, function () {
-        this.sprite.destroy();
+        this.destroy();
     }, this);
 };
 
@@ -101,11 +107,11 @@ Soldier.prototype.getDirection = function(radians) {
 
 Soldier.prototype.getNearbyEnemies = function () {
     var viewDiameter = this.viewRadius * 2;
-    playState.viewSprite.centerOn(this.sprite.x, this.sprite.y);
+    playState.viewSprite.centerOn(this.x, this.y);
     playState.viewSprite.resize(viewDiameter, viewDiameter);
 
     // for debugging view distance
-    playState.viewCircle.setTo(this.sprite.x, this.sprite.y, viewDiameter);
+    playState.viewCircle.setTo(this.x, this.y, viewDiameter);
 
     var found = playState.quadTree.retrieve(playState.viewSprite);
     var distance;
@@ -117,8 +123,8 @@ Soldier.prototype.getNearbyEnemies = function () {
         // if enemy
         if (found[i].alive && (this instanceof American && found[i] instanceof Soviet ||
             this instanceof Soviet && found[i] instanceof American)) {
-            distance = Phaser.Math.distance(this.sprite.x, this.sprite.y,
-                found[i].sprite.x, found[i].sprite.y);
+            distance = Phaser.Math.distance(this.x, this.y,
+                found[i].x, found[i].y);
 
             if (distance <= this.attackRadius) {
                 this.enemiesInAttackRadius.push(found[i]);
@@ -137,3 +143,4 @@ Soldier.prototype.getNearbyEnemies = function () {
 Soldier.prototype.moveTo = function (x, y) {
     // implement A* here
 };
+
