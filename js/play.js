@@ -14,6 +14,7 @@ var playState = {
     create: function() {
         this.createMap();
         this.createGameObjects();
+        this.setupUI();
         this.setUpEventListeners();
     },
 
@@ -53,27 +54,27 @@ var playState = {
         }
 
 
-        if (this.currentPlayer) {
-            if (this.cursors.left.isDown) {
-                this.currentPlayer.direction = "west";
-                this.currentPlayer.body.moveLeft(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.right.isDown) { // Move to the right
-                this.currentPlayer.direction = "east";
-                this.currentPlayer.body.moveRight(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.up.isDown) { //move up
-                this.currentPlayer.direction = "north";
-                this.currentPlayer.body.moveUp(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.down.isDown) { // move dowm
-                this.currentPlayer.direction = "south";
-                this.currentPlayer.body.moveDown(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else {
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
-            }
-        }
+//         if (this.currentPlayer) {
+//             if (this.cursors.left.isDown) {
+//                 this.currentPlayer.direction = "west";
+//                 this.currentPlayer.body.moveLeft(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+//             } else if (this.cursors.right.isDown) { // Move to the right
+//                 this.currentPlayer.direction = "east";
+//                 this.currentPlayer.body.moveRight(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+//             } else if (this.cursors.up.isDown) { //move up
+//                 this.currentPlayer.direction = "north";
+//                 this.currentPlayer.body.moveUp(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+//             } else if (this.cursors.down.isDown) { // move dowm
+//                 this.currentPlayer.direction = "south";
+//                 this.currentPlayer.body.moveDown(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+//             } else {
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
+//             }
+//         }
     },
     setupUI: function() {
         var cameraViewPort = game.camera.view;
@@ -100,7 +101,6 @@ var playState = {
             "rect": new Phaser.Graphics(game, 0, 0)
         };
 
-        var minimapImg;
         this.minimapImg = game.add.sprite(0, cameraViewPort.height - (cameraViewPort.height * .25), 'minimap_image');
         this.minimapImg.fixedToCamera = true;
         var scaleWidth = cameraViewPort.width * .25 / this.minimapImg.width
