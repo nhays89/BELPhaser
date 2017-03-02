@@ -31,7 +31,7 @@ function American(game, x, y) {
 
     this.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
     this.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
-    
+
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
  //  this.body.debug = true;
     this.body.collideWorldBounds = true;
@@ -39,7 +39,6 @@ function American(game, x, y) {
    //this.body.damping = .9999999999;
    //this.body.fixedRotation = true;
 }
-
 
 American.prototype = Object.create(Soldier.prototype);
 American.prototype.constructor = American;

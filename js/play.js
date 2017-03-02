@@ -32,7 +32,8 @@ var playState = {
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
-            var path = this.finder.findPath(0, 0, 4, 4, this.collisionGrid.clone());
+            // 9, 4
+            var path = this.pathfinder.findPath(0, 0, 9 * 32, 4 * 32);
             console.log(path);
             // this.pathfinding.findPath(0, 0, 7, 80, function (path) {
             //     if (path === null) {
@@ -175,9 +176,9 @@ var playState = {
                     return;
                 }
 
-                if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y < this.selectRect.origin.y) { //its to the right and above 
+                if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y < this.selectRect.origin.y) { //its to the right and above
                     this.selectRect.topLeft.setTo(this.selectRect.origin.x, this.selectRect.current.y);
-                } else if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the right and below 
+                } else if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the right and below
                     this.selectRect.topLeft.setTo(this.selectRect.origin.x, this.selectRect.origin.y);
                 } else if (this.selectRect.origin.x > this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the left and below
                     this.selectRect.topLeft.setTo(this.selectRect.current.x, this.selectRect.origin.y);
@@ -191,7 +192,7 @@ var playState = {
                 graphics.lineStyle(1, 0x80ff00, 1);
                 graphics.drawRect(this.selectRect.topLeft.x, this.selectRect.topLeft.y, this.selectRect.width, this.selectRect.height);
                 game.world.add(graphics);
-            } else { //capture the coordinate and store   
+            } else { //capture the coordinate and store
                 this.selectRect.origin.setTo(mousePointer.position.x, mousePointer.position.y);
                 this.selectRect.isActive = true;
 
@@ -250,7 +251,7 @@ var playState = {
     pauseMenuListener: function(sprite, pointer) {
         console.log('in here');
 
-    
+
     },
 
     detectCameraMove: function() {
@@ -302,7 +303,7 @@ var playState = {
     createAmericans: function(numOfAmericans) {
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
-        //         americanGroup.alignIn(game.world.bounds, Phaser.CENTER);    
+        //         americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
         for (var i = 0; i < 10; i++) {
 
             var x = 1000; //default
@@ -325,7 +326,7 @@ var playState = {
         //             console.log(child.body.x);
         //         }, this);
 
-        //         // 
+        //         //
         //americanGroup.enableBodyDebug = true;
 
         //
@@ -345,13 +346,13 @@ var playState = {
 
 
     createMap: function() {
-      
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
+
        this.map = game.add.tilemap('map');
 
         this.map.addTilesetImage('wood_tileset');
@@ -371,7 +372,7 @@ var playState = {
        // this.collisionLayer2 = game.physics.p2.convertCollisionObjects(this.map, "collision2");
 
 
-      
+
 
         // this.pathfinding = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
         // this.pathfinding.setGrid(this.collisionLayer.layer.data);
@@ -395,7 +396,7 @@ var playState = {
         // this.easystar.setAcceptableTiles([0, 1291]);
         // this.easystar.enableDiagonals();
         // this.easystar.enableCornerCutting();
-      
+
 
         this.baselayer.resizeWorld();
         //this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
