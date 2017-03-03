@@ -6,12 +6,12 @@ WebFontConfig = {
 
 var text = null;
 var playState = {
-    preload: function() {
+    preload: function () {
         //  Load the Google WebFont Loader script
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },
 
-    create: function() {
+    create: function () {
         this.createMap();
         this.createGameObjects();
         this.setupUI();
@@ -22,7 +22,7 @@ var playState = {
         this.pathDebug.on = false;
     },
 
-    update: function() {
+    update : function () {
 
         // Used to check if the camera's coordinates were changed.
         // The camera's coordinates won't change if they have reached the bounds of the world.
@@ -34,7 +34,7 @@ var playState = {
             // console.log("mouse down");
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-            
+
             if (this.pathDebug.on) {
 
                 this.pathDebug.clear();
@@ -79,7 +79,7 @@ var playState = {
         //     }
         // }
     },
-    setupUI: function() {
+    setupUI: function () {
         var cameraViewPort = game.camera.view;
 
         var graphics = new Phaser.Graphics(game, 0, 0);
@@ -94,16 +94,15 @@ var playState = {
         game.world.add(graphics);
 
         this.selectRect = { //stores data about mouse events for the rectangle selection
-            "origin": new Phaser.Point(),
-            "current": new Phaser.Point(),
-            "topLeft": new Phaser.Point(),
-            "width": 0,
-            "height": 0,
+            "origin"  : new Phaser.Point(),
+            "current" : new Phaser.Point(),
+            "topLeft" : new Phaser.Point(),
+            "width"   : 0,
+            "height"  : 0,
             "isActive": false,
-            "rect": new Phaser.Graphics(game, 0, 0)
+            "rect"    : new Phaser.Graphics(game, 0, 0)
         };
 
-        var minimapImg;
         this.minimapImg = game.add.sprite(0, cameraViewPort.height - (cameraViewPort.height * .25), 'minimap_image');
         this.minimapImg.fixedToCamera = true;
         var scaleWidth = cameraViewPort.width * .25 / this.minimapImg.width
@@ -138,21 +137,21 @@ var playState = {
 
         this.minimap_loc.lineStyle(1, 0xd9d9d9, 1);
         this.minimap_loc.drawRect(0, 0,
-          game.camera.width * this.minimapImg.scale.x,
-         game.camera.height * this.minimapImg.scale.y);
+            game.camera.width * this.minimapImg.scale.x,
+            game.camera.height * this.minimapImg.scale.y);
 
         var pKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
         pKey.onDown.add(this.pauseGame, this);
     },
 
-    setupInput: function() {
+    setupInput: function () {
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
 
     },
 
-    updateSelectionRect: function() {
+    updateSelectionRect: function () {
         var mousePointer = game.input.mousePointer;
         if (mousePointer.leftButton.isDown) {
 
@@ -161,8 +160,6 @@ var playState = {
                 // console.log("origin: " + this.selectRect.origin.x + ": " + this.selectRect.origin.y);
                 this.selectRect.current = mousePointer.position;
                 // console.log(this.selectRect.current.x + " : " + this.selectRect.current.y);
-
-
 
                 this.selectRect.height = (Math.abs(this.selectRect.origin.y - this.selectRect.current.y));
                 this.selectRect.width = (Math.abs(this.selectRect.origin.x - this.selectRect.current.x));
@@ -199,14 +196,7 @@ var playState = {
         }
     },
 
-
-
-
-    render: function() {
-        this.lines = this.lines || [];
-        for (var i =0; i < this.lines.length; i++) {
-            game.debug.geom(this.lines[i]);
-        }
+    render: function () {
         //        var americans = game.world.getByName("americans");
 
         //game.debug.game.debug.spriteInfo(americans.children[0], 200, 200);
@@ -232,10 +222,8 @@ var playState = {
         // for debugging view distance
         this.viewCircle = new Phaser.Circle(0, 0, 200);
 
-},
-
-
-    pauseGame: function() {
+    },
+    pauseGame : function () {
         if (game.paused) {
             this.pause_menu.destroy();
             game.paused = false;
@@ -251,13 +239,13 @@ var playState = {
         }
     },
 
-    pauseMenuListener: function(sprite, pointer) {
+    pauseMenuListener: function (sprite, pointer) {
         console.log('in here');
 
 
     },
 
-    detectCameraMove: function() {
+    detectCameraMove: function () {
         var tempCamera;
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
@@ -289,9 +277,9 @@ var playState = {
         }
     },
 
-    updateGameObjects: function() {
-        this.soldierGroups.forEach(function(group) {
-            group.forEach(function(soldier) {
+    updateGameObjects: function () {
+        this.soldierGroups.forEach(function (group) {
+            group.forEach(function (soldier) {
                 soldier.update();
 
                 if (soldier.alive) {
@@ -303,7 +291,7 @@ var playState = {
     },
 
 
-    createAmericans: function(numOfAmericans) {
+    createAmericans: function (numOfAmericans) {
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
         //         americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
@@ -338,14 +326,13 @@ var playState = {
     },
 
 
-    createSoviets: function() {
+    createSoviets: function () {
 
     },
 
 
-
-    createMap: function() {
-       this.map = game.add.tilemap('map');
+    createMap: function () {
+        this.map = game.add.tilemap('map');
 
         this.map.addTilesetImage('wood_tileset');
         this.map.addTilesetImage('trees_plants_rocks');
@@ -380,7 +367,7 @@ var playState = {
     },
 
 
-    createGameObjects: function() {
+    createGameObjects: function () {
 
 
 
@@ -390,21 +377,21 @@ var playState = {
         //  game.world.add(americanGroup);
         var americans = this.createAmericans();
         this.currentPlayer = game.world.getByName("americans").children[0]
-            //  var american = new American(game,10,10,"american");
-            //american.addAnimation('american-stand-north', ['american-stand-north'], 1, false, false);
+        //  var american = new American(game,10,10,"american");
+        //american.addAnimation('american-stand-north', ['american-stand-north'], 1, false, false);
 
         //american.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
         //   american.animations.play('american-stand-north');
         //  game.world.add(american);
     },
 
-    onLeftButtonDown: function(pointer, mouseEvent) {
+    onLeftButtonDown: function (pointer, mouseEvent) {
         // console.log("on left button down");
         // console.log(pointer);
         // console.log(mouseEvent);
     },
 
-    onLeftButtonUp: function(pointer, mouseEvent) {
+    onLeftButtonUp : function (pointer, mouseEvent) {
         //determine soldiers in rect area
         //process logic
 
@@ -418,13 +405,13 @@ var playState = {
 
         this.selectRect.rect.clear();
     },
-    onRightButtonUp: function(pointer, mouseEvent) {
+    onRightButtonUp: function (pointer, mouseEvent) {
         // console.log("on right button up");
         // console.log(pointer);
         // console.log(mouseEvent);
     },
 
-    onRightButtonDown: function(pointer, mouseEvent) {
+    onRightButtonDown: function (pointer, mouseEvent) {
         // console.log("on right button down");
         // console.log(pointer);
         // console.log(mouseEvent);
