@@ -14,7 +14,12 @@ var playState = {
     create: function() {
         this.createMap();
         this.createGameObjects();
-        this.setUpEventListeners();
+        this.setupUI();
+        this.setupInput();
+
+        this.pathDebug = game.add.graphics(0, 0);
+        this.pathDebug.coords = [5, 5, 30, 30];
+        this.pathDebug.on = false;
     },
 
     update: function() {
@@ -26,58 +31,56 @@ var playState = {
         this.updateSelectionRect();
         var mousePointer = game.input.mousePointer;
         if (mousePointer.leftButton.isDown) {
-            console.log("mouse down");
-
+            // console.log("mouse down");
         }
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+            
+            if (this.pathDebug.on) {
 
-            // 9, 4
-            var path = this.pathfinder.findPath(0, 0, 9 * 32, 4 * 32);
-            console.log(path);
-            // this.pathfinding.findPath(0, 0, 7, 80, function (path) {
-            //     if (path === null) {
-            //         console.log("The path to the destination" +
-            //             "point was not found.");
-            //     } else {
-            //
-            //         for (var i = 0; i < path.length; i++) {
-            //             console.log("P: " + i + ", X: " + path[i].x + ",Y: " + path[i].y);
-            //         }
-            //
-            //     }
-            // });
+                this.pathDebug.clear();
 
-            // this.soviet.sprite.animations.play('soviet-die-west');
-            // var found = this.getNearbyEnemies(this.soviet);
-            // console.log('Num enemies: ' + this.getNearbyEnemies(this.soviet));
-        }
+                // this.pathDebug.beginFill(0xFF0000);
+                this.pathDebug.lineStyle(5, 0xffd900, 1);
 
+                var path = this.pathfinder.findPath(this.pathDebug.coords[0] * 33,
+                    this.pathDebug.coords[1] * 33, this.pathDebug.coords[2] * 33,
+                    this.pathDebug.coords[3] * 33);
+                console.log(path);
 
-        if (this.currentPlayer) {
-            if (this.cursors.left.isDown) {
-                this.currentPlayer.direction = "west";
-                this.currentPlayer.body.moveLeft(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.right.isDown) { // Move to the right
-                this.currentPlayer.direction = "east";
-                this.currentPlayer.body.moveRight(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.up.isDown) { //move up
-                this.currentPlayer.direction = "north";
-                this.currentPlayer.body.moveUp(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.down.isDown) { // move dowm
-                this.currentPlayer.direction = "south";
-                this.currentPlayer.body.moveDown(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else {
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
+                for (var i = 0; i < path.length; i++) {
+                    if (i === 0) {
+                        this.pathDebug.moveTo(path[i].x, path[i].y);
+                    } else {
+                        this.pathDebug.lineTo(path[i].x, path[i].y);
+                    }
+                }
             }
         }
+
+        // if (this.currentPlayer) {
+        //     if (this.cursors.left.isDown) {
+        //         this.currentPlayer.direction = "west";
+        //         this.currentPlayer.body.moveLeft(200);
+        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+        //     } else if (this.cursors.right.isDown) { // Move to the right
+        //         this.currentPlayer.direction = "east";
+        //         this.currentPlayer.body.moveRight(200);
+        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+        //     } else if (this.cursors.up.isDown) { //move up
+        //         this.currentPlayer.direction = "north";
+        //         this.currentPlayer.body.moveUp(200);
+        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+        //     } else if (this.cursors.down.isDown) { // move dowm
+        //         this.currentPlayer.direction = "south";
+        //         this.currentPlayer.body.moveDown(200);
+        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+        //     } else {
+        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
+        //     }
+        // }
     },
     setupUI: function() {
         var cameraViewPort = game.camera.view;
-
 
         var graphics = new Phaser.Graphics(game, 0, 0);
         graphics.lineStyle(2, 0xd9d9d9, 1);
@@ -142,14 +145,10 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
 
-
-    setUpEventListeners: function() {
-        game.input.mousePointer.leftButton.onDown.add(this.onLeftButtonDown, this);
+    setupInput: function() {
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
-
-
 
     },
 
@@ -158,10 +157,10 @@ var playState = {
         if (mousePointer.leftButton.isDown) {
 
             if (this.selectRect.isActive) { //if we have a point stored from a recent down event
-                console.log(mousePointer.position.x + " : " + mousePointer.position.y);
-                console.log("origin: " + this.selectRect.origin.x + ": " + this.selectRect.origin.y);
+                // console.log(mousePointer.position.x + " : " + mousePointer.position.y);
+                // console.log("origin: " + this.selectRect.origin.x + ": " + this.selectRect.origin.y);
                 this.selectRect.current = mousePointer.position;
-                console.log(this.selectRect.current.x + " : " + this.selectRect.current.y);
+                // console.log(this.selectRect.current.x + " : " + this.selectRect.current.y);
 
 
 
@@ -172,7 +171,7 @@ var playState = {
                 var height = this.selectRect.height;
 
                 if (this.selectRect.origin.x === this.selectRect.current.x && this.selectRect.origin.y === this.selectRect.current.y) {
-                    console.log("same");
+                    // console.log("same");
                     return;
                 }
 
@@ -204,6 +203,10 @@ var playState = {
 
 
     render: function() {
+        this.lines = this.lines || [];
+        for (var i =0; i < this.lines.length; i++) {
+            game.debug.geom(this.lines[i]);
+        }
         //        var americans = game.world.getByName("americans");
 
         //game.debug.game.debug.spriteInfo(americans.children[0], 200, 200);
@@ -332,27 +335,16 @@ var playState = {
         //
 
         return americanGroup;
-
-
     },
 
 
     createSoviets: function() {
-
-
 
     },
 
 
 
     createMap: function() {
-
-
-
-
-
-
-
        this.map = game.add.tilemap('map');
 
         this.map.addTilesetImage('wood_tileset');
@@ -369,19 +361,8 @@ var playState = {
 
         this.collisionLayer = this.map.createLayer('collision');
         this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
-       // this.collisionLayer2 = game.physics.p2.convertCollisionObjects(this.map, "collision2");
 
-
-
-
-        // this.pathfinding = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-        // this.pathfinding.setGrid(this.collisionLayer.layer.data);
-        // this.pathfinding.setAcceptableTiles([0, 1291]);
-        // this.pathfinding.enableDiagonals();
-        // this.pathfinding.enableCornerCutting();
-
-        this.finder = new PF.AStarFinder();
-        //this.collisionGrid = new PF.Grid(this.collisionLayer.layer.data);
+        this.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
         this.collisionGrid = new PF.Grid([
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],
@@ -389,13 +370,6 @@ var playState = {
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0]
         ]);
-
-
-        // this.easystar = new EasyStar.js();
-        // this.easystar.setGrid(this.collisionLayer.layer.data);
-        // this.easystar.setAcceptableTiles([0, 1291]);
-        // this.easystar.enableDiagonals();
-        // this.easystar.enableCornerCutting();
 
 
         this.baselayer.resizeWorld();
@@ -407,6 +381,8 @@ var playState = {
 
 
     createGameObjects: function() {
+
+
 
         //var spriteTest = new Phaser.Sprite(50,50, "american");
         //  var americanGroup = this.createAmericans();
@@ -420,23 +396,17 @@ var playState = {
         //american.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
         //   american.animations.play('american-stand-north');
         //  game.world.add(american);
-
-
-
     },
 
     onLeftButtonDown: function(pointer, mouseEvent) {
-        console.log("on left button down");
-        console.log(pointer);
-        console.log(mouseEvent);
+        // console.log("on left button down");
+        // console.log(pointer);
+        // console.log(mouseEvent);
     },
 
     onLeftButtonUp: function(pointer, mouseEvent) {
-
-
         //determine soldiers in rect area
         //process logic
-
 
         this.selectRect.isActive = false;
         this.selectRect.origin.setTo(0, 0);
@@ -444,20 +414,20 @@ var playState = {
         this.selectRect.topLeft.setTo(0, 0);
         this.selectRect.width = 0;
         this.selectRect.height = 0;
-        console.log("on left button up");
+        // console.log("on left button up");
 
         this.selectRect.rect.clear();
     },
     onRightButtonUp: function(pointer, mouseEvent) {
-        console.log("on right button up");
-        console.log(pointer);
-        console.log(mouseEvent);
+        // console.log("on right button up");
+        // console.log(pointer);
+        // console.log(mouseEvent);
     },
 
     onRightButtonDown: function(pointer, mouseEvent) {
-        console.log("on right button down");
-        console.log(pointer);
-        console.log(mouseEvent);
+        // console.log("on right button down");
+        // console.log(pointer);
+        // console.log(mouseEvent);
     },
 
 

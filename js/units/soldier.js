@@ -1,5 +1,5 @@
 function Soldier(game, x, y, key) {
-    Phaser.Sprite.call(this, game, x, y, key);
+    Body.call(this, game, x, y, key);
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;
@@ -28,10 +28,10 @@ function Soldier(game, x, y, key) {
     this.shootAnimation = {};
 
 
-    game.add.existing(this);
+
 };
 
-Soldier.prototype = Object.create(Phaser.Sprite.prototype);
+Soldier.prototype = Object.create(Body.prototype);
 Soldier.prototype.constructor = Soldier;
 
 
@@ -145,4 +145,3 @@ Soldier.prototype.getNearbyEnemies = function () {
 Soldier.prototype.moveTo = function (x, y) {
     // implement A* here
 };
-

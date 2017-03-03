@@ -66,8 +66,8 @@ Pathfinder.prototype = {
 
         // convert to pixels
         for (var i = 0; i < path.length; i++) {
-            path[i].x = path[i][0] * this.tileWidth;
-            path[i].y = path[i][1] * this.tileHeight;
+            path[i].x = path[i][0] * this.tileWidth + (this.tileWidth / 2); // offsets to the center of the tile
+            path[i].y = path[i][1] * this.tileHeight + (this.tileHeight / 2);
         }
         return path;
     },
@@ -100,12 +100,16 @@ Pathfinder.prototype = {
         openList.push(startNode);
         startNode.opened = true;
 
-        var closestNode; // get f value
+        var closestNode = null; // get f value
 
         // while the open list is not empty
         while (!openList.empty()) {
             // pop the position of node which has the minimum `f` value.
             node = openList.pop();
+
+            if (node.f < closestNode.f)
+                closestNode = node;
+
             node.closed = true;
 
             // if reached the end position, construct the path and return it
@@ -151,7 +155,7 @@ Pathfinder.prototype = {
         } // end while not open list empty
 
         // fail to find the path
-        return [];
+        return this.backtrace(closestNode);
     },
 
     // from pathfinding.js @ https://github.com/qiao/PathFinding.js
@@ -163,5 +167,4 @@ Pathfinder.prototype = {
         }
         return path.reverse();
     }
-
 };
