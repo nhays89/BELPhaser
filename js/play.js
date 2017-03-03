@@ -22,17 +22,18 @@ var playState = {
         this.pathDebug.on = false;
     },
 
-    update : function () {
+    update: function () {
 
         // Used to check if the camera's coordinates were changed.
         // The camera's coordinates won't change if they have reached the bounds of the world.
         this.detectCameraMove();
         //this.updateGameObjects();
         this.updateSelectionRect();
-        var mousePointer = game.input.mousePointer;
-        if (mousePointer.leftButton.isDown) {
-            // console.log("mouse down");
-        }
+        this.updateSelectedGroup(game.world.getByName("americans"));
+        //this.updateSelectedGroup(game.world.getByName("tanks")); //TODO
+            //console.log("updating");
+
+
         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
             if (this.pathDebug.on) {
@@ -93,7 +94,7 @@ var playState = {
 
         game.world.add(graphics);
 
-        this.selectRect = { //stores data about mouse events for the rectangle selection
+        this.select = { //stores data about mouse events for the rectangle selection
             "origin"  : new Phaser.Point(),
             "current" : new Phaser.Point(),
             "topLeft" : new Phaser.Point(),
@@ -144,7 +145,9 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
 
-    setupInput: function () {
+
+    setupInput: function() {
+
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
@@ -154,43 +157,52 @@ var playState = {
     updateSelectionRect: function () {
         var mousePointer = game.input.mousePointer;
         if (mousePointer.leftButton.isDown) {
+        this.select.current.setTo(mousePointer.position.x + game.camera.x, mousePointer.position.y + game.camera.y);
+        if (this.select.isActive) { //if we have a point stored from a recent down event
+            //console.log(mousePointer.position.x + " : " + mousePointer.position.y);
+            //console.log("origin: " + this.select.origin.x + ": " + this.select.origin.y);
 
-            if (this.selectRect.isActive) { //if we have a point stored from a recent down event
-                // console.log(mousePointer.position.x + " : " + mousePointer.position.y);
-                // console.log("origin: " + this.selectRect.origin.x + ": " + this.selectRect.origin.y);
-                this.selectRect.current = mousePointer.position;
-                // console.log(this.selectRect.current.x + " : " + this.selectRect.current.y);
+            //console.log(this.select.current.x + " : " + this.select.current.y);
 
-                this.selectRect.height = (Math.abs(this.selectRect.origin.y - this.selectRect.current.y));
-                this.selectRect.width = (Math.abs(this.selectRect.origin.x - this.selectRect.current.x));
 
-                var width = this.selectRect.width;
-                var height = this.selectRect.height;
 
-                if (this.selectRect.origin.x === this.selectRect.current.x && this.selectRect.origin.y === this.selectRect.current.y) {
-                    // console.log("same");
+           // this.select.height = (Math.abs(this.select.origin.y - this.select.current.y));
+           // this.select.width = (Math.abs(this.select.origin.x - this.select.current.x));
+
+           // var width = this.select.width;
+          //  var height = this.select.height;
+        var gameCamX = game.camera.x;
+                var gameCamY = game.camera.y;
+                if (this.select.origin.x === this.select.current.x && this.select.origin.y === this.select.current.y) {
+                    //console.log("same");
                     return;
                 }
 
-                if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y < this.selectRect.origin.y) { //its to the right and above
-                    this.selectRect.topLeft.setTo(this.selectRect.origin.x, this.selectRect.current.y);
-                } else if (this.selectRect.origin.x < this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the right and below
-                    this.selectRect.topLeft.setTo(this.selectRect.origin.x, this.selectRect.origin.y);
-                } else if (this.selectRect.origin.x > this.selectRect.current.x && this.selectRect.current.y > this.selectRect.origin.y) { //its to the left and below
-                    this.selectRect.topLeft.setTo(this.selectRect.current.x, this.selectRect.origin.y);
+                if (this.select.origin.x < this.select.current.x && this.select.current.y < this.select.origin.y) { //its to the right and above
+                    this.select.topLeft.setTo(this.select.origin.x , this.select.current.y);
+                } else if (this.select.origin.x < this.select.current.x && this.select.current.y > this.select.origin.y) { //its to the right and below
+                    this.select.topLeft.setTo(this.select.origin.x, this.select.origin.y);
+                } else if (this.select.origin.x > this.select.current.x && this.select.current.y > this.select.origin.y) { //its to the left and below
+                    this.select.topLeft.setTo(this.select.current.x, this.select.origin.y);
                 } else { //its to the left and above
 
-                    this.selectRect.topLeft.setTo(this.selectRect.current.x, this.selectRect.current.y);
+                    this.select.topLeft.setTo(this.select.current.x, this.select.current.y);
                 }
-                var graphics = this.selectRect.rect;
+                var width = (Math.abs(this.select.origin.x - this.select.current.x));
+                var height = (Math.abs(this.select.origin.y - this.select.current.y));
+                var graphics = this.select.rect;
                 graphics.clear();
 
                 graphics.lineStyle(1, 0x80ff00, 1);
-                graphics.drawRect(this.selectRect.topLeft.x, this.selectRect.topLeft.y, this.selectRect.width, this.selectRect.height);
+                graphics.drawRect(this.select.topLeft.x, this.select.topLeft.y, width, height);
                 game.world.add(graphics);
-            } else { //capture the coordinate and store
-                this.selectRect.origin.setTo(mousePointer.position.x, mousePointer.position.y);
-                this.selectRect.isActive = true;
+            } else { //capture the current coordinate and store as origin
+                var graphics = this.select.rect;
+                this.select.origin.setTo(this.select.current.x, this.select.current.y);
+                graphics.lineStyle(1, 0x80ff00, 1);
+                graphics.drawRect(this.select.origin.x, this.select.origin.y, 1,1); //print the press to the screen
+                game.world.add(graphics);
+                this.select.isActive = true;
 
             }
         }
@@ -294,7 +306,7 @@ var playState = {
     createAmericans: function (numOfAmericans) {
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
-        //         americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
+        americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
         for (var i = 0; i < 10; i++) {
 
             var x = 1000; //default
@@ -385,25 +397,52 @@ var playState = {
         //  game.world.add(american);
     },
 
-    onLeftButtonDown: function (pointer, mouseEvent) {
-        // console.log("on left button down");
-        // console.log(pointer);
-        // console.log(mouseEvent);
+    //@param - Phaser.Group - each member of the group must have a physics body
+    updateSelectedGroup: function(group) {
+        if(game.input.mousePointer.leftButton.isDown) {
+            group.forEach(function(member) {
+
+
+            var wasSelectedPreviously = member.selected;
+            var nowSelected =  member.isSelected(this.select.rect.getLocalBounds());
+        //console.log("member wasSelectedPreviously: " + wasSelectedPreviously);
+        //console.log("member nowSelected: " + nowSelected);
+
+
+            if(wasSelectedPreviously && nowSelected) {//then no need to set body ring
+                return;
+            }else if(wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
+                member.removeBodyRing();
+            } else if(!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
+                member.setBodyRing();
+            }else {
+                return;
+            }
+
+        },this);
+
+
+
+        }
+        //console.log("left button down");
     },
 
-    onLeftButtonUp : function (pointer, mouseEvent) {
-        //determine soldiers in rect area
-        //process logic
+    onLeftButtonUp: function(pointer, mouseEvent) {
 
-        this.selectRect.isActive = false;
-        this.selectRect.origin.setTo(0, 0);
-        this.selectRect.current.setTo(0, 0);
-        this.selectRect.topLeft.setTo(0, 0);
-        this.selectRect.width = 0;
-        this.selectRect.height = 0;
-        // console.log("on left button up");
 
-        this.selectRect.rect.clear();
+        this.updateSelectedGroup(game.world.getByName("americans"));
+        console.log(" in left button up");
+
+
+        this.select.isActive = false;
+        this.select.origin.setTo(0, 0);
+        this.select.current.setTo(0, 0);
+        this.select.topLeft.setTo(0, 0);
+        this.select.width = 0;
+        this.select.height = 0;
+        //console.log("on left button up");
+
+        this.select.rect.clear();
     },
     onRightButtonUp: function (pointer, mouseEvent) {
         // console.log("on right button up");

@@ -1,8 +1,10 @@
 
 
 /*
- Any object that has a Phaser.Physics.Arcarde.Body
- */
+
+Any object that has a Phaser.Physics.Arcarde.Body
+
+*/
 
 function Body(game, x, y, key) {
     Phaser.Sprite.call(this, game, x, y, key);
