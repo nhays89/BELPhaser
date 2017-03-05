@@ -20,7 +20,7 @@ var loadState = {
 
         //load needed physics
         game.physics.startSystem(Phaser.Physics.P2JS);
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        //game.physics.startSystem(Phaser.Physics.ARCADE);
 
         //load ui
         game.load.image('minimap_frame', 'assets/ui/minimap.png');

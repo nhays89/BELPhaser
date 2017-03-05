@@ -8,7 +8,7 @@ Any object that has a Phaser.Physics.Arcarde.Body
 
 function Body(game, x, y, key) {
     Phaser.Sprite.call(this, game, x, y, key);
-    game.add.existing(this);
+    //game.add.existing(this);
     this.myGraphicsCanvas = new Phaser.Graphics(game, 0, 0);
 }
 
@@ -25,16 +25,15 @@ Body.prototype.constructor = Body;
 
 Body.prototype.isSelected = function(rect) {
 
-        var myLeft = this.body.x;
-        var myRight = this.body.x + this.body.width;
-        var myTop = this.body.y;
-        var myBottom = this.body.y + this.body.height;
+    var myLeft = this.body.x;
+    var myRight = this.body.x + this.body.width;
+    var myTop = this.body.y;
+    var myBottom = this.body.y + this.body.height;
 
-        var rectLeft = rect.x;
-        var rectRight = rect.x + rect.width;
-        var rectTop = rect.y;
-        var rectBottom = rect.y + rect.height;
-
+    var rectLeft = rect.x;
+    var rectRight = rect.x + rect.width;
+    var rectTop = rect.y;
+    var rectBottom = rect.y + rect.height;
         //if the selection rectangle covers my anchor x,y || I contain the selection's top left x,y
         if(myLeft >= rectLeft && myLeft <= rectRight && myTop >= rectTop && myTop <= rectBottom ||
         rectLeft >= myLeft && rectLeft <= myRight && rectTop >= myTop && rectTop <= myBottom) {
@@ -43,7 +42,6 @@ Body.prototype.isSelected = function(rect) {
             this.selected = false;
         }
         return this.selected;
-
 }
 
 
@@ -53,20 +51,20 @@ Body.prototype.toggleSelected = function() {
 
 Body.prototype.setBodyRing = function() {
 
-        this.myGraphicsCanvas.lineStyle(1, 0x80ff00, 1);
-        var scale = 1.25;
-        var offsetPercent = .5;
-        var widthoffset = this.body.width * offsetPercent;
-        var heightoffset = this.body.height * offsetPercent;
-        this.myGraphicsCanvas.drawCircle(this.body.x + widthoffset, this.body.y + heightoffset, this.body.width * scale);
-        game.world.add(this.myGraphicsCanvas);
+    this.myGraphicsCanvas.lineStyle(1, 0x80ff00, 1);
+    var scale = 1.25;
+    var offsetPercent = .5;
+    var widthoffset = this.body.width * offsetPercent;
+    var heightoffset = this.body.height * offsetPercent;
+    this.myGraphicsCanvas.drawCircle(this.body.x + widthoffset, this.body.y + heightoffset, this.body.width * scale);
+    game.world.add(this.myGraphicsCanvas);
 
 }
 
 
 Body.prototype.removeBodyRing = function() {
 
-        this.myGraphicsCanvas.clear();
+    this.myGraphicsCanvas.clear();
 }
 
 
