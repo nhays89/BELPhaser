@@ -8,7 +8,7 @@ Any object that has a Phaser.Physics.Arcarde.Body
 
 function Body(game, x, y, key) {
     Phaser.Sprite.call(this, game, x, y, key);
-    game.add.existing(this);
+    //game.add.existing(this);
     this.myGraphicsCanvas = new Phaser.Graphics(game, 0, 0);
 }
 

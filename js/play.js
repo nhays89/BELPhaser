@@ -33,8 +33,7 @@ var playState = {
         //this.updateSelectedGroup(game.world.getByName("tanks")); //TODO
             //console.log("updating");
 
-
-        if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
             if (this.pathDebug.on) {
 
@@ -43,7 +42,7 @@ var playState = {
                 // this.pathDebug.beginFill(0xFF0000);
                 this.pathDebug.lineStyle(5, 0xffd900, 1);
 
-                var path = this.pathfinder.findPath(this.pathDebug.coords[0] * 33,
+                var path = game.pathfinder.findPath(this.pathDebug.coords[0] * 33,
                     this.pathDebug.coords[1] * 33, this.pathDebug.coords[2] * 33,
                     this.pathDebug.coords[3] * 33);
                 console.log(path);
@@ -57,6 +56,10 @@ var playState = {
                 }
             }
         }
+
+        game.physics.arcade.collide(this.americansGroup, this.collisionLayer);
+
+        this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
         // if (this.currentPlayer) {
         //     if (this.cursors.left.isDown) {
@@ -147,6 +150,9 @@ var playState = {
 
 
     setupInput: function() {
+        
+        // prevent browser default context menu from appearing
+        game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
@@ -304,10 +310,11 @@ var playState = {
 
 
     createAmericans: function (numOfAmericans) {
+        var numOfAmericans = numOfAmericans || 10;
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
-        americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
-        for (var i = 0; i < 10; i++) {
+        //americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
+        for (var i = 0; i < numOfAmericans; i++) {
 
             var x = 1000; //default
             var y = 1000;
@@ -320,18 +327,17 @@ var playState = {
 
         americanGroup.align(5, 2, 40, 40);
 
-        //         game.world.getByName("americans").children.forEach(function(child) {
-        //             child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
-        //             child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
-        //             child.body.x = child.x;
-        //             child.body.y = child.y;
-        //             console.log(child.x);
-        //             console.log(child.body.x);
-        //         }, this);
+        // game.world.getByName("americans").children.forEach(function(child) {
+        //     child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
+        //     child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
+        //     child.body.x = child.x;
+        //     child.body.y = child.y;
+        //     console.log(child.x);
+        //     console.log(child.body.x);
+        // }, this);
 
         //         //
         //americanGroup.enableBodyDebug = true;
-
         //
 
         return americanGroup;
@@ -346,22 +352,31 @@ var playState = {
     createMap: function () {
         this.map = game.add.tilemap('map');
 
+        this.map.addTilesetImage('tiled_collision');
         this.map.addTilesetImage('wood_tileset');
         this.map.addTilesetImage('trees_plants_rocks');
         this.map.addTilesetImage('town');
         this.map.addTilesetImage('Castle');
         this.map.addTilesetImage('mountain_landscape');
-        this.map.addTilesetImage('tiled_collision');
+
+        this.collisionLayer = this.map.createLayer('collision');
+
+        this.collisionLayer.resizeWorld();
+
+        this.map.setCollisionByIndex(1289, true, 0);
+        this.map.setCollisionByIndex(1291, false, 0);
+
+        // game.physics.p2.convertTilemap(this.map, this.collisionLayer);
+        this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
 
         this.baselayer = this.map.createLayer('base');
         this.rocklayer = this.map.createLayer('rock');
         this.castlelayer = this.map.createLayer('castle');
         this.extralayer = this.map.createLayer('extra');
 
-        this.collisionLayer = this.map.createLayer('collision');
-        this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
 
-        this.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
+
+        game.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
         this.collisionGrid = new PF.Grid([
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],
@@ -387,8 +402,8 @@ var playState = {
         //  var americanGroup = this.createAmericans();
         //var sovietGroup = this.createSoviets();
         //  game.world.add(americanGroup);
-        var americans = this.createAmericans();
-        this.currentPlayer = game.world.getByName("americans").children[0]
+        this.americansGroup = this.createAmericans();
+        this.currentPlayer = game.world.getByName("americans").children[0];
         //  var american = new American(game,10,10,"american");
         //american.addAnimation('american-stand-north', ['american-stand-north'], 1, false, false);
 
@@ -451,6 +466,13 @@ var playState = {
     },
 
     onRightButtonDown: function (pointer, mouseEvent) {
+        
+        this.americansGroup.forEach(function (soldier) {
+            if (soldier.selected) {
+                soldier.cancelMovement();
+                soldier.moveTo(pointer.event.x + game.camera.x, pointer.event.y + game.camera.y);
+            }
+        });
         // console.log("on right button down");
         // console.log(pointer);
         // console.log(mouseEvent);

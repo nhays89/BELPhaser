@@ -1117,7 +1117,7 @@ AStarFinder.prototype.findPath = function(startX, startY, endX, endY, grid) {
     } // end while not open list empty
 
     // fail to find the path
-    return Util.backtrace(closestNode);
+    return []; //Util.backtrace(closestNode);
 };
 
 module.exports = AStarFinder;

@@ -34,9 +34,10 @@ function American(game, x, y) {
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     //  this.body.debug = true;
+    // this.game.physics.p2.enable(this);
     this.body.collideWorldBounds = true;
     this.body.setCircle(20);
-    //this.body.damping = .9999999999;
+    this.body.damping = .9999999999;
     //this.body.fixedRotation = true;
 }
 

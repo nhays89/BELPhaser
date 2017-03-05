@@ -68,7 +68,18 @@ Pathfinder.prototype = {
         for (var i = 0; i < path.length; i++) {
             path[i].x = path[i][0] * this.tileWidth + (this.tileWidth / 2); // offsets to the center of the tile
             path[i].y = path[i][1] * this.tileHeight + (this.tileHeight / 2);
+
+            if (i > 0) {
+                path[i].direction = this.getDirection(game.physics.arcade.angleBetween(
+                    { x: path[i].x, y: path[i].y },
+                    { x: path[i - 1].x, y: path[i - 1].y }
+                ));
+
+                path[i].distance = Phaser.Math.distance(path[i - 1].x, path[i - 1].y,
+                    path[i].x, path[i].y)
+            }
         }
+        path.shift(); // remove the starting point (sprite already knows this)
         return path;
     },
 
@@ -78,6 +89,30 @@ Pathfinder.prototype = {
 
         return this.grid.isWalkableAt(gridX, gridY);
     },
+
+    getDirection: function(radians) {
+        var degrees = Phaser.Math.radToDeg(radians);
+
+        if (degrees >= -22.5 && degrees < 22.5) {
+            return 'west';
+        } else if (degrees >= 22.5 && degrees < 67.5) {
+            return 'northwest';
+        } else if (degrees >= 67.5 && degrees < 112.5) {
+            return 'north';
+        } else if (degrees >= 112.5 && degrees < 157.5) {
+            return 'northeast';
+        } else if (degrees >= -157.5 && degrees < -112.5) {
+            return 'southeast';
+        } else if (degrees >= -112.5 && degrees < -67.5) {
+            return 'south';
+        } else if (degrees >= -67.5 && degrees < -22.5) {
+            return 'southwest';
+        } else {
+            return 'east';
+        }
+    },
+
+
 
     // from pathfinding.js @ https://github.com/qiao/PathFinding.js
     aStarSearch: function (startX, startY, endX, endY, grid) {
