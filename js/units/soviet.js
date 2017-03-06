@@ -33,12 +33,6 @@ function Soviet(game, x, y) {
 
     this.animations.add('soviet-die-west', Phaser.Animation.generateFrameNames('soviet-die-west', 0, 14), 14, false, false);
     this.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
-    this.game.physics.enable(this, Phaser.Physics.ARCADE);
-    //  this.body.debug = true;
-    this.body.collideWorldBounds = true;
-    this.body.setCircle(20);
-    //this.body.damping = .9999999999;
-    //this.body.fixedRotation = true;
 }
 
 

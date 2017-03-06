@@ -1,5 +1,14 @@
 function Soldier(game, x, y, key) {
     Body.call(this, game, x, y, key);
+
+    this.game.physics.p2.enable(this);
+    //  this.body.debug = true;
+    // this.game.physics.p2.enable(this);
+    this.body.collideWorldBounds = true;
+    this.body.setCircle(this.body.radius);
+    this.body.damping = .9999999999;
+    this.body.fixedRotation = true;
+
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;
@@ -23,6 +32,8 @@ function Soldier(game, x, y, key) {
     // this.bulletSplash.anchor.setTo(0.5, 0.5);
     // this.sprite.addChild(this.bulletSplash);
     // this.bulletSplash.animations.add('bulletSplash');
+
+
 
     this.weaponCooldownDuration = 1500;
     this.shootAnimation = {};
@@ -63,11 +74,13 @@ Soldier.prototype.shoot = function (enemy) {
     }
 };
 
-Soldier.prototype.update = function () {
-    if (this.alive && this.health <= 0) {
-        this.die();
-    }
-};
+// Soldier.prototype.update = function () {
+//     if (this.alive && this.health <= 0) {
+//         this.die();
+//     }
+//
+//
+// };
 
 Soldier.prototype.die = function () {
     var deathDir;
@@ -125,6 +138,8 @@ Soldier.prototype.getNearbyEnemies = function () {
     this.enemiesInAttackRadius = [];
     for (var i = 0; i < found.length; i++) {
 
+        // game.physics.arcade.collide(this.body, found[i].body);
+
         // if enemy
         if (found[i].alive && (this instanceof American && found[i] instanceof Soviet ||
             this instanceof Soviet && found[i] instanceof American)) {
@@ -149,6 +164,7 @@ Soldier.prototype.update = function() {
 
     if (this.isMoving) {
         this.animations.play(this.key + '-run-' + this.currentCoords.direction);
+        this.moveTo();
     } else {
         this.cancelMovement();
     }
@@ -178,23 +194,56 @@ Soldier.prototype.moveTo = function (x, y) {
         var self = this;
         this.isMoving = true;
         this.currentCoords = this.currentPath.shift();
-
-        //game.physics.arcade.moveToXY(this, this.currentCoords.x, this.currentCoords.y, 100);
-
-        //this.animations.play(this.key + '-run-' + this.currentCoords.direction);
-
         var duration = (this.currentCoords.distance / this.speed) * 1000;
-        this.tween = game.add.tween(this).to({ x: this.currentCoords.x, y: this.currentCoords.y },
-                        duration, Phaser.Easing.Linear.None, true);
-        
-        this.tween.onComplete.add(function () {
+
+
+
+        // game.physics.arcade.moveToXY(this, this.currentCoords.x, this.currentCoords.y, 100);
+        this.animations.play(this.key + '-run-' + this.currentCoords.direction);
+
+        if (this.currentCoords.direction == 'north') {
+            this.moveNorth(duration);
+        } else if (this.currentCoords.direction == 'northeast') {
+            this.moveNorthEast(duration);
+        } else if (this.currentCoords.direction == 'east') {
+            this.moveEast(duration);
+        } else if (this.currentCoords.direction == 'southeast') {
+            this.moveSouthEast(duration);
+        } else if (this.currentCoords.direction == 'south') {
+            this.moveSouth(duration);
+        } else if (this.currentCoords.direction == 'southwest') {
+            this.moveSouthWest(duration);
+        } else if (this.currentCoords.direction == 'west') {
+            this.moveWest(duration);
+        } else {
+            this.moveNorthWest(duration);
+        }
+
+        if (Phaser.Math.distance(this.x, this.y, this.currentCoords.x, this.currentCoords.y) <= 10) {
             this.isMoving = false;
-            if (self.currentPath.length <= 0) {
-                self.cancelMovement();
-            } else {
-                self.moveTo(); // moveTo without coords, will take from the currentPath
-            }
-        }, this);
+        }
+
+        // this.body.onMoveComplete.addOnce(function () {
+        //     this.isMoving = false;
+        //         if (self.currentPath.length <= 0) {
+        //             self.cancelMovement();
+        //         } else {
+        //             self.moveTo(); // moveTo without coords, will take from the currentPath
+        //         }
+        // }, this);
+        // this.body.moveTo(duration, this.currentCoords.distance);
+
+        // this.tween = game.add.tween(this).to({ x: this.currentCoords.x, y: this.currentCoords.y },
+        //                 duration, Phaser.Easing.Linear.None, true);
+        //
+        // this.tween.onComplete.add(function () {
+        //     this.isMoving = false;
+        //     if (self.currentPath.length <= 0) {
+        //         self.cancelMovement();
+        //     } else {
+        //         self.moveTo(); // moveTo without coords, will take from the currentPath
+        //     }
+        // }, this);
 
         // for displaying the soldier's path.
         if (this.pathDebug.on) {
@@ -211,4 +260,33 @@ Soldier.prototype.moveTo = function (x, y) {
             }
         }
     }
+};
+
+Soldier.prototype.moveNorth = function (distance) {
+    this.body.moveUp(distance);
+};
+Soldier.prototype.moveNorthEast = function (distance) {
+    this.body.moveUp(distance);
+    this.body.moveRight(distance);
+};
+Soldier.prototype.moveEast = function (distance) {
+    this.body.moveRight(distance);
+};
+Soldier.prototype.moveSouthEast = function (distance) {
+    this.body.moveDown(distance);
+    this.body.moveRight(distance);
+};Soldier.prototype.moveSouth = function (distance) {
+    this.body.moveDown(distance);
+};
+Soldier.prototype.moveSouthWest = function (distance) {
+    this.body.moveDown(distance);
+    this.body.moveLeft(distance);
+};
+Soldier.prototype.moveWest = function (distance) {
+    this.body.moveLeft(distance);
+};
+Soldier.prototype.moveNorthWest = function (distance) {
+    this.body.moveUp(distance);
+    this.body.moveLeft(distance);
+
 };

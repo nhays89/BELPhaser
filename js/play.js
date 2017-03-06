@@ -20,6 +20,11 @@ var playState = {
         this.pathDebug = game.add.graphics(0, 0);
         this.pathDebug.coords = [5, 5, 30, 30];
         this.pathDebug.on = false;
+
+        this.cursors = game.input.keyboard.createCursorKeys();
+        this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
+        this.viewCircle = new Phaser.Circle(0, 0, 200);
+
     },
 
     update: function () {
@@ -27,7 +32,7 @@ var playState = {
         // Used to check if the camera's coordinates were changed.
         // The camera's coordinates won't change if they have reached the bounds of the world.
         this.detectCameraMove();
-        //this.updateGameObjects();
+        this.updateGameObjects();
         this.updateSelectionRect();
         this.updateSelectedGroup(game.world.getByName("americans"));
         //this.updateSelectedGroup(game.world.getByName("tanks")); //TODO
@@ -57,31 +62,33 @@ var playState = {
             }
         }
 
-        game.physics.arcade.collide(this.americansGroup, this.collisionLayer);
+        // game.physics.arcade.collide(this.americansGroup, this.collisionLayer);
 
-        this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        // this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
-        // if (this.currentPlayer) {
-        //     if (this.cursors.left.isDown) {
-        //         this.currentPlayer.direction = "west";
-        //         this.currentPlayer.body.moveLeft(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else if (this.cursors.right.isDown) { // Move to the right
-        //         this.currentPlayer.direction = "east";
-        //         this.currentPlayer.body.moveRight(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else if (this.cursors.up.isDown) { //move up
-        //         this.currentPlayer.direction = "north";
-        //         this.currentPlayer.body.moveUp(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else if (this.cursors.down.isDown) { // move dowm
-        //         this.currentPlayer.direction = "south";
-        //         this.currentPlayer.body.moveDown(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else {
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
-        //     }
-        // }
+        if (this.currentPlayer) {
+            if (this.cursors.left.isDown) {
+                this.currentPlayer.direction = "west";
+                this.currentPlayer.body.moveLeft(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            } else if (this.cursors.right.isDown) { // Move to the right
+                this.currentPlayer.direction = "east";
+                this.currentPlayer.body.moveRight(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            }
+
+            if (this.cursors.up.isDown) { //move up
+                this.currentPlayer.direction = "north";
+                this.currentPlayer.body.moveUp(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            } else if (this.cursors.down.isDown) { // move dowm
+                this.currentPlayer.direction = "south";
+                this.currentPlayer.body.moveDown(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            } else {
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
+            }
+        }
     },
     setupUI: function () {
         var cameraViewPort = game.camera.view;
@@ -296,45 +303,57 @@ var playState = {
     },
 
     updateGameObjects: function () {
-        this.soldierGroups.forEach(function (group) {
-            group.forEach(function (soldier) {
-                soldier.update();
+        this.americansGroup.forEach(function (soldier) {
+            soldier.update();
 
-                if (soldier.alive) {
-                    soldier.getNearbyEnemies();
-                }
-            })
-        });
+            if (soldier.alive) {
+                soldier.getNearbyEnemies();
+            }
+        }, this);
 
     },
 
 
-    createAmericans: function (numOfAmericans) {
-        var numOfAmericans = numOfAmericans || 10;
+    createAmericans: function (numOfAmericans, x, y, numRows, numCols) {
+        numOfAmericans = numOfAmericans || 10;
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
         //americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
+        var width = 30;
+        var height = 30;
         for (var i = 0; i < numOfAmericans; i++) {
+            var col = i * width % (numCols * width);
+            var row = height + i / numCols;
 
-            var x = 1000; //default
-            var y = 1000;
-            var american = americanGroup.create(x, y, "american"); // creates a new American
+            var american = americanGroup.create(col, row, "american"); // creates a new American
             this.quadTree.insert(american.body);
             american.name = american.key;
+
+            // var x = (i * 30) % (30 * 5); //default
+            // var y = 0;
+            //
+            // if (i * 30 == 5 * 30) {
+            //     y = i * 30;
+            // }
+            // // var x = (i * 30) % (30 * 5); //default
+            // // var y = (i * 30) % (30 * 5);
+            // var american = americanGroup.create(x, y, "american"); // creates a new American
+            // this.quadTree.insert(american.body);
+            // american.name = american.key;
 
             //game.debug.spriteInfo(american, 32, 32);
         }
 
-        americanGroup.align(5, 2, 40, 40);
+        //americanGroup.align(5, 2, 40, 40);
 
-        // game.world.getByName("americans").children.forEach(function(child) {
-        //     child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
-        //     child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
-        //     child.body.x = child.x;
-        //     child.body.y = child.y;
-        //     console.log(child.x);
-        //     console.log(child.body.x);
-        // }, this);
+        game.world.getByName("americans").children.forEach(function(child) {
+            child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
+            child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
+            child.body.x = child.x;
+            child.body.y = child.y;
+            console.log(child.x);
+            console.log(child.body.x);
+        }, this);
 
         //         //
         //americanGroup.enableBodyDebug = true;
@@ -366,8 +385,8 @@ var playState = {
         this.map.setCollisionByIndex(1289, true, 0);
         this.map.setCollisionByIndex(1291, false, 0);
 
-        // game.physics.p2.convertTilemap(this.map, this.collisionLayer);
-        this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
+        game.physics.p2.convertTilemap(this.map, this.collisionLayer);
+        // this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
 
         this.baselayer = this.map.createLayer('base');
         this.rocklayer = this.map.createLayer('rock');
@@ -402,7 +421,7 @@ var playState = {
         //  var americanGroup = this.createAmericans();
         //var sovietGroup = this.createSoviets();
         //  game.world.add(americanGroup);
-        this.americansGroup = this.createAmericans();
+        this.americansGroup = this.createAmericans(10, 0, 0, 5, 5);
         this.currentPlayer = game.world.getByName("americans").children[0];
         //  var american = new American(game,10,10,"american");
         //american.addAnimation('american-stand-north', ['american-stand-north'], 1, false, false);
