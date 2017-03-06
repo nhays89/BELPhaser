@@ -20,18 +20,18 @@ var playState = {
         this.pathDebug = game.add.graphics(0, 0);
         this.pathDebug.coords = [5, 5, 30, 30];
         this.pathDebug.on = false;
+
+        this.cursors = game.input.keyboard.createCursorKeys();
+        this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
+        this.viewCircle = new Phaser.Circle(0, 0, 200);
+
     },
 
     update: function () {
-
-        // Used to check if the camera's coordinates were changed.
-        // The camera's coordinates won't change if they have reached the bounds of the world.
         this.detectCameraMove();
-        //this.updateGameObjects();
         this.updateSelectionRect();
-        this.updateSelectedGroup(game.world.getByName("americans"));
-        //this.updateSelectedGroup(game.world.getByName("tanks")); //TODO
-            //console.log("updating");
+        this.updateGameObjects();
+        
 
          if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
@@ -57,31 +57,33 @@ var playState = {
             }
         }
 
-        game.physics.arcade.collide(this.americansGroup, this.collisionLayer);
+        // game.physics.arcade.collide(this.americansGroup, this.collisionLayer);
 
-        this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
+        // this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
-        // if (this.currentPlayer) {
-        //     if (this.cursors.left.isDown) {
-        //         this.currentPlayer.direction = "west";
-        //         this.currentPlayer.body.moveLeft(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else if (this.cursors.right.isDown) { // Move to the right
-        //         this.currentPlayer.direction = "east";
-        //         this.currentPlayer.body.moveRight(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else if (this.cursors.up.isDown) { //move up
-        //         this.currentPlayer.direction = "north";
-        //         this.currentPlayer.body.moveUp(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else if (this.cursors.down.isDown) { // move dowm
-        //         this.currentPlayer.direction = "south";
-        //         this.currentPlayer.body.moveDown(200);
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-        //     } else {
-        //         this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
-        //     }
-        // }
+        if (this.currentPlayer) {
+            if (this.cursors.left.isDown) {
+                this.currentPlayer.direction = "west";
+                this.currentPlayer.body.moveLeft(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            } else if (this.cursors.right.isDown) { // Move to the right
+                this.currentPlayer.direction = "east";
+                this.currentPlayer.body.moveRight(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            }
+
+            if (this.cursors.up.isDown) { //move up
+                this.currentPlayer.direction = "north";
+                this.currentPlayer.body.moveUp(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            } else if (this.cursors.down.isDown) { // move dowm
+                this.currentPlayer.direction = "south";
+                this.currentPlayer.body.moveDown(200);
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
+            } else {
+                this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
+            }
+        }
     },
     setupUI: function () {
         var cameraViewPort = game.camera.view;
@@ -214,6 +216,24 @@ var playState = {
         }
     },
 
+
+    getNearbySoviet: function(point) {
+    
+     var triggerDistance = 100;
+     var closestSovietInRange = null;
+     var closestDistance = Number.MAX_SAFE_INTEGER;
+         game.world.getByName("soviets").forEachAlive(function(soviet) { 
+         var distance = Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y);
+        if ( Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y) <= triggerDistance) { 
+             if(distance < closestDistance) {
+                 closestDistance = distance;
+                 closestSovietInRange = soviet;
+             }
+        }
+      }, this);
+      return closestSovietInRange;
+      },
+
     render: function () {
         //        var americans = game.world.getByName("americans");
 
@@ -296,56 +316,65 @@ var playState = {
     },
 
     updateGameObjects: function () {
-        this.soldierGroups.forEach(function (group) {
-            group.forEach(function (soldier) {
-                soldier.update();
+   
+        var americans = game.world.getByName("americans");
+        var soviets = game.world.getByName("soviets");
+        if(americans.exists) {
+             americans.forEachAlive(function(american){   
+               american.update();
+        }, this);
+        }
+       
+        soviets.forEach(function(soviet) {
+            soviet.update();
+        },this);
+    },
 
-                if (soldier.alive) {
-                    soldier.getNearbyEnemies();
-                }
-            })
-        });
+
+//     addToGroup(group, )
+
+    
+    resetCoords: function(groupName) {
+//         game.world.getByName(groupName).children.forEach(function(child) {
+//             child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
+//             child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
+//             child.body.x = child.x;
+//             child.body.y = child.y;
+//          //   console.log(child.x);
+//          //   console.log(child.body.x);
+//         }, this);
 
     },
 
 
-    createAmericans: function (numOfAmericans) {
-        var numOfAmericans = numOfAmericans || 10;
-        var americanGroup = new Phaser.Group(game, game.world, "americans", false);
-        americanGroup.classType = American; //sets the type of object to create when group.create is called
-        //americanGroup.alignIn(game.world.bounds, Phaser.CENTER);
+    createAmericans: function (group, numOfAmericans, x, y, numRows, numCols) {
+        numOfAmericans = numOfAmericans || 10;
+        
+        var width = 30;
+        var height = 30;
         for (var i = 0; i < numOfAmericans; i++) {
-
-            var x = 1000; //default
-            var y = 1000;
-            var american = americanGroup.create(x, y, "american"); // creates a new American
+            var col = i * width % (numCols * width);
+            var row = height + i / numCols;
+            var american = americanGroup.create(col + x, row + y, "american"); // creates a new American
             this.quadTree.insert(american.body);
             american.name = american.key;
-
-            //game.debug.spriteInfo(american, 32, 32);
         }
-
-        americanGroup.align(5, 2, 40, 40);
-
-        // game.world.getByName("americans").children.forEach(function(child) {
-        //     child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
-        //     child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
-        //     child.body.x = child.x;
-        //     child.body.y = child.y;
-        //     console.log(child.x);
-        //     console.log(child.body.x);
-        // }, this);
-
-        //         //
-        //americanGroup.enableBodyDebug = true;
-        //
-
+        resetCoords("americans");
         return americanGroup;
     },
 
 
-    createSoviets: function () {
-
+    addToGroup: function (group, num, x,y,numCols) {    
+        num = num || 10;
+        var width = 30;
+        var height = 30;
+        for (var i = 0; i < num; i++) {
+            var col = i * width % (numCols * width);
+            var row = height * Math.floor(i / numCols);
+            var soldier = group.create(col  + x, row + y); // creates a new Soviet
+            this.quadTree.insert(soldier.body);
+            soldier.name = soldier.key;
+        }
     },
 
 
@@ -366,8 +395,8 @@ var playState = {
         this.map.setCollisionByIndex(1289, true, 0);
         this.map.setCollisionByIndex(1291, false, 0);
 
-        // game.physics.p2.convertTilemap(this.map, this.collisionLayer);
-        this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
+        game.physics.p2.convertTilemap(this.map, this.collisionLayer);
+        // this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
 
         this.baselayer = this.map.createLayer('base');
         this.rocklayer = this.map.createLayer('rock');
@@ -396,43 +425,56 @@ var playState = {
 
     createGameObjects: function () {
 
-
-
-        //var spriteTest = new Phaser.Sprite(50,50, "american");
-        //  var americanGroup = this.createAmericans();
-        //var sovietGroup = this.createSoviets();
-        //  game.world.add(americanGroup);
-        this.americansGroup = this.createAmericans();
-        this.currentPlayer = game.world.getByName("americans").children[0];
-        //  var american = new American(game,10,10,"american");
-        //american.addAnimation('american-stand-north', ['american-stand-north'], 1, false, false);
-
-        //american.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
-        //   american.animations.play('american-stand-north');
-        //  game.world.add(american);
+        var americanGroup = new Phaser.Group(game, game.world, "americans", false);
+        americanGroup.classType = American; //sets the type of object to create when group.create is called
+        game.world.add(americanGroup);
+        var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
+         sovietGroup.classType = Soviet;
+         game.world.add(sovietGroup);
+       americanGroup = this.addToGroup(americanGroup,10,1000,1000,5);
+       sovietGroup = this.addToGroup(sovietGroup, 10, 1250,1250,3);
+ 
+        
+        this.currentPlayer = game.world.getByName("americans").children[0]; //testing
     },
 
     //@param - Phaser.Group - each member of the group must have a physics body
     updateSelectedGroup: function(group) {
         if(game.input.mousePointer.leftButton.isDown) {
             group.forEach(function(member) {
-
-
             var wasSelectedPreviously = member.selected;
             var nowSelected =  member.isSelected(this.select.rect.getLocalBounds());
-        //console.log("member wasSelectedPreviously: " + wasSelectedPreviously);
-        //console.log("member nowSelected: " + nowSelected);
-
-
+ 
             if(wasSelectedPreviously && nowSelected) {//then no need to set body ring
                 return;
             }else if(wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
                 member.removeBodyRing();
             } else if(!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
                 member.setBodyRing();
-            }else {
-                return;
             }
+
+
+            //main game loop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         },this);
 
@@ -467,7 +509,7 @@ var playState = {
 
     onRightButtonDown: function (pointer, mouseEvent) {
         
-        this.americansGroup.forEach(function (soldier) {
+        this.americansGroupd.forEach(function (soldier) {
             if (soldier.selected) {
                 soldier.cancelMovement();
                 soldier.moveTo(pointer.event.x + game.camera.x, pointer.event.y + game.camera.y);

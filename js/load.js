@@ -1,8 +1,8 @@
 var loadState = {
 
     preload: function () {
-        var loadingLabel = game.add.text(80, 150, 'loading...',
-            {font: '30px Courier', fill: '#ffffff'});
+        var loadingLabel = game.add.text(200, 200, 'Loading...',
+            {font: '30px Courier', fill: '#000000'});
 
         //map files
         game.load.image('town', 'assets/map/town.png');
