@@ -33,21 +33,14 @@ Body.prototype.isSelected = function(rect) {
     var rectRight = rect.x + rect.width;
     var rectTop = rect.y;
     var rectBottom = rect.y + rect.height;
-
-    var myX = this.body.x;
-    var myY = this.body.y;
-    var rectX = rect.x;
-    var rectY = rect.y;
-
-    //if the selection rectangle covers my anchor x,y || I contain the selection's top left x,y
-    if(myX >= rectLeft && myX <= rectRight && myY >= rectTop && myY <= rectBottom ||
-        rectX >= myLeft && rectX <= myRight && rectY >= myTop && rectY <= myBottom) {
-        this.selected = true;
-    } else {
-        this.selected = false;
-    }
-    return this.selected;
-
+        //if the selection rectangle covers my anchor x,y || I contain the selection's top left x,y
+        if(myLeft >= rectLeft && myLeft <= rectRight && myTop >= rectTop && myTop <= rectBottom ||
+        rectLeft >= myLeft && rectLeft <= myRight && rectTop >= myTop && rectTop <= myBottom) {
+            this.selected = true;
+        } else {
+            this.selected = false;
+        }
+        return this.selected;
 }
 
 
