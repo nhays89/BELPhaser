@@ -43,7 +43,7 @@ Body.prototype.isSelected = function(rect) {
         }
         return this.selected;
 }
-
+    
 
 Body.prototype.toggleSelected = function() {
     !(this.selected);
@@ -67,11 +67,3 @@ Body.prototype.removeBodyRing = function() {
     this.myGraphicsCanvas.clear();
 }
 
-
-
-
-
-
-Body.prototype.removeBodyRing = function() {
-    this.myGraphicsCanvas.clear();
-}
