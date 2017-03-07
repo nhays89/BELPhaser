@@ -30,6 +30,7 @@ var playState = {
     update: function () {
         this.detectCameraMove();
         this.updateSelectionRect();
+        this.updateSelectedGroup(game.world.getByName("americans"));
         this.updateGameObjects();
         
 
@@ -61,7 +62,7 @@ var playState = {
 
         // this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
-        if (this.currentPlayer) {
+        if (this.currentPlayer) { //debug
             if (this.cursors.left.isDown) {
                 this.currentPlayer.direction = "west";
                 this.currentPlayer.body.moveLeft(200);
@@ -319,15 +320,20 @@ var playState = {
    
         var americans = game.world.getByName("americans");
         var soviets = game.world.getByName("soviets");
-        if(americans.exists) {
+        if(americans) {
              americans.forEachAlive(function(american){   
                american.update();
         }, this);
+        } else {
+            //create more soon or game over
         }
-       
-        soviets.forEach(function(soviet) {
-            soviet.update();
-        },this);
+        if(soviets) {
+            soviets.forEachAlive(function(soviet){
+                soviet.update();
+            }, this);
+        } else {
+            //create more soon or game over
+        }
     },
 
 
@@ -346,24 +352,6 @@ var playState = {
 
     },
 
-
-    createAmericans: function (group, numOfAmericans, x, y, numRows, numCols) {
-        numOfAmericans = numOfAmericans || 10;
-        
-        var width = 30;
-        var height = 30;
-        for (var i = 0; i < numOfAmericans; i++) {
-            var col = i * width % (numCols * width);
-            var row = height + i / numCols;
-            var american = americanGroup.create(col + x, row + y, "american"); // creates a new American
-            this.quadTree.insert(american.body);
-            american.name = american.key;
-        }
-        resetCoords("americans");
-        return americanGroup;
-    },
-
-
     addToGroup: function (group, num, x,y,numCols) {    
         num = num || 10;
         var width = 30;
@@ -371,7 +359,7 @@ var playState = {
         for (var i = 0; i < num; i++) {
             var col = i * width % (numCols * width);
             var row = height * Math.floor(i / numCols);
-            var soldier = group.create(col  + x, row + y); // creates a new Soviet
+            var soldier = group.create(col  + x, row + y); //uses constructor specified in group.classType
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
         }
@@ -429,12 +417,10 @@ var playState = {
         americanGroup.classType = American; //sets the type of object to create when group.create is called
         game.world.add(americanGroup);
         var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
-         sovietGroup.classType = Soviet;
-         game.world.add(sovietGroup);
-       americanGroup = this.addToGroup(americanGroup,10,1000,1000,5);
-       sovietGroup = this.addToGroup(sovietGroup, 10, 1250,1250,3);
- 
-        
+        sovietGroup.classType = Soviet;
+        game.world.add(sovietGroup);
+        americanGroup = this.addToGroup(americanGroup,10,1000,1000,5);
+        sovietGroup = this.addToGroup(sovietGroup, 10, 1250,1250,3);
         this.currentPlayer = game.world.getByName("americans").children[0]; //testing
     },
 
@@ -445,40 +431,14 @@ var playState = {
             var wasSelectedPreviously = member.selected;
             var nowSelected =  member.isSelected(this.select.rect.getLocalBounds());
  
-            if(wasSelectedPreviously && nowSelected) {//then no need to set body ring
+            if(wasSelectedPreviously && nowSelected) {//then no need to set body ring again
                 return;
             }else if(wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
                 member.removeBodyRing();
             } else if(!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
                 member.setBodyRing();
             }
-
-
-            //main game loop
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         },this);
-
-
 
         }
         //console.log("left button down");
