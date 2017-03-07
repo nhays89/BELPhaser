@@ -47,55 +47,62 @@ if(this.health <= 0) {
     this.die(); //removed from group in 7000 millis
 } else {
     this.updateNearbyEnemies();
-    
+    if(this.targetEnemy && !this.targetEnemy.isAlive) {//if we have a targetEnemy and he is dead
+        this.targetEnemy = null; //reset
+        this.ignoreEnemies = false; //reset
+    }
     if(game.input.mousePointer.rightButton.isUp) {//if user right clicked
         if(this.selected) {//and we are selected
             var targetEnemyNearClick = this.getNearbySoviet(game.input.mousePointer.position);
             if(targetEnemyNearClick) {//if user clicked near enemy
                 this.targetEnemy = targetEnemyNearClick;
-                this.ignoreEnemies = false; //kill enemies along the way if needed
+                this.ignoreEnemies = true; //don't kill enemies along the way 
             } else {//user clicked in space
-               if(this.enemiesInAttackRadius.children.length > 0) { //we are trying to retreat
+               if(this.enemiesInAttackRadius.length > 0) { //we are trying to retreat
                    this.ignoreEnemies = true;//don't attack enemies on our way out (set this back to false when we reach destination)
                } else {
                    this.ignoreEnemies = false;//keep our gaurd up
                }
                this.targetEnemy = null;//if we had a target, remove it
-               this.currentPath = game.pathfinder.findPath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(targetEnemy.body.x, targetEnemy.body.y)); //get new path to destination
+               var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(targetEnemy.body.x, targetEnemy.body.y));
+                   if(isPath) {//if there is a path
+                       step();
+                   } else {
+                       //keep doing what you were doing
+                   }
             }
         }
     }   
     
     var enemyInView;
     var enemyInAttack;
-    if(this.ignoreEnemies === false) {//we can attack at will
-        if(enemyInAttack = this.enemiesInAttackRadius.getClosestTo(this)) {//if we have an enemy in attack radius & he is really close
-            this.currentPath = null;//if we were walking somewhere, stop and shoot
-            this.shoot(this.closestEnemy);
-         } else if(enemyInView = this.enemiesInViewRadius.getClosestTo(this)) {//we have an enemy in view radius but he is far away
-            
-            if(this.targetEnemy !== enemyInView) { //if its not our current target soldier 
-                this.targetEnemy = enemyInView; //he is now
-                this.currentPath = game.pathfinder.findPath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
-                    
-            }
-            //moveTo(next on stack)
-         } else if(this.targetEnemy && this.targetEnemy.isAlive) { //we are still looking for him
-            this.currentPath = game.pathfinder.findPath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
-            //moveTo(next on stack)
-         } else if(this.currentPath.length > 0) { //go to next coordinate
-             //moveTo(next on stack)
-         } else { //were have no where to go
-             this.stand();
-         }
-     } else { //we are currently ignoreEnemies
-        if(this.currentPath == null || this.currentPath.length === 0) {//we have reached destination
-            this.ignoreEnemies = false;
-        } else { //we still have destination coords 
-            //moveTo(next on stack);
+    if(this.ignoreEnemies === false) {//we can attack when enemies are nearby
+        var newTargetEnemy;
+        if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
+              shoot(this.targetEnemy); //shoot him
+        } else {//we don't have a targetEnemy || he is outside our attack radius 
+         if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
+              this.targetEnemy = newTargetEnemy;//assign as new target enemy
+              shoot(this.targetEnemy);//shoot him
+          }else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
+             this.targetEnemy = newTargetEnemy;
+             var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
+             if(isPath) {//if there is a path
+                   step(); //chase him
+               } else {
+                   console.log("in new target enemy view radius no path");
+               }
+          } else {
+              this.step(); //keep moving or standing while on the lookout for enemies
+          }
+      }
+    } else {//we are currently ignoring enemies
+        if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
+            shoot(this.targetEnemy); 
+        } else {
+            step();
         }
      }
-
 }
     
-}
+};

@@ -53,34 +53,35 @@ Pathfinder.prototype = {
 
         var startGridX, startGridY, endGridX, endGridY;
 
-        // convert to grid from pixels
-        startGridX = Math.floor(startX / this.tileWidth);
-        startGridY = Math.floor(startY / this.tileHeight);
-        endGridX = Math.floor(endX / this.tileWidth);
-        endGridY = Math.floor(endY / this.tileHeight);
+       // convert to grid from pixels
+       startGridX = Math.floor(startX / this.tileWidth);
+       startGridY = Math.floor(startY / this.tileHeight);
+       endGridX = Math.floor(endX / this.tileWidth);
+       endGridY = Math.floor(endY / this.tileHeight);
 
-        var gridBackup = this.grid.clone();
+       var gridBackup = this.grid.clone();
+       var path2 = [];
+       var path = PF.AStarFinder.prototype.findPath.call(this, startGridX, startGridY,
+           endGridX, endGridY, gridBackup);
 
-        var path = PF.AStarFinder.prototype.findPath.call(this, startGridX, startGridY,
-            endGridX, endGridY, gridBackup);
+       // convert to pixels
+       for (var i = 0; i < path.length; i++) {
+           path2[i] = {};
+           path2[i].x = path[i][0] * this.tileWidth + (this.tileWidth / 2); // offsets to the center of the tile
+           path2[i].y = path[i][1] * this.tileHeight + (this.tileHeight / 2);
 
-        // convert to pixels
-        for (var i = 0; i < path.length; i++) {
-            path[i].x = path[i][0] * this.tileWidth + (this.tileWidth / 2); // offsets to the center of the tile
-            path[i].y = path[i][1] * this.tileHeight + (this.tileHeight / 2);
+           if (i > 0) {
+               path2[i].direction = this.getDirection(game.physics.arcade.angleBetween(
+                   { x: path[i].x, y: path[i].y },
+                   { x: path[i - 1].x, y: path[i - 1].y }
+               ));
 
-            if (i > 0) {
-                path[i].direction = this.getDirection(game.physics.arcade.angleBetween(
-                    { x: path[i].x, y: path[i].y },
-                    { x: path[i - 1].x, y: path[i - 1].y }
-                ));
-
-                path[i].distance = Phaser.Math.distance(path[i - 1].x, path[i - 1].y,
-                    path[i].x, path[i].y)
-            }
-        }
-        path.shift(); // remove the starting point (sprite already knows this)
-        return path;
+               path2[i].distance = Phaser.Math.distance(path[i - 1][0], path[i - 1][1],
+                   path[i][0], path[i][1]);
+           }
+       }
+       path2.shift(); // remove the starting point (sprite already knows this)
+       return path2;
     },
 
     isWalkable: function (x, y) {
