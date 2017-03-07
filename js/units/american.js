@@ -66,15 +66,15 @@ if(this.health <= 0) {
                 destinationPoint = new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y); //destination is the enemy soldier          
             } else {//user clicked in space
                if(this.enemiesInAttackRadius.length > 0) { //we are trying to retreat
-                   this.ignoreEnemies = true;//don't attack enemies on our way out (set this back to false when we reach destination)
+                   this.ignoreEnemies = true;//don't attack enemies on our way out (sets back to false when we reach destination)
                } else {
                    this.ignoreEnemies = false;//keep our gaurd up
                }
                this.targetEnemy = null;//if we had a target, remove it
                destinationPoint = new Phaser.Point(game.input.mousePointer.position); //destination is the click
             }
-            var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(destinationPoint.x, destinationPoint.y)); //get path
-               if(!isPath) {//if there is a path
+            var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(destinationPoint.x, destinationPoint.y)); // sets currentPath implictly
+               if(!isPath) {//if there is not a path
                    console.log("did not generate path on click in american --");
                } 
         }
@@ -83,19 +83,21 @@ if(this.health <= 0) {
     if(this.ignoreEnemies === false) {//we can attack when enemies are nearby
         var newTargetEnemy;
         if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
+               
               shoot(this.targetEnemy); //shoot him
         } else {//we don't have a targetEnemy || he is outside our attack radius 
          if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
               this.targetEnemy = newTargetEnemy;//assign as new target enemy
+              
               shoot(this.targetEnemy);//shoot him
           } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
              this.targetEnemy = newTargetEnemy;
-             var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
-             if(isPath) {//if there is a path
+             var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y)); // sets currentPath implictly
+             if(isPath) {//if there is a path -
                    step(); //chase him
                } else {
-                   console.log("in new target enemy view radius no path in american");
-               }
+                   console.log("in new target enemy view radius no path in american ignore enemeies is false");
+               }f
           } else {
               this.step(); //keep moving or standing while on the lookout for enemies
           }

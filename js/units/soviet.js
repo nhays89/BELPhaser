@@ -65,30 +65,29 @@ if(this.health <= 0) {
     if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
           shoot(this.targetEnemy); //shoot him
     } else {//we don't have a targetEnemy || he is outside our attack radius 
-     if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
-          this.targetEnemy = newTargetEnemy;//assign as new target enemy
-          shoot(this.targetEnemy);//shoot him
-      }else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
-         this.targetEnemy = newTargetEnemy;
-         var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
-         if(isPath) {//if there is a path
-               step(); //chase him
-           } else {
-               console.log("in new target enemy view radius in soviet --- no path");
-           }
-      } else {
-          if(this.currentPath.length === 0) {
-              var rndCoord = getRndCoord();
-              var myCoord = new Phaser.Point(this.body.x, this.body.y);
-              var isPath = this.generatePath(myCoord, rndCoord);
-              if(isPath) {
-                  step();
-              } else {
-                  console.log("in soviet trying to generate path failed");
+          if (newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
+              this.targetEnemy = newTargetEnemy;//assign as new target enemy
+              shoot(this.targetEnemy);//shoot him
+          } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
+             this.targetEnemy = newTargetEnemy;
+             var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
+             if(!isPath) {//if there is a path
+                   console.log("in new target enemy view radius in soviet --- no path");
+               }
+               step();
+          } else {
+              if(this.currentPath.length === 0) {
+                  var rndCoord = getRndCoord();
+                  var myCoord = new Phaser.Point(this.body.x, this.body.y);
+                  var isPath = this.generatePath(myCoord, rndCoord);
+                  if(isPath) {
+                      step();
+                  } else {
+                      console.log("in soviet trying to generate path failed");
+                  }
               }
-          }
-          this.step(); //keep moving or standing while on the lookout for enemies
-      }
+              this.step(); //keep moving or standing while on the lookout for enemies
+        }
   }
 
 }

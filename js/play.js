@@ -33,7 +33,7 @@ var playState = {
         this.updateSelectedGroup(game.world.getByName("americans"));
         this.updateGameObjects();
         
-
+         //ALL DEBUG BELOW
          if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
             if (this.pathDebug.on) {
@@ -469,12 +469,12 @@ var playState = {
 
     onRightButtonDown: function (pointer, mouseEvent) {
         
-        this.americansGroupd.forEach(function (soldier) {
-            if (soldier.selected) {
-                soldier.cancelMovement();
-                soldier.moveTo(pointer.event.x + game.camera.x, pointer.event.y + game.camera.y);
-            }
-        });
+//         .forEach(function (soldier) {
+//             if (soldier.selected) {
+//                 soldier.cancelMovement();
+//                 soldier.moveTo(pointer.event.x + game.camera.x, pointer.event.y + game.camera.y);
+//             }
+//         });
         // console.log("on right button down");
         // console.log(pointer);
         // console.log(mouseEvent);
