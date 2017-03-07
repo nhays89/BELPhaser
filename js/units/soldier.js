@@ -12,10 +12,11 @@ function Soldier(game, x, y, key) {
     this.enemiesInViewRadius = new Phaser.Group(game, null, "enemiesInViewRadius");
     this.enemiesInAttackRadius = new Phaser.Group(game, null, "enemiesInAttackRadius");
     this.targetEnemy = null;
-    this.currentCoords = {};
-    this.destinationCoords = {};
+    this.currentCoord = {};
+    this.anchorCoord = {};
+    this.destinationCoord = {};
     this.closestEnemy = null;
-    this.ignoreEnemies = false;
+  
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;
@@ -181,51 +182,58 @@ Soldier.prototype.stand = function () {
 */
 Soldier.prototype.generatePath = function(targetPoint, destinationPoint) {             
         var path = game.pathfinder.findPath(targetPoint.x, targetPoint.y, destinationPoint.x, destinationPoint.y); //get new path to destination
-           if(path.length> 0) {
+           if(path.length > 0) {
                this.currentPath = path;
-               this.currentCoords = this.currentPath.shift();
+               this.currentCoord = this.currentPath.shift();//get my current xy
+               this.anchorCoord = currentCoord;//set the anchor point to my xy
+               return true;
+           } else {
+               this.stand();
+               return false;
            } 
+     
 };
 
 Soldier.prototype.step = function () {
         var self = this;
-        this.destinationCoords = this.currentPath[0]; //destinationCoords
-        if(this.destinationCoords) {
-            
-        } else {
-            stand();
-        }
-            if (Phaser.Math.distance(this.currentCoords.x, this.currentCoords.y, this.destinationCoords.x, this.destinationCoords.y) > this.currentCoords.distance) {
-                 this.currentCoords = this.currentPath.shift();
-
+        var nextCoord = this.currentPath[0]; //destinationCoord
+        var currentPoint 
+        if(this.destinationCoord && this.anchorCoord) {//if we have an anchorCoord and still have a destinationCoord
+            if (Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, this.currentCoord.x, this.currentCoord.y) >= this.anchorCoord.distance) { //if we have arrived at destination coord or gone slightly past
+             this.anchorCoord = this.currentPath.shift();//set our new anchorCoord = to the next coord
             }
-            this.animations.play(this.key + '-run-' + this.currentCoords.direction);
-             if (this.currentCoords.direction === 'north') {
+            this.animations.play(this.key + '-run-' + this.anchorCoord.direction);
+             if (this.anchorCoord.direction === 'north') {
                 this.direction = 'north';
                 this.moveNorth(pixelsPerSecond);
-            } else if (this.currentCoords.direction === 'northeast') {
+            } else if (this.anchorCoord.direction === 'northeast') {
                 this.direction = 'northeast';
                 this.moveNorthEast(pixelsPerSecond);
-            } else if (this.currentCoords.direction === 'east') {
+            } else if (this.anchorCoord.direction === 'east') {
                 this.direction = 'east';
                 this.moveEast(pixelsPerSecond);
-            } else if (this.currentCoords.direction === 'southeast') {
+            } else if (this.anchorCoord.direction === 'southeast') {
                 this.direction = 'southeast';
                 this.moveSouthEast(pixelsPerSecond);
-            } else if (this.currentCoords.direction === 'south') {
+            } else if (this.anchorCoord.direction === 'south') {
                 this.direction = 'south';
                 this.moveSouth(pixelsPerSecond);
-            } else if (this.currentCoords.direction === 'southwest') {
+            } else if (this.anchorCoord.direction === 'southwest') {
                 this.direction = 'southwest';
                 this.moveSouthWest(pixelsPerSecond);
-            } else if (this.currentCoords.direction === 'west') {
+            } else if (this.anchorCoord.direction === 'west') {
                 this.direction = 'west';
                 this.moveWest(pixelsPerSecond);
             } else {
                 this.direction = 'northwest';
                 this.moveNorthWest(pixelsPerSecond);
             }
+        } else {
+            stand();
         }
+        
+        
+        
 
         
 
@@ -237,9 +245,9 @@ Soldier.prototype.step = function () {
         //             self.moveTo(); // moveTo without coords, will take from the currentPath
         //         }
         // }, this);
-        // this.body.moveTo(duration, this.currentCoords.distance);
+        // this.body.moveTo(duration, this.currentCoord.distance);
 
-        // this.tween = game.add.tween(this).to({ x: this.currentCoords.x, y: this.currentCoords.y },
+        // this.tween = game.add.tween(this).to({ x: this.currentCoord.x, y: this.currentCoord.y },
         //                 duration, Phaser.Easing.Linear.None, true);
         //
         // this.tween.onComplete.add(function () {
@@ -259,9 +267,9 @@ Soldier.prototype.step = function () {
 
             for (var i = 0; i < this.currentPath.length; i++) {
                 if (i === 0) {
-                    this.pathDebug.moveTo(this.body.x, this.body.y);
+                    //this.pathDebug.moveTo(this.body.x, this.body.y);
                 } else {
-                    this.pathDebug.lineTo(this.currentPath[i].x, this.currentPath[i].y);
+                   // this.pathDebug.lineTo(this.currentPath[i].x, this.currentPath[i].y);
                 }
             }
         }
