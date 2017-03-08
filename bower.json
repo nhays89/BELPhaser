@@ -1,0 +1,25 @@
+{
+  "name": "behind-enemy-lines",
+  "description": "RTS",
+  "main": "game.js",
+  "authors": [
+    "Ethan Rowell <ethan.rowell11@gmail.com>"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "Phaser",
+    "RTS",
+    "strategy"
+  ],
+  "homepage": "https://github.com/nhays89/BELPhaser",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pathfinding": "^0.4.18"
+  }
+}
