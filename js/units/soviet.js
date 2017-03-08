@@ -70,25 +70,23 @@ if(this.health <= 0) {
               shoot(this.targetEnemy);//shoot him
           } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
              this.targetEnemy = newTargetEnemy;
-             var isPath = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
-             if(!isPath) {//if there is a path
-                   console.log("in new target enemy view radius in soviet --- no path");
-               }
-               step();
+             var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
+             if(path.length > 0) {//if there is a path -
+                this.addPath(path);
+               } 
+               this.step();
           } else {
               if(this.currentPath.length === 0) {
-                  var rndCoord = getRndCoord();
+                  var rndCoord = this.generateRandCoord();
                   var myCoord = new Phaser.Point(this.body.x, this.body.y);
-                  var isPath = this.generatePath(myCoord, rndCoord);
-                  if(isPath) {
-                      step();
-                  } else {
-                      console.log("in soviet trying to generate path failed");
+                  var path = this.generatePath(myCoord, rndCoord);
+                  if(path.length > 0) {//if there is a path -
+                       this.addPath(path);
                   }
               }
               this.step(); //keep moving or standing while on the lookout for enemies
         }
-  }
+   }
 
 }
 

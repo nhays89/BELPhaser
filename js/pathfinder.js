@@ -69,19 +69,21 @@ Pathfinder.prototype = {
            path2[i] = {};
            path2[i].x = path[i][0] * this.tileWidth + (this.tileWidth / 2); // offsets to the center of the tile
            path2[i].y = path[i][1] * this.tileHeight + (this.tileHeight / 2);
-
-           if (i > 0) {
-               path2[i].direction = this.getDirection(game.physics.arcade.angleBetween(
-                   { x: path[i].x, y: path[i].y },
-                   { x: path[i - 1].x, y: path[i - 1].y }
-               ));
-
-               path2[i].distance = Phaser.Math.distance(path[i - 1][0], path[i - 1][1],
-                   path[i][0], path[i][1]);
-           }
        }
-       path2.shift(); // remove the starting point (sprite already knows this)
-       return path2;
+       for (var i = 0; i < path.length -1; i++) {
+           path2[i].direction = this.getDirection(game.physics.arcade.angleBetween(
+               { x: path2[i].x, y: path2[i].y },
+               { x: path2[i + 1].x, y: path2[i + 1].y }
+           ));
+
+           path2[i].distance = Phaser.Math.distance(path2[i].x, path2[i].y,
+               path2[i + 1].x, path2[i + 1].y);
+       }
+       // path2.shift(); // remove the starting point (sprite already knows this)
+       if(path2.length === 0) {
+           console.log("clicked on non walkable tile");
+       }
+       return path2
     },
 
     isWalkable: function (x, y) {
@@ -93,23 +95,22 @@ Pathfinder.prototype = {
 
     getDirection: function(radians) {
         var degrees = Phaser.Math.radToDeg(radians);
-
         if (degrees >= -22.5 && degrees < 22.5) {
-            return 'west';
-        } else if (degrees >= 22.5 && degrees < 67.5) {
-            return 'northwest';
-        } else if (degrees >= 67.5 && degrees < 112.5) {
-            return 'north';
-        } else if (degrees >= 112.5 && degrees < 157.5) {
-            return 'northeast';
-        } else if (degrees >= -157.5 && degrees < -112.5) {
-            return 'southeast';
-        } else if (degrees >= -112.5 && degrees < -67.5) {
-            return 'south';
-        } else if (degrees >= -67.5 && degrees < -22.5) {
-            return 'southwest';
-        } else {
             return 'east';
+        } else if (degrees >= 22.5 && degrees < 67.5) {
+            return 'southeast';
+        } else if (degrees >= 67.5 && degrees < 112.5) {
+            return 'south';
+        } else if (degrees >= 112.5 && degrees < 157.5) {
+            return 'southwest';
+        } else if (degrees >= -157.5 && degrees < -112.5) {
+            return 'northwest';
+        } else if (degrees >= -112.5 && degrees < -67.5) {
+            return 'north';
+        } else if (degrees >= -67.5 && degrees < -22.5) {
+            return 'northeast';
+        } else {
+            return 'west';
         }
     },
 

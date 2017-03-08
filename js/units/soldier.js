@@ -26,7 +26,7 @@ function Soldier(game, x, y, key) {
     this.damage = 20;
     this.direction = 'south';
     this.currentSpeed;
-    this.pixelsPerSecond;
+    this.pixelsPerSecond = 90;
     this.cooldowns = {
         'weapon': false
     };
@@ -57,7 +57,7 @@ Soldier.prototype.shoot = function (enemy) {
     //     this.bulletSplash = game.add.sprite(0, 0, 'bulletSplash');
     //     this.bulletSplash.animations.add('bulletSplash');
     // }
-    var radians = game.physics.arcade.angleBetween(enemy, this);
+    var radians = game.physics.arcade.angleBetween(this, enemy);
     this.direction = this.getDirection(radians);
 
     if (!this.cooldowns['weapon']) {
@@ -108,21 +108,21 @@ Soldier.prototype.getDirection = function(radians) {
     var degrees = Phaser.Math.radToDeg(radians);
 
     if (degrees >= -22.5 && degrees < 22.5) {
-        return 'west';
-    } else if (degrees >= 22.5 && degrees < 67.5) {
-        return 'northwest';
-    } else if (degrees >= 67.5 && degrees < 112.5) {
-        return 'north';
-    } else if (degrees >= 112.5 && degrees < 157.5) {
-        return 'northeast';
-    } else if (degrees >= -157.5 && degrees < -112.5) {
-        return 'southeast';
-    } else if (degrees >= -112.5 && degrees < -67.5) {
-        return 'south';
-    } else if (degrees >= -67.5 && degrees < -22.5) {
-        return 'southwest';
-    } else {
         return 'east';
+    } else if (degrees >= 22.5 && degrees < 67.5) {
+        return 'southeast';
+    } else if (degrees >= 67.5 && degrees < 112.5) {
+        return 'south';
+    } else if (degrees >= 112.5 && degrees < 157.5) {
+        return 'southwest';
+    } else if (degrees >= -157.5 && degrees < -112.5) {
+        return 'northwest';
+    } else if (degrees >= -112.5 && degrees < -67.5) {
+        return 'north';
+    } else if (degrees >= -67.5 && degrees < -22.5) {
+        return 'northeast';
+    } else {
+        return 'west';
     }
 };
 
@@ -148,26 +148,46 @@ Soldier.prototype.updateNearbyEnemies = function () {
     for (var i = 0; i < found.length; i++) {
 
         // game.physics.arcade.collide(this.body, found[i].body);
+        if(found[i].sprite) { //if a body with a sprite
 
-        // if enemy
-        if (found[i].alive && (this instanceof American && found[i] instanceof Soviet ||
-            this instanceof Soviet && found[i] instanceof American)) {
-            distance = Phaser.Math.distance(this.x, this.y,
-                found[i].x, found[i].y);
+        
+            // if enemy
+            if (found[i].sprite.alive && (this instanceof American && found[i].sprite instanceof Soviet ||
+                this instanceof Soviet && found[i].sprite instanceof American)) {
+                distance = Phaser.Math.distance(this.x, this.y,
+                    found[i].x, found[i].y);
 
-            if (distance <= this.attackRadius) {
-                this.enemiesInAttackRadius.add(found[i]);
-//                 if (!this.cooldowns['weapon']) {
-//                     this.shoot(found[i]);
-//                 }
-            } else if (distance <= this.viewRadius) {
-                // walk closer
-                // this.moveTo(found[i].sprite.x, found[i].sprite.y);
-                this.enemiesInViewRadius.push(found[i]);
+                if (distance <= this.attackRadius) {
+                    this.enemiesInAttackRadius.add(found[i].sprite);
+    //                 if (!this.cooldowns['weapon']) {
+    //                     this.shoot(found[i]);
+    //                 }
+                } else if (distance <= this.viewRadius) {
+                    // walk closer
+                    // this.moveTo(found[i].sprite.x, found[i].sprite.y);
+                    this.enemiesInViewRadius.add(found[i].sprite);
+                }
             }
         }
     }
 };
+
+
+Soldier.prototype.generateRandCoord = function () {
+    
+   while(true) {
+        var randx = game.rnd.integerInRange(0, 3200); 
+        var randy = game.rnd.integerInRange(0,3200);
+        var valid = pathfinder.iswalkable(randx,randy);
+        console.log("generating random coord, randx = " + randx + " rand y =" + randy);
+        if(valid) {
+            return new Phaser.Point(randx,randy);
+        } 
+   }
+   
+
+};
+
 
 
 Soldier.prototype.stand = function () {
@@ -180,58 +200,62 @@ Soldier.prototype.stand = function () {
 @param Phaser.Point(x,y)
 
 */
-Soldier.prototype.generatePath = function(targetPoint, destinationPoint) {             
-        var path = game.pathfinder.findPath(targetPoint.x, targetPoint.y, destinationPoint.x, destinationPoint.y); //get new path to destination
-           if(path.length > 0) {
-               this.currentPath = path;
-               this.currentCoord = this.currentPath.shift();//get my current xy
-               this.anchorCoord = currentCoord;//set the anchor point to my xy
-               return true;
-           } else {
-               this.stand();
-               return false;
-           } 
+Soldier.prototype.addPath = function(path) {             
+       this.currentPath = path;
+       this.currentCoord = this.currentPath.shift();//get my current xy
+       this.anchorCoord = this.currentCoord;//set the anchor point to my xy
+       //this.body.x = this.anchorCoord.x;
+     //  this.body.y = this.anchorCoord.y;
      
 };
+
+
+
+Soldier.prototype.generatePath = function(targetPoint, destinationPoint) {
+    return game.pathfinder.findPath(targetPoint.x, targetPoint.y, destinationPoint.x, destinationPoint.y); //get new path to destination
+}
 
 Soldier.prototype.step = function () {
         var self = this;
         var nextCoord = this.currentPath[0]; //destinationCoord
-        var currentPoint 
-        if(this.destinationCoord && this.anchorCoord) {//if we have an anchorCoord and still have a destinationCoord
-            if (Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, this.currentCoord.x, this.currentCoord.y) >= this.anchorCoord.distance) { //if we have arrived at destination coord or gone slightly past
+      
+       
+        if(nextCoord && this.anchorCoord) {//if we have an anchorCoord and still have a destinationCoord
+            var currentCoord = {x: this.body.x, y: this.body.y};
+            console.log(Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y));
+            if ((Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y) >= this.anchorCoord.distance)) { //if we have arrived at destination coord or gone slightly past
              this.anchorCoord = this.currentPath.shift();//set our new anchorCoord = to the next coord
             }
             this.animations.play(this.key + '-run-' + this.anchorCoord.direction);
              if (this.anchorCoord.direction === 'north') {
                 this.direction = 'north';
-                this.moveNorth(pixelsPerSecond);
+                this.moveNorth(this.pixelsPerSecond);
             } else if (this.anchorCoord.direction === 'northeast') {
                 this.direction = 'northeast';
-                this.moveNorthEast(pixelsPerSecond);
+                this.moveNorthEast(this.pixelsPerSecond);
             } else if (this.anchorCoord.direction === 'east') {
                 this.direction = 'east';
-                this.moveEast(pixelsPerSecond);
+                this.moveEast(this.pixelsPerSecond);
             } else if (this.anchorCoord.direction === 'southeast') {
                 this.direction = 'southeast';
-                this.moveSouthEast(pixelsPerSecond);
+                this.moveSouthEast(this.pixelsPerSecond);
             } else if (this.anchorCoord.direction === 'south') {
                 this.direction = 'south';
-                this.moveSouth(pixelsPerSecond);
+                this.moveSouth(this.pixelsPerSecond);
             } else if (this.anchorCoord.direction === 'southwest') {
                 this.direction = 'southwest';
-                this.moveSouthWest(pixelsPerSecond);
+                this.moveSouthWest(this.pixelsPerSecond);
             } else if (this.anchorCoord.direction === 'west') {
                 this.direction = 'west';
-                this.moveWest(pixelsPerSecond);
+                this.moveWest(this.pixelsPerSecond);
             } else {
                 this.direction = 'northwest';
-                this.moveNorthWest(pixelsPerSecond);
+                this.moveNorthWest(this.pixelsPerSecond);
             }
         } else {
-            stand();
+            this.stand();
         }
-        
+
         
         
 

@@ -12,10 +12,10 @@ var playState = {
     },
 
     create: function () {
-        this.createMap();
-        this.createGameObjects();
-        this.setupUI();
-        this.setupInput();
+       this.createMap();
+       this.createGameObjects();
+       this.setupUI();
+       this.setupInput();
 
         this.pathDebug = game.add.graphics(0, 0);
         this.pathDebug.coords = [5, 5, 30, 30];
@@ -34,57 +34,57 @@ var playState = {
         this.updateGameObjects();
         
          //ALL DEBUG BELOW
-         if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+//          if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
 
-            if (this.pathDebug.on) {
+//             if (this.pathDebug.on) {
 
-                this.pathDebug.clear();
+//                 this.pathDebug.clear();
 
-                // this.pathDebug.beginFill(0xFF0000);
-                this.pathDebug.lineStyle(5, 0xffd900, 1);
+//                 // this.pathDebug.beginFill(0xFF0000);
+//                 this.pathDebug.lineStyle(5, 0xffd900, 1);
 
-                var path = game.pathfinder.findPath(this.pathDebug.coords[0] * 33,
-                    this.pathDebug.coords[1] * 33, this.pathDebug.coords[2] * 33,
-                    this.pathDebug.coords[3] * 33);
-                console.log(path);
+//                 var path = game.pathfinder.findPath(this.pathDebug.coords[0] * 33,
+//                     this.pathDebug.coords[1] * 33, this.pathDebug.coords[2] * 33,
+//                     this.pathDebug.coords[3] * 33);
+//                 console.log(path);
 
-                for (var i = 0; i < path.length; i++) {
-                    if (i === 0) {
-                        this.pathDebug.moveTo(path[i].x, path[i].y);
-                    } else {
-                        this.pathDebug.lineTo(path[i].x, path[i].y);
-                    }
-                }
-            }
-        }
+//                 for (var i = 0; i < path.length; i++) {
+//                     if (i === 0) {
+//                         this.pathDebug.moveTo(path[i].x, path[i].y);
+//                     } else {
+//                         this.pathDebug.lineTo(path[i].x, path[i].y);
+//                     }
+//                 }
+//             }
+//         }
 
         // game.physics.arcade.collide(this.americansGroup, this.collisionLayer);
 
         // this.americansGroup.sort('y', Phaser.Group.SORT_ASCENDING);
 
-        if (this.currentPlayer) { //debug
-            if (this.cursors.left.isDown) {
-                this.currentPlayer.direction = "west";
-                this.currentPlayer.body.moveLeft(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.right.isDown) { // Move to the right
-                this.currentPlayer.direction = "east";
-                this.currentPlayer.body.moveRight(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            }
+//         if (this.currentPlayer) { //debug
+//             if (this.cursors.left.isDown) {
+//                 this.currentPlayer.direction = "west";
+//                 this.currentPlayer.body.moveLeft(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction, 60);
+//             } else if (this.cursors.right.isDown) { // Move to the right
+//                 this.currentPlayer.direction = "east";
+//                 this.currentPlayer.body.moveRight(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction, 60);
+//             }
 
-            if (this.cursors.up.isDown) { //move up
-                this.currentPlayer.direction = "north";
-                this.currentPlayer.body.moveUp(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else if (this.cursors.down.isDown) { // move dowm
-                this.currentPlayer.direction = "south";
-                this.currentPlayer.body.moveDown(200);
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction);
-            } else {
-                this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction);
-            }
-        }
+//             if (this.cursors.up.isDown) { //move up
+//                 this.currentPlayer.direction = "north";
+//                 this.currentPlayer.body.moveUp(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction, 60);
+//             } else if (this.cursors.down.isDown) { // move dowm
+//                 this.currentPlayer.direction = "south";
+//                 this.currentPlayer.body.moveDown(200);
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-run-' + this.currentPlayer.direction, 60);
+//             } else {
+//                 this.currentPlayer.animations.play(this.currentPlayer.name + '-stand-' + this.currentPlayer.direction, 60);
+//             }
+//         }
     },
     setupUI: function () {
         var cameraViewPort = game.camera.view;
@@ -160,7 +160,7 @@ var playState = {
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
-
+        this.rightButtonReleased;
     },
 
     updateSelectionRect: function () {
@@ -223,15 +223,18 @@ var playState = {
      var triggerDistance = 100;
      var closestSovietInRange = null;
      var closestDistance = Number.MAX_SAFE_INTEGER;
-         game.world.getByName("soviets").forEachAlive(function(soviet) { 
+     var soviets = game.world.getByName("soviets");
+     if(soviets) {
+        soviets.forEachAlive(function(soviet) { 
          var distance = Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y);
-        if ( Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y) <= triggerDistance) { 
+            if ( Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y) <= triggerDistance) { 
              if(distance < closestDistance) {
                  closestDistance = distance;
                  closestSovietInRange = soviet;
              }
-        }
-      }, this);
+            }
+      }, this); 
+     } 
       return closestSovietInRange;
       },
 
@@ -327,13 +330,14 @@ var playState = {
         } else {
             //create more soon or game over
         }
-        if(soviets) {
-            soviets.forEachAlive(function(soviet){
-                soviet.update();
-            }, this);
-        } else {
-            //create more soon or game over
-        }
+//         if(soviets) {
+//             soviets.forEachAlive(function(soviet){
+//                 soviet.update();
+//             }, this);
+//         } else {
+//             //create more soon or game over
+//         }
+        game.input.mousePointer.rightButton.reset(); //resets to right button up after every update
     },
 
 
@@ -416,12 +420,12 @@ var playState = {
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
         game.world.add(americanGroup);
-        var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
-        sovietGroup.classType = Soviet;
-        game.world.add(sovietGroup);
-        americanGroup = this.addToGroup(americanGroup,10,1000,1000,5);
-        sovietGroup = this.addToGroup(sovietGroup, 10, 1250,1250,3);
-        this.currentPlayer = game.world.getByName("americans").children[0]; //testing
+       // var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
+       // sovietGroup.classType = Soviet;
+      //  game.world.add(sovietGroup);
+        americanGroup = this.addToGroup(americanGroup,3,1000,1000,1);
+       // sovietGroup = this.addToGroup(sovietGroup, 10, 1200,1000,3);
+        //this.currentPlayer = game.world.getByName("americans").children[0]; //testing
     },
 
     //@param - Phaser.Group - each member of the group must have a physics body
