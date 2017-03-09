@@ -84,7 +84,7 @@ if(this.health <= 0) {
                if(path.length > 0) {//if there is a path -
                 this.addPath(path);
                } else {
-                console.log("in rightButton is down user clicked in space");
+                //console.log("in rightButton is down user clicked in space");
                }
         }
     }   
