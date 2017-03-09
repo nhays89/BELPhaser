@@ -72,7 +72,7 @@ if(this.health <= 0) {
                 this.ignoreEnemies = true; //don't kill enemies along the way 
                 destinationPoint = new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y); //destination is the enemy soldier          
             } else {//user clicked in space
-               if(this.enemiesInAttackRadius.length > 0) { //we are trying to retreat
+               if(this.enemiesInAttackRadius.length > 0 || this.enemiesInViewRadius.length > 0) { //we are trying to retreat
                    this.ignoreEnemies = true;//don't attack enemies on our way out (sets back to false when we reach destination)
                } else {
                    this.ignoreEnemies = false;//keep our gaurd up

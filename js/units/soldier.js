@@ -15,7 +15,6 @@ function Soldier(game, x, y, key) {
     this.currentCoord = {};
     this.anchorCoord = {};
     this.destinationCoord = {};
-    this.closestEnemy = null;
   
     this.type = "Soldier";
     this.alive = true;
@@ -61,7 +60,7 @@ Soldier.prototype.shoot = function (enemy) {
     this.direction = this.getDirection(radians);
 
     if (!this.cooldowns['weapon']) {
-        this.shootAnimation = this.animations.play(this.faction + '-fire-' + this.direction);
+        this.shootAnimation = this.animations.play(this.key + '-fire-' + this.direction);
         //enemy.bulletSplash.animations.play('bulletSplash');
 
         this.cooldowns['weapon'] = true;
@@ -70,7 +69,7 @@ Soldier.prototype.shoot = function (enemy) {
         }, this);
 
         this.shootAnimation.onComplete.add(function () {
-            this.animations.play(this.faction + '-stand-' + this.direction);
+            this.animations.play(this.key + '-stand-' + this.direction);
         }, this);
 
         enemy.health -= this.damage;
@@ -98,7 +97,7 @@ Soldier.prototype.die = function () {
         case "northeast": deathDir = "east"; break;
     }
 
-    this.animations.play(this.faction + '-die-' + deathDir);
+    this.animations.play(this.key + '-die-' + deathDir);
     game.time.events.add(7000, function () {  //remove from world in 7000 millis
         this.destroy();
     }, this);
@@ -175,10 +174,10 @@ Soldier.prototype.updateNearbyEnemies = function () {
 
 Soldier.prototype.generateRandCoord = function () {
     
-   while(true) {
-        var randx = game.rnd.integerInRange(0, 3200); 
-        var randy = game.rnd.integerInRange(0,3200);
-        var valid = pathfinder.iswalkable(randx,randy);
+   for(var i = 0; i < 10; i++) {
+        var randx = game.rnd.integerInRange(0, 3200); //get coords off camera
+        var randy = game.rnd.integerInRange(0,3200); //get coords off camera
+        var valid = game.pathfinder.isWalkable(randx,randy);
         console.log("generating random coord, randx = " + randx + " rand y =" + randy);
         if(valid) {
             return new Phaser.Point(randx,randy);
@@ -193,7 +192,7 @@ Soldier.prototype.generateRandCoord = function () {
 Soldier.prototype.stand = function () {
     this.currentPath = [];
     this.animations.stop();
-    this.animations.play(this.key + '-stand-' + this.direction);
+   this.animations.play(this.key + '-stand-' + this.direction);
 };
 
 /*
@@ -224,7 +223,11 @@ Soldier.prototype.step = function () {
             var currentCoord = {x: this.body.x, y: this.body.y};
             //console.log(Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y));
             if ((Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y) >= this.anchorCoord.distance)) { //if we have arrived at destination coord or gone slightly past
+             var currentDirection = this.anchorCoord.direction;
              this.anchorCoord = this.currentPath.shift();//set our new anchorCoord = to the next coord
+             if(!this.anchorCoord.direction) {//reached final destinationCoord 
+                 this.anchorCoord.direction = currentDirection;
+             }
             }
             this.animations.play(this.key + '-run-' + this.anchorCoord.direction);
              if (this.anchorCoord.direction === 'north') {
@@ -256,47 +259,6 @@ Soldier.prototype.step = function () {
             this.stand();
         }
 
-        
-        
-
-        
-
-        // this.body.onMoveComplete.addOnce(function () {
-        //     this.isMoving = false;
-        //         if (self.currentPath.length <= 0) {
-        //             self.cancelMovement();
-        //         } else {
-        //             self.moveTo(); // moveTo without coords, will take from the currentPath
-        //         }
-        // }, this);
-        // this.body.moveTo(duration, this.currentCoord.distance);
-
-        // this.tween = game.add.tween(this).to({ x: this.currentCoord.x, y: this.currentCoord.y },
-        //                 duration, Phaser.Easing.Linear.None, true);
-        //
-        // this.tween.onComplete.add(function () {
-        //     this.isMoving = false;
-        //     if (self.currentPath.length <= 0) {
-        //         self.cancelMovement();
-        //     } else {
-        //         self.moveTo(); // moveTo without coords, will take from the currentPath
-        //     }
-        // }, this);
-
-        // for displaying the soldier's path.
-        if (this.pathDebug.on) {
-            this.pathDebug.clear();
-
-            this.pathDebug.lineStyle(5, game.rnd.integer(), 1);
-
-            for (var i = 0; i < this.currentPath.length; i++) {
-                if (i === 0) {
-                    //this.pathDebug.moveTo(this.body.x, this.body.y);
-                } else {
-                   // this.pathDebug.lineTo(this.currentPath[i].x, this.currentPath[i].y);
-                }
-            }
-        }
     
 };
 
@@ -328,3 +290,45 @@ Soldier.prototype.moveNorthWest = function (distance) {
     this.body.moveLeft(distance);
 
 };
+
+        
+        
+
+        
+
+        // this.body.onMoveComplete.addOnce(function () {
+        //     this.isMoving = false;
+        //         if (self.currentPath.length <= 0) {
+        //             self.cancelMovement();
+        //         } else {
+        //             self.moveTo(); // moveTo without coords, will take from the currentPath
+        //         }
+        // }, this);
+        // this.body.moveTo(duration, this.currentCoord.distance);
+
+        // this.tween = game.add.tween(this).to({ x: this.currentCoord.x, y: this.currentCoord.y },
+        //                 duration, Phaser.Easing.Linear.None, true);
+        //
+        // this.tween.onComplete.add(function () {
+        //     this.isMoving = false;
+        //     if (self.currentPath.length <= 0) {
+        //         self.cancelMovement();
+        //     } else {
+        //         self.moveTo(); // moveTo without coords, will take from the currentPath
+        //     }
+        // }, this);
+
+        // for displaying the soldier's path.
+//         if (this.pathDebug.on) {
+//             this.pathDebug.clear();
+
+//             this.pathDebug.lineStyle(5, game.rnd.integer(), 1);
+
+//             for (var i = 0; i < this.currentPath.length; i++) {
+//                 if (i === 0) {
+//                     //this.pathDebug.moveTo(this.body.x, this.body.y);
+//                 } else {
+//                    // this.pathDebug.lineTo(this.currentPath[i].x, this.currentPath[i].y);
+//                 }
+//             }
+//         }
