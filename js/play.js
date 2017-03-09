@@ -297,6 +297,7 @@ var playState = {
         }
         if(soviets) {
             soviets.forEachAlive(function(soviet){
+                console.log(soviet.alive);
                 soviet.update();
             }, this);
         } else {
@@ -308,7 +309,7 @@ var playState = {
 
 //     addToGroup(group, )
 
-    
+    //used to offset coords for groups (not needed atm)    
     resetCoords: function(groupName) {
 
         game.world.getByName(groupName).children.forEach(function(child) {
@@ -386,11 +387,11 @@ var playState = {
 
     createSpawnPoints: function () {
         this.sovietSpawnPoints = [
-        new Phaser.Rectangle(16,16,40,40),
+        new Phaser.Rectangle(48,48,40,40),
         new Phaser.Rectangle(3184, 2608,40,40),
         new Phaser.Rectangle(1456, 3184, 40,40),
-        new Phaser.Rectangle(16,2608, 40,40),
-        new Phaser.Rectangle(16,624,40,40),
+        new Phaser.Rectangle(48,2608, 40,40),
+        new Phaser.Rectangle(48,624,40,40),
         new Phaser.Rectangle(3152, 48, 40, 40),
         new Phaser.Rectangle(2896, 48,40,40),
         new Phaser.Rectangle(3152,1584, 40,40),
@@ -434,7 +435,7 @@ var playState = {
     },
 
     createGameObjects: function () {
-
+        
        
         this.clockTicks = 0;
         this.spawnInterval = 10; //every so many seconds spawn soldiers

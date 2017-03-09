@@ -15,7 +15,7 @@ function Soldier(game, x, y, key) {
     this.currentCoord = {};
     this.anchorCoord = {};
     this.destinationCoord = {};
-  
+   
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;
@@ -25,11 +25,15 @@ function Soldier(game, x, y, key) {
     this.damage = 20;
     this.direction = 'south';
     this.currentSpeed;
-    this.pixelsPerSecond = 90;
+    this.pixelsPerSecond = 150;
     this.cooldowns = {
         'weapon': false
     };
-
+    this.events.onKilled.add(function(soldier){
+                soldier.selected = false;
+                soldier.alive = false;
+                soldier.die(); 
+            }, this);
     // this.bulletSplash = game.add.sprite(0, 0, 'bulletSplash');
     // this.bulletSplash.anchor.setTo(0.5, 0.5);
     // this.sprite.addChild(this.bulletSplash);
@@ -139,9 +143,12 @@ Soldier.prototype.updateNearbyEnemies = function () {
 
     // for debugging view distance
     playState.viewCircle.setTo(this.x, this.y, viewDiameter);
-    this.enemiesInViewRadius.removeChildren();
-    this.enemiesInAttackRadius.removeChildren();
+    this.enemiesInViewRadius.removeAll();
+    this.enemiesInAttackRadius.removeAll();
     var found = playState.quadTree.retrieve(playState.viewSprite);
+//     if(this instanceof American) {
+//         found = game.world.getByName("soviets").children;
+//     }
     var distance;
 
     for (var i = 0; i < found.length; i++) {

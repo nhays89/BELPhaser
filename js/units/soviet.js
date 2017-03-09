@@ -40,7 +40,12 @@ Soviet.prototype.constructor = Soviet;
 
 Soviet.prototype.update = function() {
 if(this.health <= 0) {
+    this.currentPath = [];
+    this.enemiesInAttackRadius.removeAll();
+    this.enemiesInViewRadius.removeAll();
+    
     this.alive = false;
+    playState.numOfSoviets--;
     this.die(); //removed from group in 7000 millis
 } else {
 

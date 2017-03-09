@@ -38,12 +38,10 @@ function American(game, x, y) {
 American.prototype = Object.create(Soldier.prototype);
 American.prototype.constructor = American;
 
+
+//only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
-if(this.health <= 0) {
-    this.selected = false;
-    this.alive = false;
-    this.die(); //removed from group in 7000 millis
-} else {
+
     this.updateNearbyEnemies();
     if(this.targetEnemy) {
         if(!this.targetEnemy.alive) {//if we had a targetEnemy but he is dead
@@ -121,6 +119,5 @@ if(this.health <= 0) {
             this.step(); //stand gaurd or keep running towards destination
        }
    }
-}
     
 };
