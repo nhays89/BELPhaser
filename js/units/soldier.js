@@ -222,7 +222,7 @@ Soldier.prototype.step = function () {
        
         if(nextCoord && this.anchorCoord) {//if we have an anchorCoord and still have a destinationCoord
             var currentCoord = {x: this.body.x, y: this.body.y};
-            console.log(Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y));
+            //console.log(Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y));
             if ((Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y) >= this.anchorCoord.distance)) { //if we have arrived at destination coord or gone slightly past
              this.anchorCoord = this.currentPath.shift();//set our new anchorCoord = to the next coord
             }

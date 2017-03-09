@@ -389,25 +389,22 @@ var playState = {
 
         game.physics.p2.convertTilemap(this.map, this.collisionLayer);
         // this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
-
-        this.baselayer = this.map.createLayer('base');
-        this.rocklayer = this.map.createLayer('rock');
-        this.castlelayer = this.map.createLayer('castle');
-        this.extralayer = this.map.createLayer('extra');
-
-
+        
+        this.baseLayer = this.map.createLayer('base');
+        this.pathsLayer = this.map.createLayer('paths');
+        this.waterLayer = this.map.createLayer('water');
+        this.rockLayer = this.map.createLayer('rock');
+        this.rock2Layer = this.map.createLayer('rock2');
+        this.castlFloorLayer = this.map.createLayer('castle_floor');
+        this.castleWallLayer = this.map.createLayer('castle_wall');
+        this.castleLayer = this.map.createLayer('castle');
+        this.foilageLayer = this.map.createLayer('foilage');
+        this.castleDecorLayer = this.map.createLayer('castle_decor');
+        this.foilage2Layer = this.map.createLayer('foilage2');
 
         game.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
-        this.collisionGrid = new PF.Grid([
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0]
-        ]);
 
-
-        this.baselayer.resizeWorld();
+        this.baseLayer.resizeWorld();
         //this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
         this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
         var offset = 100;
@@ -452,7 +449,7 @@ var playState = {
 
 
         this.updateSelectedGroup(game.world.getByName("americans"));
-        console.log(" in left button up");
+        //console.log(" in left button up");
 
 
         this.select.isActive = false;

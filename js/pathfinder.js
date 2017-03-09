@@ -81,7 +81,7 @@ Pathfinder.prototype = {
        }
        // path2.shift(); // remove the starting point (sprite already knows this)
        if(path2.length === 0) {
-           console.log("clicked on non walkable tile");
+           //console.log("clicked on non walkable tile");
        }
        return path2
     },
