@@ -36,7 +36,7 @@ function Soviet(game, x, y) {
     this.animations.add('soviet-dead-east', Phaser.Animation.generateFrameNames('soviet-dead-east', 14, 14), 1, true, false);
 
     this.viewRadius = 450;
-    this.health = 10000;
+    this.health = 100;
 }
 
 

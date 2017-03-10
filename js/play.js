@@ -74,7 +74,8 @@ var playState = {
         this.minimap_loc_sprite.fixedToCamera = true;
 
         this.minimap_loc.lineStyle(1, 0xd9d9d9, 1);
-        this.minimap_loc.drawRect(0, 0,
+        this.minimap_loc.drawRect(game.camera.position.x * this.minimapImg.scale.x,
+            game.camera.position.y * this.minimapImg.scale.y,
             game.camera.width * this.minimapImg.scale.x,
             game.camera.height * this.minimapImg.scale.y);
 
@@ -368,6 +369,9 @@ var playState = {
         this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
         var offset = 100;
         this.spawnPoint = new Phaser.Point(game.world.centerX - offset, game.world.centerY - offset);
+
+        game.camera.x = game.world.centerX - (game.camera.width / 2);
+        game.camera.y = game.world.centerY - (game.camera.height / 2);
     },
 
     createSpawnPoints: function () {
@@ -419,7 +423,7 @@ var playState = {
 
         this.clockTicks = 0;
         this.spawnInterval = 60; //every so many seconds spawn soldiers
-        this.spawnSovietCount = 1; //this number + 1 is how many soldiers will spawn at each spawn interval
+        this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
 
         this.level = 1;
         this.levelInterval = 300;
@@ -443,7 +447,7 @@ var playState = {
         this.createSpawnPoints();
         var scout = this.getSovietSpawnPoint();
 
-        this.addToGroup(americanGroup, 3, 500, 500, 1);
+        this.addToGroup(americanGroup, 16, game.world.centerX - 100, game.world.centerY, 4);
         this.addToGroup(sovietGroup, 1, 800, 800, 1);
 
     },

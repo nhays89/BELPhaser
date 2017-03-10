@@ -33,6 +33,7 @@ function American(game, x, y) {
     this.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
     this.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
 
+    this.health = 200;
 }
 
 American.prototype = Object.create(Soldier.prototype);
