@@ -12,12 +12,13 @@ var playState = {
     },
 
     create: function () {
+        this.createMap();
+        this.createGameObjects();
 
-       this.createMap();
-       this.createGameObjects();
-       this.setupUI();
-       this.setupInput();
-       this.createGameTimer();
+        this.setupUI();
+        this.setupInput();
+        this.setupPauseMenu();
+        this.createGameTimer();
 
     },
 
@@ -27,17 +28,14 @@ var playState = {
         this.updateSelectedGroup(game.world.getByName("americans"));
         this.updateGameObjects();
     },
-    setupUI: function () {
+
+    setupUI  : function () {
         var cameraViewPort = game.camera.view;
 
-        var minimapBorder = new Phaser.Graphics(game, 0, 0);
-        minimapBorder.lineStyle(2, 0xd9d9d9, 1);
-
-        minimapBorder.drawRect(0, cameraViewPort.height - (cameraViewPort.height * .25), (cameraViewPort.width * .25), cameraViewPort.height * .25);
-
-        minimapBorder.fixedToCamera = true;
-
-        game.world.add(minimapBorder);
+        this.minimap = game.add.sprite(-16, game.canvas.height + 14, 'minimap_frame');
+        this.minimap.scale.setTo(2, 2);
+        this.minimap.y = this.minimap.y - this.minimap.height;
+        this.minimap.fixedToCamera = true;
 
         this.select = {                                     //stores data about mouse events for the rectangle selection
             "origin"  : new Phaser.Point(),                 //origin of mouse click
@@ -49,11 +47,12 @@ var playState = {
             "rect"    : new Phaser.Graphics(game, 0, 0)
         };
 
-        this.minimapImg = game.add.sprite(0, cameraViewPort.height - (cameraViewPort.height * .25), 'minimap_image');
+        this.minimapImg = game.add.sprite(this.minimap.x + 26, this.minimap.y + 26, 'minimap_image');
         this.minimapImg.fixedToCamera = true;
-        var scaleWidth = cameraViewPort.width * .25 / this.minimapImg.width
-        var scaleHeight = cameraViewPort.height * .25 / this.minimapImg.height;
-        this.minimapImg.scale.setTo(scaleWidth, scaleHeight);
+        // 166 and 132 are the number of pixels (width / height) of the minimap frame
+        // multiplied by the scale of the minimap frame
+        this.minimapImg.scale.setTo(168 * (this.minimap.scale.x + .12) / this.minimapImg.width,
+            132 * (this.minimap.scale.y + .17) / this.minimapImg.height);
 
         this.info_panel = game.add.sprite(game.canvas.width / 2, 0, 'info_panel');
         this.info_panel.scale.setTo(2, 2);
@@ -68,13 +67,6 @@ var playState = {
         this.timeLabel.strokeThickness = 1;
         this.timeLabel.fixedToCamera = true;
 
-        this.action_menu = game.add.sprite(game.canvas.width, game.canvas.height, 'action_menu');
-        this.action_menu.scale.setTo(2, 2);
-        this.action_menu.x = this.action_menu.x - this.action_menu.width;
-        this.action_menu.y = this.action_menu.y - this.action_menu.height;
-        this.action_menu.fixedToCamera = true;
-
-
         this.minimap_loc_sprite = game.add.sprite(this.minimapImg.x, this.minimapImg.y);
         this.minimap_loc = game.add.graphics(0, 0);
 
@@ -82,144 +74,161 @@ var playState = {
         this.minimap_loc_sprite.fixedToCamera = true;
 
         this.minimap_loc.lineStyle(1, 0xd9d9d9, 1);
-        this.minimap_loc.drawRect(0, 0,
-        game.camera.width * this.minimapImg.scale.x,
-        game.camera.height * this.minimapImg.scale.y);
+        this.minimap_loc.drawRect(game.camera.position.x * this.minimapImg.scale.x,
+            game.camera.position.y * this.minimapImg.scale.y,
+            game.camera.width * this.minimapImg.scale.x,
+            game.camera.height * this.minimapImg.scale.y);
 
         var pKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
         pKey.onDown.add(this.pauseGame, this);
     },
-    
-    createGameTimer: function() {
-        game.time.events.loop(1000, function() {    //fires every second until the game is over
+
+    createGameTimer: function () {
+        game.time.events.loop(1000, function () {    //fires every second until the game is over
             this.updateGameTimer();
-        }, this); 
+        }, this);
     },
 
-    setupInput: function() {
-        
+    setupInput: function () {
+
         // prevent browser default context menu from appearing
-        game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+        game.canvas.oncontextmenu = function (e) {
+            e.preventDefault();
+        };
 
         //setup input handling
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
-
     },
 
     updateSelectionRect: function () {
         var mousePointer = game.input.mousePointer;
-        
+
         if (mousePointer.leftButton.isDown) {
             this.select.current.setTo(mousePointer.position.x + game.camera.x, mousePointer.position.y + game.camera.y);
-        
-        if (this.select.isActive) { //if we have a point stored from a recent down event
-        
-        if (this.select.origin.x === this.select.current.x && this.select.origin.y === this.select.current.y) {
-            return;
-        }
 
-        if (this.select.origin.x < this.select.current.x && this.select.current.y < this.select.origin.y) { //its to the right and above
-            this.select.topLeft.setTo(this.select.origin.x , this.select.current.y);
-        
-        } else if (this.select.origin.x < this.select.current.x && this.select.current.y > this.select.origin.y) { //its to the right and below
-            this.select.topLeft.setTo(this.select.origin.x, this.select.origin.y);
-        
-        } else if (this.select.origin.x > this.select.current.x && this.select.current.y > this.select.origin.y) { //its to the left and below
-            this.select.topLeft.setTo(this.select.current.x, this.select.origin.y);
-        
-        } else { //its to the left and above
+            if (this.select.isActive) { //if we have a point stored from a recent down event
 
-            this.select.topLeft.setTo(this.select.current.x, this.select.current.y);
-        }
+                if (this.select.origin.x === this.select.current.x && this.select.origin.y === this.select.current.y) {
+                    return;
+                }
 
-        var width = (Math.abs(this.select.origin.x - this.select.current.x));
-        var height = (Math.abs(this.select.origin.y - this.select.current.y));
-        var graphics = this.select.rect;
-        graphics.clear();
-        graphics.lineStyle(1, 0x80ff00, 1);
-        graphics.drawRect(this.select.topLeft.x, this.select.topLeft.y, width, height);
-        game.world.add(graphics);
-        
-        } else { //capture the current coordinate and store as origin
-            var graphics = this.select.rect;
-            this.select.origin.setTo(this.select.current.x, this.select.current.y);
-            graphics.lineStyle(1, 0x80ff00, 1);
-            graphics.drawRect(this.select.origin.x, this.select.origin.y, 1,1); //print the press to the screen
-            game.world.add(graphics);
-            this.select.isActive = true;
+                if (this.select.origin.x < this.select.current.x &&
+                    this.select.current.y < this.select.origin.y) { //its to the right and above
 
+                    this.select.topLeft.setTo(this.select.origin.x, this.select.current.y);
+
+                } else if (this.select.origin.x < this.select.current.x && this.select.current.y > this.select.origin.y) { //its to the right and below
+                    this.select.topLeft.setTo(this.select.origin.x, this.select.origin.y);
+
+                } else if (this.select.origin.x > this.select.current.x && this.select.current.y > this.select.origin.y) { //its to the left and below
+                    this.select.topLeft.setTo(this.select.current.x, this.select.origin.y);
+
+                } else { //its to the left and above
+
+                    this.select.topLeft.setTo(this.select.current.x, this.select.current.y);
+                }
+
+                var width = (Math.abs(this.select.origin.x - this.select.current.x));
+                var height = (Math.abs(this.select.origin.y - this.select.current.y));
+                var graphics = this.select.rect;
+                graphics.clear();
+                graphics.lineStyle(1, 0x80ff00, 1);
+                graphics.drawRect(this.select.topLeft.x, this.select.topLeft.y, width, height);
+                game.world.add(graphics);
+
+            } else { //capture the current coordinate and store as origin
+                var graphics = this.select.rect;
+                this.select.origin.setTo(this.select.current.x, this.select.current.y);
+                graphics.lineStyle(1, 0x80ff00, 1);
+                graphics.drawRect(this.select.origin.x, this.select.origin.y, 1, 1); //print the press to the screen
+                game.world.add(graphics);
+                this.select.isActive = true;
             }
         }
     },
 
+    getNearbySoviet: function (point) {
 
-    getNearbySoviet: function(point) {
-    
-     var triggerDistance = 100;
-     var closestSovietInRange = null;
-     var closestDistance = Number.MAX_SAFE_INTEGER;
-     var soviets = game.world.getByName("soviets");
-     if(soviets) {
-        soviets.forEachAlive(function(soviet) { 
-         var distance = Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y);
-            if ( Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y) <= triggerDistance) { 
-             if(distance < closestDistance) {
-                 closestDistance = distance;
-                 closestSovietInRange = soviet;
-             }
-            }
-      }, this); 
-     } 
-      return closestSovietInRange;
-      },
+        var triggerDistance = 100;
+        var closestSovietInRange = null;
+        var closestDistance = Number.MAX_SAFE_INTEGER;
+        var soviets = game.world.getByName("soviets");
+        if (soviets) {
+            soviets.forEachAlive(function (soviet) {
+                var distance = Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y);
+                if (Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y) <= triggerDistance) {
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestSovietInRange = soviet;
+                    }
+                }
+            }, this);
+        }
+        return closestSovietInRange;
+    },
 
     render: function () {
-        //        var americans = game.world.getByName("americans");
-
-        //game.debug.game.debug.spriteInfo(americans.children[0], 200, 200);
-
-        //         americans.forEach(function(child) {
-        //            // game.debug.body(child, 200,  200);
-        //             game.debug.spriteInfo(child, 50, 50);
-
-
-        // }, this);
-        // this.soviet.sprite.body.debug = true;
-        // game.debug.spriteInfo(this.soviet.sprite, 32, 32);
-        // game.debug.quadTree(this.quadTree);
-        // game.debug.geom(this.viewCircle, '#00bff3', false);
     },
 
-
-    setupUnits: function () {
-        // sprite that's used with quadtree to find a circle around the target sprite
-        // this.viewSprite = game.add.sprite(0, 0);
-
-        this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
-        // for debugging view distance
-        this.viewCircle = new Phaser.Circle(0, 0, 200);
-
-    },
-    pauseGame : function () {
+    pauseGame: function () {
         if (game.paused) {
-            this.pause_menu.destroy();
             game.paused = false;
+            this.pause_group.visible = false;
         } else {
             game.paused = true;
-
-            this.pause_menu = game.add.sprite(game.camera.x + (game.camera.width / 2),
-            game.camera.y + (game.camera.height / 2), 'pause_menu');
-            this.pause_menu.inputEnabled = true;
-            this.pause_menu.input.useHandCursor = true;
-            this.pause_menu.events.onInputDown.add(this.pauseMenuListener, this);
-            this.pause_menu.anchor.setTo(0.5, 0.5);
+            this.pause_group.visible = true;
+            this.pause_group.x = game.camera.x + (game.camera.width / 2);
+            this.pause_group.y = game.camera.y + (game.camera.height / 2);
         }
     },
 
-    pauseMenuListener: function (sprite, pointer) {
-        console.log('in here');
+    setupPauseMenu: function () {
+        this.pause_group = game.add.group();
+        this.pause_group.visible = false;
+        this.pause_menu = game.add.sprite(0, 0, 'pause_menu');
+        this.pause_menu.scale.setTo(1.8, 1.8);
+        this.pause_menu.anchor.setTo(0.5, 0.5);
+
+        this.unpause_button = game.add.button(0, 0, 'button');
+        this.restart_button = game.add.button(0, 0, 'button');
+
+        this.pause_menu.addChild(this.unpause_button);
+        this.pause_menu.addChild(this.restart_button);
+
+        this.unpause_button.x = -(this.unpause_button.width / 2);
+        this.unpause_button.y = -(this.unpause_button.height * 1.5);
+
+        this.restart_button.x = -(this.restart_button.width / 2);
+
+        var text_style = {
+            font           : 'bold 18px Roboto', fill: '#000000', align: 'center',
+            strokeThickness: 1
+        };
+        this.unpause_text = game.add.text(this.unpause_button.x + 12,
+            this.unpause_button.y - 22,
+            'CONTINUE', text_style);
+
+        this.restart_text = game.add.text(this.restart_button.x - 10,
+            this.restart_button.y + 22,
+            'RESTART GAME', text_style);
+        this.pause_group.add(this.pause_menu);
+        this.pause_group.add(this.unpause_text);
+        this.pause_group.add(this.restart_text);
+
+        game.input.mouse.mouseDownCallback = function (event) {
+            var unpause_bounds = playState.unpause_button.getBounds();
+            var restart_bounds = playState.restart_button.getBounds();
+            if (game.paused) {
+                if (Phaser.Rectangle.contains(unpause_bounds, event.x, event.y)) {
+                    playState.pauseGame();
+                } else if (Phaser.Rectangle.contains(restart_bounds, event.x, event.y)) {
+                    game.paused = false;
+                    game.state.start(game.state.current);
+                }
+            }
+        }
     },
 
     detectCameraMove: function () {
@@ -255,29 +264,27 @@ var playState = {
     },
 
     //called every second from the start of the game
-    updateGameTimer: function() {
+    updateGameTimer: function () {
 
         //after levelInterval seconds increase the level
-        if(this.clockTicks % this.levelInterval === 0) {
+        if (this.clockTicks % this.levelInterval === 0) {
             this.level++;
         }
 
-        //console.log(this.clockTicks); 
+        this.clockTicks++;
 
-        this.clockTicks++; 
-        
         //every 'spawnInterval' seconds create a soviet
-        if(this.clockTicks % this.spawnInterval === 0) {//can be adjusted depending on when we want soldiers to arrive
-            //spawn this event 
-            var timerEvent = game.time.events.add(1000, function() {
-            
-            var soviets = game.world.getByName("soviets");
-            var coord = playState.getSovietSpawnPoint();
+        if (this.clockTicks % this.spawnInterval === 0) {//can be adjusted depending on when we want soldiers to arrive
+            //spawn this event
+            var timerEvent = game.time.events.add(1000, function () {
 
-            playState.addToGroup(soviets,1, coord.x, coord.y);
+                var soviets = game.world.getByName("soviets");
+                var coord = playState.getSovietSpawnPoint();
+
+                playState.addToGroup(soviets, 1, coord.x, coord.y);
                 this.numOfSoviets++;
             }, this);
-            
+
             //execute this event above 'spawnSovietCount' times
             //...each level increase will increase the number of spawned soldiers at each spawn interval
             timerEvent.repeatCount = this.spawnSovietCount * this.level;
@@ -285,19 +292,19 @@ var playState = {
     },
 
     updateGameObjects: function () {
-        
+
         var americans = game.world.getByName("americans");
         var soviets = game.world.getByName("soviets");
-        if(americans) {
-             americans.forEachAlive(function(american){   
-               american.update();
-        }, this);
+        if (americans) {
+            americans.forEachAlive(function (american) {
+                american.update();
+            }, this);
         } else {
             //create more soon or game over
         }
-        if(soviets) {
-            soviets.forEachAlive(function(soviet){
-               // console.log(soviet.alive);
+        if (soviets) {
+            soviets.forEachAlive(function (soviet) {
+                // console.log(soviet.alive);
                 soviet.update();
             }, this);
         } else {
@@ -306,13 +313,10 @@ var playState = {
         game.input.mousePointer.rightButton.reset(); //resets to right button up after every update
     },
 
+    //used to offset coords for groups (not needed atm)
+    resetCoords: function (groupName) {
 
-//     addToGroup(group, )
-
-    //used to offset coords for groups (not needed atm)    
-    resetCoords: function(groupName) {
-
-        game.world.getByName(groupName).children.forEach(function(child) {
+        game.world.getByName(groupName).children.forEach(function (child) {
             child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
             child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
             child.body.x = child.x;
@@ -321,8 +325,8 @@ var playState = {
 
     },
 
-    addToGroup: function (group, num, x,y,numCols) { 
-        var soldier;   
+    addToGroup: function (group, num, x, y, numCols) {
+        var soldier;
         num = num || 1;
         numCols = numCols || 1;
         x = x || 16;
@@ -332,13 +336,12 @@ var playState = {
         for (var i = 0; i < num; i++) {
             var col = i * width % (numCols * width);
             var row = height * Math.floor(i / numCols);
-            soldier = group.create(col  + x, row + y); //uses constructor specified in group.classType
-            
+            soldier = group.create(col + x, row + y); //uses constructor specified in group.classType
+
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
         }
     },
-
 
     createMap: function () {
         this.map = game.add.tilemap('map');
@@ -352,56 +355,45 @@ var playState = {
 
         this.collisionLayer = this.map.createLayer('collision');
 
-        this.collisionLayer.resizeWorld();
-
-        this.map.setCollisionByIndex(1289, true, 0);
-        this.map.setCollisionByIndex(1291, false, 0);
-
-        game.physics.p2.convertTilemap(this.map, this.collisionLayer);
-        // this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
-        
         this.baseLayer = this.map.createLayer('base');
-        this.pathsLayer = this.map.createLayer('paths');
-        this.waterLayer = this.map.createLayer('water');
-        this.rockLayer = this.map.createLayer('rock');
-        this.rock2Layer = this.map.createLayer('rock2');
         this.castlFloorLayer = this.map.createLayer('castle_floor');
         this.castleWallLayer = this.map.createLayer('castle_wall');
         this.castleLayer = this.map.createLayer('castle');
-        this.foilageLayer = this.map.createLayer('foilage');
-        this.castleDecorLayer = this.map.createLayer('castle_decor');
-        this.foilage2Layer = this.map.createLayer('foilage2');
+        this.rockLayer = this.map.createLayer('rock-foilage');
+        this.rock2Layer = this.map.createLayer('rock2');
 
         game.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
 
         this.baseLayer.resizeWorld();
-        //this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
+        this.collision2Layer = game.physics.p2.convertCollisionObjects(this.map, "poly_collision");
         this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
         var offset = 100;
         this.spawnPoint = new Phaser.Point(game.world.centerX - offset, game.world.centerY - offset);
-    },
 
+        game.camera.x = game.world.centerX - (game.camera.width / 2);
+        game.camera.y = game.world.centerY - (game.camera.height / 2);
+    },
 
     createSpawnPoints: function () {
         this.sovietSpawnPoints = [
-        new Phaser.Rectangle(48,48,40,40),
-        new Phaser.Rectangle(3184, 2608,40,40),
-        new Phaser.Rectangle(1456, 3184, 40,40),
-        new Phaser.Rectangle(48,2608, 40,40),
-        new Phaser.Rectangle(48,624,40,40),
-        new Phaser.Rectangle(3152, 48, 40, 40),
-        new Phaser.Rectangle(2896, 48,40,40),
-        new Phaser.Rectangle(3152,1584, 40,40),
-        new Phaser.Rectangle(656,3184, 40,40)
+            new Phaser.Rectangle(48, 48, 40, 40),
+            new Phaser.Rectangle(3184, 2608, 40, 40),
+            new Phaser.Rectangle(1456, 3184, 40, 40),
+            new Phaser.Rectangle(48, 2608, 40, 40),
+            new Phaser.Rectangle(48, 624, 40, 40),
+            new Phaser.Rectangle(3152, 48, 40, 40),
+            new Phaser.Rectangle(2896, 48, 40, 40),
+            new Phaser.Rectangle(3152, 1584, 40, 40),
+            new Phaser.Rectangle(656, 3184, 40, 40)
         ];
     },
-    
-    //@ Fisher-Yates shuffle algo
-    shuffle: function(array) {
-          var currentIndex = array.length, temporaryValue, randomIndex;
 
-          // While there remain elements to shuffle...
-          while (0 !== currentIndex) {
+    //@ Fisher-Yates shuffle algo
+    shuffle: function (array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
 
             // Pick a remaining element...
             randomIndex = Math.floor(Math.random() * currentIndex);
@@ -411,90 +403,82 @@ var playState = {
             temporaryValue = array[currentIndex];
             array[currentIndex] = array[randomIndex];
             array[randomIndex] = temporaryValue;
-          }
+        }
 
-          return array;
-        
+        return array;
     },
 
-
-    getSovietSpawnPoint: function() {
-        var point;
+    getSovietSpawnPoint: function () {
         this.sovietSpawnPoints = this.shuffle(this.sovietSpawnPoints);
-        for(var i =0; i < this.sovietSpawnPoints.length; i++) {
-         if(!Phaser.Rectangle.intersects(this.sovietSpawnPoints[i], game.camera.view)) {
-             return this.sovietSpawnPoints[i];
-         }   
+        for (var i = 0; i < this.sovietSpawnPoints.length; i++) {
+            if (!Phaser.Rectangle.intersects(this.sovietSpawnPoints[i], game.camera.view)) {
+                return this.sovietSpawnPoints[i];
+            }
         }
         //default spawn if none found - very rare unless user has 3200 * 3200 resolution
         return new Phaser.Rectangle(3152, 48, 40, 40);
-
     },
 
     createGameObjects: function () {
-        
-       
+
         this.clockTicks = 0;
-        this.spawnInterval = 10; //every so many seconds spawn soldiers
-        this.spawnSovietCount = 1; //this number + 1 is how many soldiers will spawn at each spawn interval
-      
+        this.spawnInterval = 60; //every so many seconds spawn soldiers
+        this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
+
         this.level = 1;
-        this.levelInterval = 60;
-        
+        this.levelInterval = 300;
+
         this.numOfSoviets = 0;
         this.numOfAmericans = 0;
-        
+
         this.cursors = game.input.keyboard.createCursorKeys();
 
         this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
         this.viewCircle = new Phaser.Circle(0, 0, 200);
-        
+
         var americanGroup = new Phaser.Group(game, game.world, "americans", false);
         americanGroup.classType = American; //sets the type of object to create when group.create is called
         game.world.add(americanGroup);
-        
+
 
         var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
         sovietGroup.classType = Soviet;
         game.world.add(sovietGroup);
         this.createSpawnPoints();
         var scout = this.getSovietSpawnPoint();
-       
-        americanGroup = this.addToGroup(americanGroup,1,500,500,1);
-        sovietGroup = this.addToGroup(sovietGroup, 1, 800, 800,1);
-  
+
+        this.addToGroup(americanGroup, 16, game.world.centerX - 100, game.world.centerY, 4);
+        this.addToGroup(sovietGroup, 1, 800, 800, 1);
+
     },
 
     //@param - Phaser.Group - each member of the group must have a physics body
-    updateSelectedGroup: function(group) {
-        if(group) {
-        if(game.input.mousePointer.leftButton.isDown) {
-            group.forEach(function(member) {
-            var wasSelectedPreviously = member.selected;
-            var nowSelected =  member.isSelected(this.select.rect.getLocalBounds());
- 
-            if(wasSelectedPreviously && nowSelected) {//then no need to set body ring again
-                return;
-            }else if(wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
-                member.removeBodyRing();
-            } else if(!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
-                member.setBodyRing();
-            }
-        },this);
+    updateSelectedGroup: function (group) {
+        if (group) {
+            if (game.input.mousePointer.leftButton.isDown) {
+                group.forEach(function (member) {
+                    var wasSelectedPreviously = member.selected;
+                    var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
 
-        }
-        //console.log("left button down");
+                    if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
+                        return;
+                    } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
+                        member.removeBodyRing();
+                    } else if (!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
+                        member.setBodyRing();
+                    }
+                }, this);
+            }
         }
     },
 
-    onLeftButtonUp: function(pointer, mouseEvent) {
-
+    onLeftButtonUp : function (pointer, mouseEvent) {
 
         this.updateSelectedGroup(game.world.getByName("americans"));
 
-        this.select.isActive = false;       
-        this.select.origin.setTo(0, 0);     
-        this.select.current.setTo(0, 0);    
+        this.select.isActive = false;
+        this.select.origin.setTo(0, 0);
+        this.select.current.setTo(0, 0);
         this.select.topLeft.setTo(0, 0);    //top left of selection rect
         this.select.width = 0;              //width of rect
         this.select.height = 0;             //height of rect
@@ -508,6 +492,4 @@ var playState = {
     onRightButtonDown: function (pointer) {
         // TO DO
     },
-
-
 };
