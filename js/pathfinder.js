@@ -87,8 +87,8 @@ Pathfinder.prototype = {
     },
 
     isWalkable: function (x, y) {
-        var gridX = x / this.tileWidth,
-            gridY = y / this.tileHeight;
+        var gridX = Math.floor(x / this.tileWidth),
+            gridY = Math.floor(y / this.tileHeight);
 
         return this.grid.isWalkableAt(gridX, gridY);
     },
