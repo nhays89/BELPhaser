@@ -17,7 +17,7 @@ var playState = {
        this.createGameObjects();
        this.setupUI();
        this.setupInput();
-       this.createGameTimer();
+       //this.createGameTimer();
 
     },
 
@@ -333,12 +333,24 @@ var playState = {
             var col = i * width % (numCols * width);
             var row = height * Math.floor(i / numCols);
             soldier = group.create(col  + x, row + y); //uses constructor specified in group.classType
+            
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
         }
 
-        if(soldier.key === "american") this.numOfAmericans++;
-        if(soldier.key === "soviet") this.numOfSoviets++;
+        if(soldier.key === "american") {
+            this.numOfAmericans++;
+        }
+        if(soldier.key === "soviet") {
+            this.numOfSoviets++;
+            soldier.events.onKilled.add(function(soviet) {
+                console.log("killed" + soviet); 
+            }, this);
+            soldier.events.onRemovedFromWorld.add(function(soviet){
+                console.log("remove from world");
+            }, this)
+
+        }
 
     },
 
@@ -463,8 +475,8 @@ var playState = {
         this.createSpawnPoints();
         var scout = this.getSovietSpawnPoint();
        
-        americanGroup = this.addToGroup(americanGroup,3,1000,1000,1);
-        sovietGroup = this.addToGroup(sovietGroup, 1, scout.x, scout.y,1);
+        americanGroup = this.addToGroup(americanGroup,1,500,500,1);
+        sovietGroup = this.addToGroup(sovietGroup, 1, 800, 800,1);
   
     },
 

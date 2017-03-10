@@ -31,6 +31,7 @@ function Soviet(game, x, y) {
     this.animations.add('soviet-fire-southeast', Phaser.Animation.generateFrameNames('soviet-fire-southeast', 0, 5), 6, false, false);
 
     this.animations.add('soviet-die-west', Phaser.Animation.generateFrameNames('soviet-die-west', 0, 14), 14, false, false);
+    this.animations.add('soviet-dead-west', Phaser.Animation.generateFrameNames('soviet-die-west', 14, 14), 1, true, false);
     this.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
 }
 
@@ -40,13 +41,16 @@ Soviet.prototype.constructor = Soviet;
 
 Soviet.prototype.update = function() {
 if(this.health <= 0) {
-    this.currentPath = [];
-    this.enemiesInAttackRadius.removeAll();
-    this.enemiesInViewRadius.removeAll();
+    if(this.alive) {
+        this.currentPath = [];
+        this.enemiesInAttackRadius = []; //clear
+        this.enemiesInViewRadius = []; //clear
+
+        this.alive = false;
+        playState.numOfSoviets--;
+        this.die(); //removed from group in 7000 millis
+    }
     
-    this.alive = false;
-    playState.numOfSoviets--;
-    this.die(); //removed from group in 7000 millis
 } else {
 
     this.updateNearbyEnemies(); //removes dead soldiers 
@@ -61,13 +65,13 @@ if(this.health <= 0) {
     var newTargetEnemy;
 
     if(this.targetEnemy) {
-        if(this.enemiesInAttackRadius.contains(this.targetEnemy)) {
+        if(this.enemiesInAttackRadius.includes(this.targetEnemy)) {
           this.shoot(this.targetEnemy);
-        } else if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {
+        } else if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
           this.currentPath = [];
           this.targetEnemy = newTargetEnemy;
           this.shoot(this.targetEnemy);
-        } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {
+        } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
               if(newTargetEnemy !== this.targetEnemy) {
                 this.targetEnemy = newTargetEnemy;
                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
@@ -76,15 +80,15 @@ if(this.health <= 0) {
                    } 
                  } else {
                     if(this.currentPath.length === 0) {
-                      var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.newTargetEnemy.body.y));
+                      var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
                       if(path.length > 0) {//if there is a path -
                         this.addPath(path);
-                    } 
+                        } 
 
                     }
 
                  }
-               this.step();
+            this.step();
         } else {
           this.step();
         }
@@ -92,27 +96,27 @@ if(this.health <= 0) {
 
 
     } else {//we don't have a target enemy
-          if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {
+          if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
                 this.currentPath = [];
                 this.targetEnemy = newTargetEnemy;
                 shoot(this.targetEnemy);
-            } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {
+            } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
                 this.targetEnemy = newTargetEnemy;
                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
                  if(path.length > 0) {//if there is a path -
                     this.addPath(path);
                    } 
-                   this.step();
+                 this.step();
             } else {
               if(this.currentPath.length === 0) {
-                      var rndCoord = this.generateRandCoord();
-                      var myCoord = new Phaser.Point(this.body.x, this.body.y);
-                      var path = this.generatePath(myCoord, rndCoord);
-                      if(path.length > 0) {//if there is a path -
-                           this.addPath(path);
-                      }
-                  }
-                  this.step(); //keep moving or standing while on the lookout for enemies
+//                       var rndCoord = this.generateRandCoord();
+//                       var myCoord = new Phaser.Point(this.body.x, this.body.y);
+//                       var path = this.generatePath(myCoord, rndCoord);
+//                       if(path.length > 0) {//if there is a path -
+//                            this.addPath(path);
+//                       }
+               }
+               this.step(); //keep moving or standing while on the lookout for enemies
             }
     }
 

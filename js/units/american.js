@@ -2,6 +2,7 @@ function American(game, x, y) {
     Soldier.call(this, game, x, y, 'american');
     this.type = "American";
     this.ignoreEnemies = false;
+    this.pixelsPerSecond = 180;
     this.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
     this.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
     this.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);
@@ -41,7 +42,16 @@ American.prototype.constructor = American;
 
 //only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
-
+if(this.health <= 0) {
+    this.currentPath = [];
+    this.enemiesInAttackRadius = []; //clear
+    this.enemiesInViewRadius = []; //clear
+    this.ignoreEnemies = false;
+    
+    this.alive = false;
+    playState.numOfAmericans--;
+    this.die(); //removed from group in 7000 millis
+} else {
     this.updateNearbyEnemies();
     if(this.targetEnemy) {
         if(!this.targetEnemy.alive) {//if we had a targetEnemy but he is dead
@@ -61,7 +71,7 @@ American.prototype.update = function() {
 
     if(game.input.mousePointer.rightButton.isDown) {//if user right clicked
         if(this.selected) {//and we are selected
-            this.selected = false; //reset
+           // this.selected = false; //reset
             this.removeBodyRing(); //reset
             var destinationPoint;
             var targetEnemyNearClick = playState.getNearbySoviet(new Phaser.Point(game.input.mousePointer.worldX, game.input.mousePointer.worldY));
@@ -90,15 +100,15 @@ American.prototype.update = function() {
    
     if(this.ignoreEnemies === false) {//we can attack when enemies are nearby
         var newTargetEnemy;
-        if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
+        if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {// we have a targetEnemy and he is nearby
                
               this.shoot(this.targetEnemy); //shoot him
         } else {//we don't have a targetEnemy || he is outside our attack radius 
-         if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
+         if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {//someone else is in our attack radius
               this.targetEnemy = newTargetEnemy;//assign as new target enemy
               
               this.shoot(this.targetEnemy);//shoot him
-          } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
+          } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {//someone else in our view radius
              this.targetEnemy = newTargetEnemy;
              var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y)); // sets currentPath implictly
              if(path.length > 0) {//if there is a path -
@@ -110,7 +120,7 @@ American.prototype.update = function() {
           }
       }
     } else {//we are currently ignoring enemies
-        if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
+        if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
             this.shoot(this.targetEnemy); 
         } else { //we don't have a targetEnemy || he is not in our attack radius
             if (this.currentPath.length === 0) {//reached our destination
@@ -119,5 +129,5 @@ American.prototype.update = function() {
             this.step(); //stand gaurd or keep running towards destination
        }
    }
-    
+} 
 };
