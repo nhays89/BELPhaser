@@ -11,8 +11,6 @@ function Body(game, x, y, key) {
     // game.add.existing(this);
     this.myGraphicsCanvas = new Phaser.Graphics(game, 0, 0);
 
-
-
     this.radius = 15;
 }
 
@@ -23,8 +21,6 @@ Body.prototype.constructor = Body;
 // @param - the selection rectangle to check against
 
 Body.prototype.isSelected = function(rect) {
-
-
         //p2 anchor in center
         
         var myLeft = this.body.x - this.radius;

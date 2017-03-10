@@ -33,16 +33,30 @@ function American(game, x, y) {
     this.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
     this.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
 
+    this.health = 200;
 }
 
 American.prototype = Object.create(Soldier.prototype);
 American.prototype.constructor = American;
 
+
+//only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
 if(this.health <= 0) {
-    this.selected = false;
-    this.alive = false;
-    this.die(); //removed from group in 7000 millis
+    if(!this.alive) {
+        this.currentPath = [];
+        this.enemiesInAttackRadius = []; //clear
+        this.enemiesInViewRadius = []; //clear
+        this.ignoreEnemies = false;
+
+        if(this.selected) {
+            this.removeBodyRing();
+        }
+
+        this.alive = false;
+        playState.numOfAmericans--;
+        this.die(); //removed from group in 7000 millis
+    }
 } else {
     this.updateNearbyEnemies();
     if(this.targetEnemy) {
@@ -63,7 +77,7 @@ if(this.health <= 0) {
 
     if(game.input.mousePointer.rightButton.isDown) {//if user right clicked
         if(this.selected) {//and we are selected
-            this.selected = false; //reset
+           // this.selected = false; //reset
             this.removeBodyRing(); //reset
             var destinationPoint;
             var targetEnemyNearClick = playState.getNearbySoviet(new Phaser.Point(game.input.mousePointer.worldX, game.input.mousePointer.worldY));
@@ -72,7 +86,7 @@ if(this.health <= 0) {
                 this.ignoreEnemies = true; //don't kill enemies along the way 
                 destinationPoint = new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y); //destination is the enemy soldier          
             } else {//user clicked in space
-               if(this.enemiesInAttackRadius.length > 0) { //we are trying to retreat
+               if(this.enemiesInAttackRadius.length > 0 || this.enemiesInViewRadius.length > 0) { //we are trying to retreat
                    this.ignoreEnemies = true;//don't attack enemies on our way out (sets back to false when we reach destination)
                } else {
                    this.ignoreEnemies = false;//keep our gaurd up
@@ -92,15 +106,15 @@ if(this.health <= 0) {
    
     if(this.ignoreEnemies === false) {//we can attack when enemies are nearby
         var newTargetEnemy;
-        if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
+        if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {// we have a targetEnemy and he is nearby
                
               this.shoot(this.targetEnemy); //shoot him
         } else {//we don't have a targetEnemy || he is outside our attack radius 
-         if(newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
+         if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {//someone else is in our attack radius
               this.targetEnemy = newTargetEnemy;//assign as new target enemy
               
               this.shoot(this.targetEnemy);//shoot him
-          } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
+          } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {//someone else in our view radius
              this.targetEnemy = newTargetEnemy;
              var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y)); // sets currentPath implictly
              if(path.length > 0) {//if there is a path -
@@ -112,7 +126,7 @@ if(this.health <= 0) {
           }
       }
     } else {//we are currently ignoring enemies
-        if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
+        if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
             this.shoot(this.targetEnemy); 
         } else { //we don't have a targetEnemy || he is not in our attack radius
             if (this.currentPath.length === 0) {//reached our destination
@@ -121,6 +135,5 @@ if(this.health <= 0) {
             this.step(); //stand gaurd or keep running towards destination
        }
    }
-}
-    
+} 
 };
