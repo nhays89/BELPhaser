@@ -43,7 +43,7 @@ function Soldier(game, x, y, key) {
 
 
 
-    this.weaponCooldownDuration = 1500;
+    this.weaponCooldownDuration = 750;
     this.shootAnimation = {};
 
     this.pathDebug = game.add.graphics(0, 0);
@@ -95,7 +95,7 @@ Soldier.prototype.die = function () {
         case "northeast": deathDir = "east"; break;
     }
     this.animations.stop();
-    this.animations.play(this.key + '-die-' + deathDir, true);
+    this.animations.play(this.key + '-die-' + deathDir);
     game.time.events.add(7000, function () {  //remove from world in 7000 millis
         this.destroy();
     }, this);
@@ -211,18 +211,6 @@ Soldier.prototype.getClosestIn = function(list) {
 }
 
 
-Soldier.prototype.contains = function(list, soldier) {
-
-    for(var i = 0; i < list.length; i++) {
-        if(list[i] === soldier) {
-            return true;
-        }
-    }
-    return false;
-
-}
-
-
 Soldier.prototype.generateRandCoord = function () {
     
    for(var i = 0; i < 10; i++) {
@@ -242,7 +230,7 @@ Soldier.prototype.generateRandCoord = function () {
 
 Soldier.prototype.stand = function () {
     this.currentPath = [];
-    this.animations.stop();
+   // this.animations.stop();
    this.animations.play(this.key + '-stand-' + this.direction);
 };
 

@@ -33,6 +33,7 @@ function Soviet(game, x, y) {
     this.animations.add('soviet-die-west', Phaser.Animation.generateFrameNames('soviet-die-west', 0, 14), 14, false, false);
     this.animations.add('soviet-dead-west', Phaser.Animation.generateFrameNames('soviet-die-west', 14, 14), 1, true, false);
     this.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
+    this.animations.add('soviet-dead-east', Phaser.Animation.generateFrameNames('soviet-dead-east', 14, 14), 1, true, false);
 }
 
 
@@ -109,12 +110,12 @@ if(this.health <= 0) {
                  this.step();
             } else {
               if(this.currentPath.length === 0) {
-//                       var rndCoord = this.generateRandCoord();
-//                       var myCoord = new Phaser.Point(this.body.x, this.body.y);
-//                       var path = this.generatePath(myCoord, rndCoord);
-//                       if(path.length > 0) {//if there is a path -
-//                            this.addPath(path);
-//                       }
+                  var rndCoord = this.generateRandCoord();
+                  var myCoord = new Phaser.Point(this.body.x, this.body.y);
+                  var path = this.generatePath(myCoord, rndCoord);
+                  if(path.length > 0) {//if there is a path -
+                       this.addPath(path);
+                  }
                }
                this.step(); //keep moving or standing while on the lookout for enemies
             }

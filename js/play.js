@@ -17,7 +17,7 @@ var playState = {
        this.createGameObjects();
        this.setupUI();
        this.setupInput();
-       //this.createGameTimer();
+       this.createGameTimer();
 
     },
 
@@ -210,7 +210,7 @@ var playState = {
             game.paused = true;
 
             this.pause_menu = game.add.sprite(game.camera.x + (game.camera.width / 2),
-                game.camera.y + (game.camera.height / 2), 'pause_menu');
+            game.camera.y + (game.camera.height / 2), 'pause_menu');
             this.pause_menu.inputEnabled = true;
             this.pause_menu.input.useHandCursor = true;
             this.pause_menu.events.onInputDown.add(this.pauseMenuListener, this);
@@ -262,7 +262,7 @@ var playState = {
             this.level++;
         }
 
-        console.log(this.clockTicks); 
+        //console.log(this.clockTicks); 
 
         this.clockTicks++; 
         
@@ -275,7 +275,7 @@ var playState = {
             var coord = playState.getSovietSpawnPoint();
 
             playState.addToGroup(soviets,1, coord.x, coord.y);
-            this.numOfSoviets++;
+                this.numOfSoviets++;
             }, this);
             
             //execute this event above 'spawnSovietCount' times
@@ -297,7 +297,7 @@ var playState = {
         }
         if(soviets) {
             soviets.forEachAlive(function(soviet){
-                console.log(soviet.alive);
+               // console.log(soviet.alive);
                 soviet.update();
             }, this);
         } else {
@@ -337,21 +337,6 @@ var playState = {
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
         }
-
-        if(soldier.key === "american") {
-            this.numOfAmericans++;
-        }
-        if(soldier.key === "soviet") {
-            this.numOfSoviets++;
-            soldier.events.onKilled.add(function(soviet) {
-                console.log("killed" + soviet); 
-            }, this);
-            soldier.events.onRemovedFromWorld.add(function(soviet){
-                console.log("remove from world");
-            }, this)
-
-        }
-
     },
 
 
