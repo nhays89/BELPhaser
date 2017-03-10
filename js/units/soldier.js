@@ -9,8 +9,10 @@ function Soldier(game, x, y, key) {
     this.body.damping = .999999999999;
     this.body.fixedRotation = true;
     this.currentPath = [];
-    this.enemiesInViewRadius = new Phaser.Group(game, null, "enemiesInViewRadius");
-    this.enemiesInAttackRadius = new Phaser.Group(game, null, "enemiesInAttackRadius");
+//     this.enemiesInViewRadius = new Phaser.Group(game, null, "enemiesInViewRadius");
+//     this.enemiesInAttackRadius = new Phaser.Group(game, null, "enemiesInAttackRadius");
+    this.enemiesInViewRadius = [];
+    this.enemiesInAttackRadius = [];
     this.targetEnemy = null;
     this.currentCoord = {};
     this.anchorCoord = {};
@@ -25,7 +27,7 @@ function Soldier(game, x, y, key) {
     this.damage = 20;
     this.direction = 'south';
     this.currentSpeed;
-    this.pixelsPerSecond = 150;
+    this.pixelsPerSecond = 170;
     this.cooldowns = {
         'weapon': false
     };
@@ -44,7 +46,6 @@ function Soldier(game, x, y, key) {
     this.weaponCooldownDuration = 1500;
     this.shootAnimation = {};
 
-    this.speed = 100;
     this.pathDebug = game.add.graphics(0, 0);
     this.pathDebug.on = true;
     this.currentPath = [];
@@ -80,17 +81,10 @@ Soldier.prototype.shoot = function (enemy) {
     }
 };
 
-// Soldier.prototype.update = function () {
-//     if (this.alive && this.health <= 0) {
-//         this.die();
-//     }
-//
-//
-// };
 
 Soldier.prototype.die = function () {
     var deathDir;
-    switch(direction) {
+    switch(this.direction) {
         case "north":deathDir = "west"; break;
         case "northwest": deathDir = "west"; break;
         case "west": deathDir = "west"; break;
@@ -100,8 +94,8 @@ Soldier.prototype.die = function () {
         case "east": deathDir = "east"; break;
         case "northeast": deathDir = "east"; break;
     }
-
-    this.animations.play(this.key + '-die-' + deathDir);
+    this.animations.stop();
+    this.animations.play(this.key + '-die-' + deathDir, true);
     game.time.events.add(7000, function () {  //remove from world in 7000 millis
         this.destroy();
     }, this);
@@ -143,15 +137,18 @@ Soldier.prototype.updateNearbyEnemies = function () {
 
     // for debugging view distance
     playState.viewCircle.setTo(this.x, this.y, viewDiameter);
-    this.enemiesInViewRadius.removeAll();
-    this.enemiesInAttackRadius.removeAll();
+//    this.enemiesInViewRadius.removeAll();
+//    this.enemiesInAttackRadius.removeAll();
+      this.enemiesInAttackRadius = [];
+      this.enemiesInViewRadius = [];
     var found = playState.quadTree.retrieve(playState.viewSprite);
 //     if(this instanceof American) {
 //         found = game.world.getByName("soviets").children;
 //     }
     var distance;
+    var length = found.length;
 
-    for (var i = 0; i < found.length; i++) {
+    for (var i = 0; i < length; i++) {
 
         // game.physics.arcade.collide(this.body, found[i].body);
         if(found[i].sprite) { //if a body with a sprite
@@ -164,19 +161,66 @@ Soldier.prototype.updateNearbyEnemies = function () {
                     found[i].x, found[i].y);
 
                 if (distance <= this.attackRadius) {
-                    this.enemiesInAttackRadius.add(found[i].sprite);
+                   // this.enemiesInAttackRadius.add(found[i].sprite);
+                        this.enemiesInAttackRadius.push(found[i].sprite);
     //                 if (!this.cooldowns['weapon']) {
     //                     this.shoot(found[i]);
     //                 }
                 } else if (distance <= this.viewRadius) {
                     // walk closer
                     // this.moveTo(found[i].sprite.x, found[i].sprite.y);
-                    this.enemiesInViewRadius.add(found[i].sprite);
+//                     this.enemiesInViewRadius.add(found[i].sprite);
+                       this.enemiesInViewRadius.push(found[i].sprite);
                 }
             }
         }
     }
 };
+
+//body must have x,y
+Soldier.prototype.getClosestIn = function(list) {
+   
+    var closestEnemy;
+    var closestDistance;
+
+    if(list.length > 0) {
+    
+     for(var i = 0; i < list.length; i++) {
+
+            var distance = Phaser.Math.distance(this.x, this.y, list[i].x, list[i].y);
+           
+            if(!closestEnemy) { //0
+
+                closestEnemy = list[i];
+                closestDistance = distance;
+
+            } else {
+
+                if(distance < closestDistance) {
+                    closestDistance = distance;
+                    closestEnemy = list[i];
+                }
+                
+            }
+            
+        }
+ 
+    }
+    
+    return closestEnemy;
+}
+
+
+Soldier.prototype.contains = function(list, soldier) {
+
+    for(var i = 0; i < list.length; i++) {
+        if(list[i] === soldier) {
+            return true;
+        }
+    }
+    return false;
+
+}
 
 
 Soldier.prototype.generateRandCoord = function () {
