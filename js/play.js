@@ -16,6 +16,7 @@ var playState = {
        this.createGameObjects();
        this.setupUI();
        this.setupInput();
+       this.setupPauseMenu();
 
         this.pathDebug = game.add.graphics(0, 0);
         this.pathDebug.coords = [5, 5, 30, 30];
@@ -32,6 +33,8 @@ var playState = {
         this.updateSelectionRect();
         this.updateSelectedGroup(game.world.getByName("americans"));
         this.updateGameObjects();
+
+        
         
          //ALL DEBUG BELOW
 //          if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
@@ -89,16 +92,21 @@ var playState = {
     setupUI: function () {
         var cameraViewPort = game.camera.view;
 
-        var graphics = new Phaser.Graphics(game, 0, 0);
-        graphics.lineStyle(2, 0xd9d9d9, 1);
+//         var graphics = new Phaser.Graphics(game, 0, 0);
+//         graphics.lineStyle(2, 0xd9d9d9, 1);
 
-        graphics.drawRect(0, cameraViewPort.height - (cameraViewPort.height * .25), (cameraViewPort.width * .25), cameraViewPort.height * .25);
+//         graphics.drawRect(0, cameraViewPort.height - (cameraViewPort.height * .25), (cameraViewPort.width * .25), cameraViewPort.height * .25);
 
-        graphics.fixedToCamera = true;
-        //this.minimap.y = this.minimap.y - this.minimap.height;
-        //this.minimap.fixedToCamera = true;
+//         graphics.fixedToCamera = true;
+//         //this.minimap.y = this.minimap.y - this.minimap.height;
+//         //this.minimap.fixedToCamera = true;
 
-        game.world.add(graphics);
+//         game.world.add(graphics);
+
+        this.minimap = game.add.sprite(-16, game.canvas.height + 14, 'minimap_frame');
+        this.minimap.scale.setTo(2, 2);
+        this.minimap.y = this.minimap.y - this.minimap.height;
+        this.minimap.fixedToCamera = true;
 
         this.select = { //stores data about mouse events for the rectangle selection
             "origin"  : new Phaser.Point(),
@@ -110,11 +118,17 @@ var playState = {
             "rect"    : new Phaser.Graphics(game, 0, 0)
         };
 
-        this.minimapImg = game.add.sprite(0, cameraViewPort.height - (cameraViewPort.height * .25), 'minimap_image');
+        this.minimapImg = game.add.sprite(this.minimap.x + 26, this.minimap.y + 26, 'minimap_image');
         this.minimapImg.fixedToCamera = true;
-        var scaleWidth = cameraViewPort.width * .25 / this.minimapImg.width
-        var scaleHeight = cameraViewPort.height * .25 / this.minimapImg.height;
-        this.minimapImg.scale.setTo(scaleWidth, scaleHeight);
+        // 166 and 132 are the number of pixels (width / height) of the minimap frame
+        // multiplied by the scale of the minimap frame
+        this.minimapImg.scale.setTo(168 * (this.minimap.scale.x + .12) / this.minimapImg.width,
+            132 * (this.minimap.scale.y + .17) / this.minimapImg.height);
+//         this.minimapImg = game.add.sprite(0, cameraViewPort.height - (cameraViewPort.height * .25), 'minimap_image');
+//         this.minimapImg.fixedToCamera = true;
+//         var scaleWidth = cameraViewPort.width * .25 / this.minimapImg.width
+//         var scaleHeight = cameraViewPort.height * .25 / this.minimapImg.height;
+//         this.minimapImg.scale.setTo(scaleWidth, scaleHeight);
 
         this.info_panel = game.add.sprite(game.canvas.width / 2, 0, 'info_panel');
         this.info_panel.scale.setTo(2, 2);
@@ -128,12 +142,6 @@ var playState = {
         this.timeLabel.stroke = '#000000';
         this.timeLabel.strokeThickness = 1;
         this.timeLabel.fixedToCamera = true;
-
-        this.action_menu = game.add.sprite(game.canvas.width, game.canvas.height, 'action_menu');
-        this.action_menu.scale.setTo(2, 2);
-        this.action_menu.x = this.action_menu.x - this.action_menu.width;
-        this.action_menu.y = this.action_menu.y - this.action_menu.height;
-        this.action_menu.fixedToCamera = true;
 
 
         this.minimap_loc_sprite = game.add.sprite(this.minimapImg.x, this.minimapImg.y);
@@ -149,6 +157,13 @@ var playState = {
 
         var pKey = game.input.keyboard.addKey(Phaser.Keyboard.P);
         pKey.onDown.add(this.pauseGame, this);
+
+//         this.fog = game.add.graphics(0, 0);
+//         this.fog.beginFill(0x000000);
+//         this.fog.drawRect(0, 0, game.world.width, game.world.height);
+//         this.viewCircle2 = game.add.graphics(0, 0);
+        
+        
     },
 
 
@@ -160,7 +175,6 @@ var playState = {
         game.input.mousePointer.leftButton.onUp.add(this.onLeftButtonUp, this);
         game.input.mousePointer.rightButton.onDown.add(this.onRightButtonDown, this);
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
-        this.rightButtonReleased;
     },
 
     updateSelectionRect: function () {
@@ -239,6 +253,9 @@ var playState = {
       },
 
     render: function () {
+        //game.debug.geom(this.fog,'#000000');
+        // if (this.pause_menu)
+        //     game.debug.spriteInfo(this.pause_menu, 32, 32);
         //        var americans = game.world.getByName("americans");
 
         //game.debug.game.debug.spriteInfo(americans.children[0], 200, 200);
@@ -267,24 +284,74 @@ var playState = {
     },
     pauseGame : function () {
         if (game.paused) {
-            this.pause_menu.destroy();
             game.paused = false;
+            this.pause_group.visible = false;
         } else {
             game.paused = true;
-
-            this.pause_menu = game.add.sprite(game.camera.x + (game.camera.width / 2),
-                game.camera.y + (game.camera.height / 2), 'pause_menu');
-            this.pause_menu.inputEnabled = true;
-            this.pause_menu.input.useHandCursor = true;
-            this.pause_menu.events.onInputDown.add(this.pauseMenuListener, this);
-            this.pause_menu.anchor.setTo(0.5, 0.5);
+            this.pause_group.visible = true;
+            this.pause_group.x = game.camera.x + (game.camera.width / 2);
+            this.pause_group.y = game.camera.y + (game.camera.height / 2);
+//             if (this.pause_menu) {
+//                 this.pause_menu.x = game.camera.x + (game.camera.width / 2);
+//                 this.pause_menu.y = game.camera.y + (game.camera.height / 2);
+//             } else {
+//                 this.setupPauseMenu();
+//             }
         }
+    },
+
+    setupPauseMenu: function() {
+        this.pause_group = game.add.group();
+        this.pause_group.visible = false;
+        this.pause_menu = game.add.sprite(0, 0, 'pause_menu');
+        this.pause_menu.scale.setTo(1.8, 1.8);
+        this.pause_menu.anchor.setTo(0.5, 0.5);
+
+        this.unpause_button = game.add.button(0, 0, 'button');
+        this.restart_button = game.add.button(0, 0, 'button');
+
+        this.pause_menu.addChild(this.unpause_button);
+        this.pause_menu.addChild(this.restart_button);
+        
+        this.unpause_button.x = -(this.unpause_button.width / 2);
+        this.unpause_button.y = -(this.unpause_button.height * 1.5);
+
+        this.restart_button.x = -(this.restart_button.width / 2);
+
+        var text_style = { font: 'bold 18px Roboto', fill: '#000000', align: 'center',
+            strokeThickness: 1 };
+        this.unpause_text = game.add.text(this.unpause_button.x + 12,
+                                          this.unpause_button.y - 22,
+                                          'CONTINUE', text_style);
+
+        this.restart_text = game.add.text(this.restart_button.x - 10,
+                                          this.restart_button.y + 22,
+                                          'RESTART GAME', text_style);
+        this.pause_group.add(this.pause_menu);
+        this.pause_group.add(this.unpause_text);
+        this.pause_group.add(this.restart_text);
+
+        game.input.mouse.mouseDownCallback = function (event) {
+            var unpause_bounds = playState.unpause_button.getBounds();
+            var restart_bounds = playState.restart_button.getBounds();
+            if (game.paused) {
+                if (Phaser.Rectangle.contains(unpause_bounds, event.x, event.y)) {
+                    playState.pauseGame();
+                } else if (Phaser.Rectangle.contains(restart_bounds, event.x, event.y)) {
+                    game.paused = false;
+                    game.state.start(game.state.current);
+                }
+            }
+        }
+
+        game.input.mouse.mouseOverCallback = function (event) {
+            
+        }
+
     },
 
     pauseMenuListener: function (sprite, pointer) {
         console.log('in here');
-
-
     },
 
     detectCameraMove: function () {
@@ -382,30 +449,18 @@ var playState = {
 
         this.collisionLayer = this.map.createLayer('collision');
 
-        this.collisionLayer.resizeWorld();
-
-        this.map.setCollisionByIndex(1289, true, 0);
-        this.map.setCollisionByIndex(1291, false, 0);
-
-        game.physics.p2.convertTilemap(this.map, this.collisionLayer);
-        // this.game.physics.arcade.enable(this.collisionLayer, Phaser.Physics.ARCADE, true);
-        
         this.baseLayer = this.map.createLayer('base');
-        this.pathsLayer = this.map.createLayer('paths');
-        this.waterLayer = this.map.createLayer('water');
-        this.rockLayer = this.map.createLayer('rock');
-        this.rock2Layer = this.map.createLayer('rock2');
         this.castlFloorLayer = this.map.createLayer('castle_floor');
         this.castleWallLayer = this.map.createLayer('castle_wall');
         this.castleLayer = this.map.createLayer('castle');
-        this.foilageLayer = this.map.createLayer('foilage');
-        this.castleDecorLayer = this.map.createLayer('castle_decor');
-        this.foilage2Layer = this.map.createLayer('foilage2');
+        this.rockLayer = this.map.createLayer('rock-foilage');
+        this.rock2Layer = this.map.createLayer('rock2');
+
 
         game.pathfinder = new Pathfinder(this.collisionLayer.layer.data, 32, 32, [1291, 0]);
 
         this.baseLayer.resizeWorld();
-        //this.collisionLayer = game.physics.p2.convertCollisionObjects(this.map, "collision");
+        this.collision2Layer = game.physics.p2.convertCollisionObjects(this.map, "poly_collision");
         this.quadTree = new Phaser.QuadTree(0, 0, game.width, game.height, 5, 4, 0);
         var offset = 100;
         this.spawnPoint = new Phaser.Point(game.world.centerX - offset, game.world.centerY - offset);
@@ -420,7 +475,7 @@ var playState = {
        // var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
        // sovietGroup.classType = Soviet;
       //  game.world.add(sovietGroup);
-        americanGroup = this.addToGroup(americanGroup,3,1000,1000,1);
+        americanGroup = this.addToGroup(americanGroup,3,1500,1500,1);
        // sovietGroup = this.addToGroup(sovietGroup, 10, 1200,1000,3);
         //this.currentPlayer = game.world.getByName("americans").children[0]; //testing
     },
@@ -447,7 +502,6 @@ var playState = {
 
     onLeftButtonUp: function(pointer, mouseEvent) {
 
-
         this.updateSelectedGroup(game.world.getByName("americans"));
         //console.log(" in left button up");
 
@@ -469,7 +523,6 @@ var playState = {
     },
 
     onRightButtonDown: function (pointer, mouseEvent) {
-        
 //         .forEach(function (soldier) {
 //             if (soldier.selected) {
 //                 soldier.cancelMovement();
@@ -480,6 +533,10 @@ var playState = {
         // console.log(pointer);
         // console.log(mouseEvent);
     },
+    shutdown: function() {
+        
+    }
 
 
 };
+

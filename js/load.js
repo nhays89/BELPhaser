@@ -23,10 +23,10 @@ var loadState = {
         //game.physics.startSystem(Phaser.Physics.ARCADE);
 
         //load ui
-        game.load.image('minimap_frame', 'assets/ui/minimap.png');
-        game.load.image('action_menu', 'assets/ui/action_menu.png');
-        game.load.image('info_panel', 'assets/ui/info_panel.png');
-        game.load.image('pause_menu', 'assets/ui/pause_menu.png');
+        game.load.image('minimap_frame', 'assets/ui/minimap_silver.png');
+        game.load.image('info_panel', 'assets/ui/info_panel_silver.png');
+        game.load.image('pause_menu', 'assets/ui/pause_menu_silver.png');
+        game.load.spritesheet('button', 'assets/ui/button_silver.png');
         game.load.image('minimap_image', 'assets/map/bel-map.png');
 
     },
