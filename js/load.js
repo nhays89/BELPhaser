@@ -20,7 +20,6 @@ var loadState = {
 
         //load needed physics
         game.physics.startSystem(Phaser.Physics.P2JS);
-        //game.physics.startSystem(Phaser.Physics.ARCADE);
 
         //load ui
         game.load.image('minimap_frame', 'assets/ui/minimap_silver.png');
@@ -28,7 +27,6 @@ var loadState = {
         game.load.image('pause_menu', 'assets/ui/pause_menu_silver.png');
         game.load.spritesheet('button', 'assets/ui/button_silver.png');
         game.load.image('minimap_image', 'assets/map/bel-map.png');
-
     },
     create: function () {
         game.state.start('menu');

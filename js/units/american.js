@@ -2,7 +2,6 @@ function American(game, x, y) {
     Soldier.call(this, game, x, y, 'american');
     this.type = "American";
     this.ignoreEnemies = false;
-    this.pixelsPerSecond = 180;
     this.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
     this.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
     this.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);

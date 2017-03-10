@@ -34,6 +34,9 @@ function Soviet(game, x, y) {
     this.animations.add('soviet-dead-west', Phaser.Animation.generateFrameNames('soviet-die-west', 14, 14), 1, true, false);
     this.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
     this.animations.add('soviet-dead-east', Phaser.Animation.generateFrameNames('soviet-dead-east', 14, 14), 1, true, false);
+
+    this.viewRadius = 450;
+    this.health = 10000;
 }
 
 
@@ -100,7 +103,7 @@ if(this.health <= 0) {
           if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
                 this.currentPath = [];
                 this.targetEnemy = newTargetEnemy;
-                shoot(this.targetEnemy);
+                this.shoot(this.targetEnemy);
             } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
                 this.targetEnemy = newTargetEnemy;
                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
