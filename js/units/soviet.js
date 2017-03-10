@@ -1,6 +1,7 @@
 function Soviet(game, x, y) {
     Soldier.call(this, game, x, y, 'soviet');
     this.type = "Soviet";
+    this.viewRadius 
     this.animations.add('soviet-stand-north', ['soviet-stand-north'], 1, false, false);
     this.animations.add('soviet-stand-northwest', ['soviet-stand-northwest'], 1, false, false);
     this.animations.add('soviet-stand-west', ['soviet-stand-west'], 1, false, false);
@@ -100,7 +101,7 @@ if(this.health <= 0) {
           if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
                 this.currentPath = [];
                 this.targetEnemy = newTargetEnemy;
-                shoot(this.targetEnemy);
+                this.shoot(this.targetEnemy);
             } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
                 this.targetEnemy = newTargetEnemy;
                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));

@@ -27,7 +27,7 @@ function Soldier(game, x, y, key) {
     this.damage = 20;
     this.direction = 'south';
     this.currentSpeed;
-    this.pixelsPerSecond = 170;
+    this.pixelsPerSecond = 100;
     this.cooldowns = {
         'weapon': false
     };

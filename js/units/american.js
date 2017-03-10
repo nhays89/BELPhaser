@@ -2,7 +2,7 @@ function American(game, x, y) {
     Soldier.call(this, game, x, y, 'american');
     this.type = "American";
     this.ignoreEnemies = false;
-    this.pixelsPerSecond = 180;
+
     this.animations.add('american-stand-north', ['american-stand-north'], 1, false, false);
     this.animations.add('american-stand-northwest', ['american-stand-northwest'], 1, false, false);
     this.animations.add('american-stand-west', ['american-stand-west'], 1, false, false);
@@ -43,14 +43,20 @@ American.prototype.constructor = American;
 //only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
 if(this.health <= 0) {
-    this.currentPath = [];
-    this.enemiesInAttackRadius = []; //clear
-    this.enemiesInViewRadius = []; //clear
-    this.ignoreEnemies = false;
-    
-    this.alive = false;
-    playState.numOfAmericans--;
-    this.die(); //removed from group in 7000 millis
+    if(!this.alive) {
+        this.currentPath = [];
+        this.enemiesInAttackRadius = []; //clear
+        this.enemiesInViewRadius = []; //clear
+        this.ignoreEnemies = false;
+
+        if(this.selected) {
+            this.removeBodyRing();
+        }
+
+        this.alive = false;
+        playState.numOfAmericans--;
+        this.die(); //removed from group in 7000 millis
+    }
 } else {
     this.updateNearbyEnemies();
     if(this.targetEnemy) {
