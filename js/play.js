@@ -134,7 +134,6 @@ var playState = {
     },
 
     createGameTimer: function () {
-        this.levelTimer = game.time.create(false);
         this.elapsedTimer = game.time.create(false);
 
         game.time.events.loop(1000, function () {    //fires every second until the game is over
@@ -301,7 +300,6 @@ var playState = {
                 playState.continue_button_text.destroy();
                 playState.clockTicks = 0;
                 playState.elapsedTimer.start();
-                playState.levelTimer.start();
             }
         }
     },
@@ -346,6 +344,10 @@ var playState = {
             this.level++;
             this.levelLabel.text = 'LEVEL: ' + this.level;
         }
+        if(this.numOfAmericans === 0) {
+            //  this.showGameOver();
+        }
+
 
         this.clockTicks++;
         var levelTime = Math.floor(this.elapsedTimer.seconds) % this.levelInterval;
@@ -362,7 +364,7 @@ var playState = {
         //every 'spawnInterval' seconds create a soviet
         if (this.clockTicks % this.spawnInterval === 0) {//can be adjusted depending on when we want soldiers to arrive
             //spawn this event
-            var timerEvent = game.time.events.add(1000, function () {
+            var sovietEvent = game.time.events.add(1000, function () {
 
                 var soviets = game.world.getByName("soviets");
                 var coord = playState.getSovietSpawnPoint();
@@ -373,7 +375,14 @@ var playState = {
 
             //execute this event above 'spawnSovietCount' times
             //...each level increase will increase the number of spawned soldiers at each spawn interval
-            timerEvent.repeatCount = this.spawnSovietCount * this.level;
+            sovietEvent.repeatCount = this.spawnSovietCount * this.level;
+
+            var americanEvent = game.time.events.add(1000, function() {
+                var americans = game.world.getByName('americans');
+
+                playState.addToGroup(americans, 2, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
+            }, this);
+
         }
     },
 
@@ -460,6 +469,42 @@ var playState = {
         game.camera.y = game.world.centerY - (game.camera.height / 2);
     },
 
+
+     createGameObjects: function () {
+
+        this.clockTicks = 0;
+        this.spawnInterval = 40; //every so many seconds spawn soldiers
+        this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
+
+        this.level = 0;
+        this.levelInterval = 60;
+
+        this.numOfSoviets = 0;
+        this.numOfAmericans = 0;
+
+        this.americanSpawnPoint = new Phaser.Point(game.world.centerX - 100, game.world.centerY);
+
+        this.cursors = game.input.keyboard.createCursorKeys();
+
+        this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
+        this.viewCircle = new Phaser.Circle(0, 0, 200);
+
+        var americanGroup = new Phaser.Group(game, game.world, "americans", false);
+        americanGroup.classType = American; //sets the type of object to create when group.create is called
+        game.world.add(americanGroup);
+
+
+        var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
+        sovietGroup.classType = Soviet;
+        game.world.add(sovietGroup);
+        this.createSpawnPoints();
+        var scout = this.getSovietSpawnPoint();
+
+        this.addToGroup(americanGroup, 8, this.americanSpawnPoint.x, this.americanSpawnPoint.y, 4);
+        this.addToGroup(sovietGroup, 1, 800, 800, 1);
+
+    },
+
     createSpawnPoints: function () {
         this.sovietSpawnPoints = [
             new Phaser.Rectangle(48, 48, 40, 40),
@@ -503,39 +548,6 @@ var playState = {
         }
         //default spawn if none found - very rare unless user has 3200 * 3200 resolution
         return new Phaser.Rectangle(3152, 48, 40, 40);
-    },
-
-    createGameObjects: function () {
-
-        this.clockTicks = 0;
-        this.spawnInterval = 60; //every so many seconds spawn soldiers
-        this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
-
-        this.level = 0;
-        this.levelInterval = 60;
-
-        this.numOfSoviets = 0;
-        this.numOfAmericans = 0;
-
-        this.cursors = game.input.keyboard.createCursorKeys();
-
-        this.viewSprite = new Phaser.Rectangle(0, 0, 10, 10);
-        this.viewCircle = new Phaser.Circle(0, 0, 200);
-
-        var americanGroup = new Phaser.Group(game, game.world, "americans", false);
-        americanGroup.classType = American; //sets the type of object to create when group.create is called
-        game.world.add(americanGroup);
-
-
-        var sovietGroup = new Phaser.Group(game, game.world, "soviets", false);
-        sovietGroup.classType = Soviet;
-        game.world.add(sovietGroup);
-        this.createSpawnPoints();
-        var scout = this.getSovietSpawnPoint();
-
-        this.addToGroup(americanGroup, 8, game.world.centerX - 100, game.world.centerY, 4);
-        this.addToGroup(sovietGroup, 1, 800, 800, 1);
-
     },
 
     //@param - Phaser.Group - each member of the group must have a physics body

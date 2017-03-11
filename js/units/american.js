@@ -43,7 +43,7 @@ American.prototype.constructor = American;
 //only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
 if(this.health <= 0) {
-    if(!this.alive) {
+    if(this.alive) {
         this.currentPath = [];
         this.enemiesInAttackRadius = []; //clear
         this.enemiesInViewRadius = []; //clear
@@ -64,10 +64,14 @@ if(this.health <= 0) {
             this.currentPath = []; //reset
             this.targetEnemy = null; //reset
             this.ignoreEnemies = false; //reset
+            this.finalDestination = null;
         }
     }
     if(this.currentPath.length === 0) {// we have reached our destination
-        this.ignoreEnemies = false;
+        if(!this.targetEnemy) {
+             this.ignoreEnemies = false;
+        }
+       
     }
 
     if(this.selected) {//if we are selected
@@ -84,7 +88,8 @@ if(this.health <= 0) {
             if(targetEnemyNearClick) {//if user clicked near enemy
                 this.targetEnemy = targetEnemyNearClick;
                 this.ignoreEnemies = true; //don't kill enemies along the way 
-                destinationPoint = new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y); //destination is the enemy soldier          
+                destinationPoint = new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y); //destination is the enemy soldier   
+               // this.finalDestination = destinationPoint;       
             } else {//user clicked in space
                if(this.enemiesInAttackRadius.length > 0 || this.enemiesInViewRadius.length > 0) { //we are trying to retreat
                    this.ignoreEnemies = true;//don't attack enemies on our way out (sets back to false when we reach destination)
@@ -93,6 +98,7 @@ if(this.health <= 0) {
                }
                this.targetEnemy = null;//if we had a target, remove it
                destinationPoint = new Phaser.Point(game.input.mousePointer.worldX, game.input.mousePointer.worldY)//destination is the click
+               this.finalDestination = destinationPoint;
             }
             var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(destinationPoint.x, destinationPoint.y)); // sets currentPath implictly
                if(path.length > 0) {//if there is a path -
@@ -107,33 +113,71 @@ if(this.health <= 0) {
     if(this.ignoreEnemies === false) {//we can attack when enemies are nearby
         var newTargetEnemy;
         if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {// we have a targetEnemy and he is nearby
-               
+              this.finalDestination = null;
               this.shoot(this.targetEnemy); //shoot him
         } else {//we don't have a targetEnemy || he is outside our attack radius 
          if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {//someone else is in our attack radius
+              this.finalDestination = null;
               this.targetEnemy = newTargetEnemy;//assign as new target enemy
               
               this.shoot(this.targetEnemy);//shoot him
-          } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {//someone else in our view radius
-             this.targetEnemy = newTargetEnemy;
-             var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y)); // sets currentPath implictly
-             if(path.length > 0) {//if there is a path -
-                this.addPath(path); //add to currentPath
-             }
+          } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {//someone in our view radius
+                if(!this.targetEnemy) {
+                     this.targetEnemy = newTargetEnemy;
+                     this.finalDestination = new Phaser.Point(this.targetEnemy.x, this.targetEnemy.y);
+                     var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y)); // sets currentPath implictly
+                     if(path.length > 0) {//if there is a path -
+                        this.addPath(path); //add to currentPath
+                     }
+                }
                 this.step();
           } else {
+              if(this.targetEnemy) {
+                  if(this.currentPath.length > 0) {//if empty
+                  var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y)); // sets currentPath implictly
+                     if(path.length > 0) {//if there is a path -
+                        this.addPath(path); //add to currentPath
+                     }
+                  }
+              }
               this.step(); //keep moving or standing while on the lookout for enemies
           }
       }
     } else {//we are currently ignoring enemies
         if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
+            this.finalDestination = null;
             this.shoot(this.targetEnemy); 
-        } else { //we don't have a targetEnemy || he is not in our attack radius
+        } else { //our targetEnemy is not in our attack radius
             if (this.currentPath.length === 0) {//reached our destination
+                if(this.targetEnemy) {
+                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.x, this.targetEnemy.y)); // sets currentPath implictly
+                 if(path.length > 0) {//if there is a path -
+                    this.addPath(path); //add to currentPath
+                  } 
+                }
                 this.ignoreEnemies = false; //reset
+
             }   
             this.step(); //stand gaurd or keep running towards destination
        }
    }
+
+   if(this.finalDestination) {//if we haven't reached our desination
+       if(this.currentPath.length === 0) {
+           if(!this.targetEnemy) {
+              if(Phaser.Math.distance(this.body.x, this.body.y, this.finalDestination.x, this.finalDestination.y) > this.maxRetryDistance) {
+                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.finalDestination.x, this.finalDestination.y)); // sets currentPath implictly
+                 if(path.length > 0) {//if there is a path -
+                    this.addPath(path); //add to currentPath
+                  } 
+           } 
+           }
+           
+           
+       }
+       
+   }
+
+
 } 
 };

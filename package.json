@@ -25,8 +25,6 @@
   "dependencies": {
     "pathfinding": "^0.4.18",
     "phaser": "^2.6.2",
-    "requirejs": "~2.3.3",
-    "stopwatchjs": "^0.1.1",
-    "timer.js": "^1.0.4"
+    "requirejs": "~2.3.3"
   }
 }

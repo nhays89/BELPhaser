@@ -18,7 +18,7 @@ function Soldier(game, x, y, key) {
     this.currentCoord = {};
     this.anchorCoord = {};
     this.destinationCoord = {};
-
+    this.finalDestination = null;
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;
@@ -29,6 +29,7 @@ function Soldier(game, x, y, key) {
     this.direction = 'south';
     this.currentSpeed;
     this.pixelsPerSecond = 100;
+    this.maxRetryDistance = 300;
     this.cooldowns = {
         'weapon': false
     };
@@ -341,41 +342,3 @@ Soldier.prototype.moveNorthWest = function (distance) {
     this.body.moveLeft(distance);
 
 };
-
-
-// this.body.onMoveComplete.addOnce(function () {
-//     this.isMoving = false;
-//         if (self.currentPath.length <= 0) {
-//             self.cancelMovement();
-//         } else {
-//             self.moveTo(); // moveTo without coords, will take from the currentPath
-//         }
-// }, this);
-// this.body.moveTo(duration, this.currentCoord.distance);
-
-// this.tween = game.add.tween(this).to({ x: this.currentCoord.x, y: this.currentCoord.y },
-//                 duration, Phaser.Easing.Linear.None, true);
-//
-// this.tween.onComplete.add(function () {
-//     this.isMoving = false;
-//     if (self.currentPath.length <= 0) {
-//         self.cancelMovement();
-//     } else {
-//         self.moveTo(); // moveTo without coords, will take from the currentPath
-//     }
-// }, this);
-
-// for displaying the soldier's path.
-//         if (this.pathDebug.on) {
-//             this.pathDebug.clear();
-
-//             this.pathDebug.lineStyle(5, game.rnd.integer(), 1);
-
-//             for (var i = 0; i < this.currentPath.length; i++) {
-//                 if (i === 0) {
-//                     //this.pathDebug.moveTo(this.body.x, this.body.y);
-//                 } else {
-//                    // this.pathDebug.lineTo(this.currentPath[i].x, this.currentPath[i].y);
-//                 }
-//             }
-//         }
