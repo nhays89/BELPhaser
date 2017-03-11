@@ -12,8 +12,6 @@ var playState = {
     },
 
     create: function () {
-        this.isStart = true;
-
         this.createMap();
         this.createGameObjects();
 
@@ -21,8 +19,6 @@ var playState = {
         this.setupInput();
         this.setupPauseMenu();
         this.createGameTimer();
-
-        this.displayInstructions();
     },
 
     update: function () {
@@ -95,46 +91,42 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
 
-    displayInstructions: function () {
+    showGameOver: function () {
         var text_style = {
             font           : 'bold 18px Roboto', fill: '#000000', align: 'center',
             strokeThickness: 1
         };
 
-        this.instructions = game.add.sprite(game.camera.x + (game.camera.width / 2),
+        this.game_over_dialog = game.add.sprite(game.camera.x + (game.camera.width / 2),
             game.camera.y + (game.camera.height / 2), 'menu');
-        this.instructions.scale.setTo(1.8, 1.8);
-        this.instructions.anchor.setTo(0.5, 0.5);
+        this.game_over_dialog.scale.setTo(1.8, 1.8);
+        this.game_over_dialog.anchor.setTo(0.5, 0.5);
 
-        this.continue_button = game.add.button(0, 0, 'button');
-        this.continue_button.x = -(this.continue_button.width / 2);
-        this.continue_button.y = (this.continue_button.height / 2);
+        this.restart_button = game.add.button(0, 0, 'button');
+        this.restart_button.x = -(this.restart_button.width / 2);
+        this.restart_button.y = (this.restart_button.height / 2);
 
+        var minutes = Math.floor(this.elapsedTimer.seconds / 60);
+        var seconds = Math.floor(this.elapsedTimer.seconds % 60);
 
-        this.instruction_text = game.add.text(0, 0, 'Last as long as possible against the soviets \n' +
-            ' with your squad of Americans. To control your units, \n' +
-            'drag with the left mouse to select and right click to move \n' +
-            ' to or attack enemies. Move around the map \n with \'WASD\' keys.'
+        this.game_over_text = game.add.text(0, 0, 'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.'
             , text_style);
-        this.continue_button_text = game.add.text(0, 0, 'CONTINUE', text_style);
-        this.continue_button_text.x = this.continue_button.x + this.instructions.x + 10;
-        this.continue_button_text.y = this.continue_button.y + this.instructions.y + 37;
+        this.restart_game_button_text = game.add.text(0, 0, 'RESTART', text_style);
+        this.restart_game_button_text.x = this.restart_button.x + this.game_over_dialog.x + 10;
+        this.restart_game_button_text.y = this.restart_button.y + this.game_over_dialog.y + 37;
 
-        this.instructions.addChild(this.continue_button);
-        //this.instructions.addChild(instruction_text);
+        this.game_over_dialog.addChild(this.restart_button);
 
-        this.instruction_text.x = (this.instructions.x - this.instructions.width / 2) + 30;
-        this.instruction_text.y = (this.instructions.y - this.instructions.height / 2) + 20;
+        this.game_over_text.x = (this.game_over_dialog.x - this.game_over_dialog.width / 2) + 30;
+        this.game_over_text.y = (this.game_over_dialog.y - this.game_over_dialog.height / 2) + 20;
 
         game.input.mouse.mouseDownCallback = this.menuHandler;
-        game.time.events.add(1000, function () {
-            game.paused = true;
-        }, this);
-
+        game.paused = true;
     },
 
     createGameTimer: function () {
         this.elapsedTimer = game.time.create(false);
+        this.elapsedTimer.start();
 
         game.time.events.loop(1000, function () {    //fires every second until the game is over
             this.updateGameTimer();
@@ -225,20 +217,16 @@ var playState = {
     },
 
     pauseGame: function () {
-        if (!this.isStart) {
-            if (game.paused) {
-                game.paused = false;
-                this.pause_group.visible = false;
-                this.elapsedTimer.resume();
-                this.levelTimer.resume();
-            } else {
-                game.paused = true;
-                this.pause_group.visible = true;
-                this.pause_group.x = game.camera.x + (game.camera.width / 2);
-                this.pause_group.y = game.camera.y + (game.camera.height / 2);
-                this.elapsedTimer.pause();
-                this.levelTimer.pause();
-            }
+        if (game.paused) {
+            game.paused = false;
+            this.pause_group.visible = false;
+            this.elapsedTimer.resume();
+        } else {
+            game.paused = true;
+            this.pause_group.visible = true;
+            this.pause_group.x = game.camera.x + (game.camera.width / 2);
+            this.pause_group.y = game.camera.y + (game.camera.height / 2);
+            this.elapsedTimer.pause();
         }
     },
 
@@ -280,7 +268,7 @@ var playState = {
 
     menuHandler: function (event) {
 
-        if (game.paused && !playState.isStart) {
+        if (game.paused) {
             var unpause_bounds = playState.unpause_button.getBounds();
             var restart_bounds = playState.restart_button.getBounds();
 
@@ -289,17 +277,6 @@ var playState = {
             } else if (Phaser.Rectangle.contains(restart_bounds, event.x, event.y)) {
                 game.paused = false;
                 game.state.start(game.state.current);
-            }
-        } else if (playState.isStart) {
-            var continue_bounds = playState.continue_button.getBounds();
-            if (Phaser.Rectangle.contains(continue_bounds, event.x, event.y)) {
-                playState.isStart = false;
-                game.paused = false;
-                playState.instructions.destroy();
-                playState.instruction_text.destroy();
-                playState.continue_button_text.destroy();
-                playState.clockTicks = 0;
-                playState.elapsedTimer.start();
             }
         }
     },
@@ -340,12 +317,12 @@ var playState = {
     updateGameTimer: function () {
 
         //after levelInterval seconds increase the level
-        if (!this.isStart && Math.floor(this.elapsedTimer.seconds) % this.levelInterval === 0) {
+        if (Math.floor(this.elapsedTimer.seconds) % this.levelInterval === 0) {
             this.level++;
             this.levelLabel.text = 'LEVEL: ' + this.level;
         }
-        if(this.numOfAmericans === 0) {
-            //  this.showGameOver();
+        if (this.numOfAmericans <= 0) {
+            this.showGameOver();
         }
 
 
@@ -370,14 +347,13 @@ var playState = {
                 var coord = playState.getSovietSpawnPoint();
 
                 playState.addToGroup(soviets, 1, coord.x, coord.y);
-                this.numOfSoviets++;
             }, this);
 
             //execute this event above 'spawnSovietCount' times
             //...each level increase will increase the number of spawned soldiers at each spawn interval
             sovietEvent.repeatCount = this.spawnSovietCount * this.level;
 
-            var americanEvent = game.time.events.add(1000, function() {
+            var americanEvent = game.time.events.add(1000, function () {
                 var americans = game.world.getByName('americans');
 
                 playState.addToGroup(americans, 2, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
@@ -394,6 +370,7 @@ var playState = {
             americans.forEachAlive(function (american) {
                 american.update();
             }, this);
+            americans.sort();
         } else {
             //create more soon or game over
         }
@@ -402,6 +379,7 @@ var playState = {
                 // console.log(soviet.alive);
                 soviet.update();
             }, this);
+            soviets.sort();
         } else {
             //create more soon or game over
         }
@@ -435,6 +413,12 @@ var playState = {
 
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
+        }
+
+        if (soldier instanceof American) {
+            this.numOfAmericans++;
+        } else {
+            this.numOfSoviets++;
         }
     },
 
@@ -470,7 +454,7 @@ var playState = {
     },
 
 
-     createGameObjects: function () {
+    createGameObjects: function () {
 
         this.clockTicks = 0;
         this.spawnInterval = 40; //every so many seconds spawn soldiers
@@ -500,7 +484,7 @@ var playState = {
         this.createSpawnPoints();
         var scout = this.getSovietSpawnPoint();
 
-        this.addToGroup(americanGroup, 8, this.americanSpawnPoint.x, this.americanSpawnPoint.y, 4);
+        this.addToGroup(americanGroup, 2, this.americanSpawnPoint.x, this.americanSpawnPoint.y, 4);
         this.addToGroup(sovietGroup, 1, 800, 800, 1);
 
     },
@@ -568,6 +552,13 @@ var playState = {
                 }, this);
             }
         }
+    },
+
+    showGameOver: function() {
+        var minutes = Math.floor(this.elapsedTimer.seconds / 60);
+        var seconds = Math.floor(this.elapsedTimer.seconds % 60);
+
+        game.state.start('menu', true, false, 'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.');
     },
 
     onLeftButtonUp : function (pointer, mouseEvent) {
