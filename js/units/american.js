@@ -43,14 +43,20 @@ American.prototype.constructor = American;
 //only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
 if(this.health <= 0) {
-    this.currentPath = [];
-    this.enemiesInAttackRadius = []; //clear
-    this.enemiesInViewRadius = []; //clear
-    this.ignoreEnemies = false;
-    
-    this.alive = false;
-    playState.numOfAmericans--;
-    this.die(); //removed from group in 7000 millis
+    if(!this.alive) {
+        this.currentPath = [];
+        this.enemiesInAttackRadius = []; //clear
+        this.enemiesInViewRadius = []; //clear
+        this.ignoreEnemies = false;
+
+        if(this.selected) {
+            this.removeBodyRing();
+        }
+
+        this.alive = false;
+        playState.numOfAmericans--;
+        this.die(); //removed from group in 7000 millis
+    }
 } else {
     this.updateNearbyEnemies();
     if(this.targetEnemy) {

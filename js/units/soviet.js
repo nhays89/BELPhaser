@@ -1,6 +1,7 @@
 function Soviet(game, x, y) {
     Soldier.call(this, game, x, y, 'soviet');
     this.type = "Soviet";
+    this.viewRadius 
     this.animations.add('soviet-stand-north', ['soviet-stand-north'], 1, false, false);
     this.animations.add('soviet-stand-northwest', ['soviet-stand-northwest'], 1, false, false);
     this.animations.add('soviet-stand-west', ['soviet-stand-west'], 1, false, false);
