@@ -109,16 +109,16 @@ var playState = {
         var minutes = Math.floor(this.elapsedTimer.seconds / 60);
         var seconds = Math.floor(this.elapsedTimer.seconds % 60);
 
-        this.game_over_text = game.add.text(0, 0, 'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.'
-            , text_style);
+        this.game_over_text = game.add.text(this.game_over_dialog.x, this.game_over_dialog.y,
+         'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.', text_style);
         this.restart_game_button_text = game.add.text(0, 0, 'RESTART', text_style);
-        this.restart_game_button_text.x = this.restart_button.x + this.game_over_dialog.x + 10;
+        this.restart_game_button_text.x = this.restart_button.x + this.game_over_dialog.x + 15;
         this.restart_game_button_text.y = this.restart_button.y + this.game_over_dialog.y + 37;
 
         this.game_over_dialog.addChild(this.restart_button);
 
-        this.game_over_text.x = (this.game_over_dialog.x - this.game_over_dialog.width / 2) + 30;
-        this.game_over_text.y = (this.game_over_dialog.y - this.game_over_dialog.height / 2) + 20;
+        this.game_over_text.x = (this.game_over_dialog.x - this.game_over_dialog.width / 3) + 30;
+        this.game_over_text.y = (this.game_over_dialog.y - this.game_over_dialog.height / 3);
 
         game.input.mouse.mouseDownCallback = this.menuHandler;
         game.paused = true;
@@ -410,12 +410,12 @@ var playState = {
 
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
-        }
 
-        if (soldier instanceof American) {
-            this.numOfAmericans++;
-        } else {
-            this.numOfSoviets++;
+            if (soldier instanceof American) {
+                this.numOfAmericans++;
+            } else {
+                this.numOfSoviets++;
+            }
         }
     },
 
