@@ -26,7 +26,7 @@ function Soldier(game, x, y, key) {
     this.direction = 'south';
     this.currentSpeed;
     this.pixelsPerSecond = 100;
-    this.maxRetryDistance = 40;
+    this.maxRetryDistance = 80; //distance around destinationCoord to retry path algo if stuck
     this.cooldowns = {
         'weapon': false
     };
