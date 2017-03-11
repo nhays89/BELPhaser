@@ -20,6 +20,7 @@ var playState = {
         this.setupPauseMenu();
         this.createGameTimer();
 
+        this.displayInstructions();
     },
 
     update: function () {
@@ -83,9 +84,13 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
 
+    displayInstructions: function() {
+
+    },
+
     createGameTimer: function () {
         game.time.events.loop(1000, function () {    //fires every second until the game is over
-            this.updateGameTimer();
+            // this.updateGameTimer();
         }, this);
     },
 
@@ -445,10 +450,10 @@ var playState = {
         sovietGroup.classType = Soviet;
         game.world.add(sovietGroup);
         this.createSpawnPoints();
-        var scout = this.getSovietSpawnPoint();
+        //var scout = this.getSovietSpawnPoint();
 
-        this.addToGroup(americanGroup, 16, game.world.centerX - 100, game.world.centerY, 4);
-        this.addToGroup(sovietGroup, 1, 800, 800, 1);
+        this.addToGroup(americanGroup, 4, game.world.centerX - 100, game.world.centerY, 4);
+        this.addToGroup(sovietGroup, 4, 800, 800, 1);
 
     },
 

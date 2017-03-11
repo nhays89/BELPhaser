@@ -70,7 +70,7 @@ Soldier.prototype.shoot = function (enemy) {
 
         this.cooldowns['weapon'] = true;
         this.isShooting = true;
-        game.time.events.add(1000, function() {
+        game.time.events.add(1000, function () {
             this.isShooting = false;
         }, this);
 
@@ -157,41 +157,29 @@ Soldier.prototype.updateNearbyEnemies = function () {
 
     // for debugging view distance
     playState.viewCircle.setTo(this.x, this.y, viewDiameter);
-//    this.enemiesInViewRadius.removeAll();
-//    this.enemiesInAttackRadius.removeAll();
     this.enemiesInAttackRadius = [];
     this.enemiesInViewRadius = [];
-    var found = playState.quadTree.retrieve(playState.viewSprite);
-//     if(this instanceof American) {
-//         found = game.world.getByName("soviets").children;
-//     }
+
+    var found = [];
+    if (this instanceof American) {
+        found = game.world.getByName('soviets').children;
+    } else {
+        found = game.world.getByName('americans').children;
+    }
     var distance;
     var length = found.length;
 
     for (var i = 0; i < length; i++) {
+        // if enemy
+        if (found[i].alive && (this instanceof American && found[i] instanceof Soviet ||
+            this instanceof Soviet && found[i] instanceof American)) {
+            distance = Phaser.Math.distance(this.x, this.y,
+                found[i].x, found[i].y);
 
-        // game.physics.arcade.collide(this.body, found[i].body);
-        if (found[i].sprite) { //if a body with a sprite
-
-
-            // if enemy
-            if (found[i].sprite.alive && (this instanceof American && found[i].sprite instanceof Soviet ||
-                this instanceof Soviet && found[i].sprite instanceof American)) {
-                distance = Phaser.Math.distance(this.x, this.y,
-                    found[i].x, found[i].y);
-
-                if (distance <= this.attackRadius) {
-                    // this.enemiesInAttackRadius.add(found[i].sprite);
-                    this.enemiesInAttackRadius.push(found[i].sprite);
-                    //                 if (!this.cooldowns['weapon']) {
-                    //                     this.shoot(found[i]);
-                    //                 }
-                } else if (distance <= this.viewRadius) {
-                    // walk closer
-                    // this.moveTo(found[i].sprite.x, found[i].sprite.y);
-//                     this.enemiesInViewRadius.add(found[i].sprite);
-                    this.enemiesInViewRadius.push(found[i].sprite);
-                }
+            if (distance <= this.attackRadius) {
+                this.enemiesInAttackRadius.push(found[i]);
+            } else if (distance <= this.viewRadius) {
+                this.enemiesInViewRadius.push(found[i]);
             }
         }
     }
@@ -279,11 +267,11 @@ Soldier.prototype.step = function () {
     var nextCoord = this.currentPath[0]; //destinationCoord
 
 
-
     if (nextCoord && this.anchorCoord) {//if we have an anchorCoord and still have a destinationCoord
         var currentCoord = { x: this.body.x, y: this.body.y };
         //console.log(Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y));
-        if ((Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y) >= this.anchorCoord.distance)) { //if we have arrived at destination coord or gone slightly past
+        var distance = Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y);
+        if ((distance >= this.anchorCoord.distance)) { //if we have arrived at destination coord or gone slightly past
             var currentDirection = this.anchorCoord.direction;
             this.anchorCoord = this.currentPath.shift();//set our new anchorCoord = to the next coord
             if (!this.anchorCoord.direction) {//reached final destinationCoord
