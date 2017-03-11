@@ -4,14 +4,11 @@ function Soldier(game, x, y, key) {
     this.game.physics.p2.enable(this);
 
     this.body.radius = 16;
-    //  this.body.debug = true;
     this.body.collideWorldBounds = true;
     this.body.setCircle(this.body.radius);
     this.body.damping = .999999999999;
     this.body.fixedRotation = true;
     this.currentPath = [];
-//     this.enemiesInViewRadius = new Phaser.Group(game, null, "enemiesInViewRadius");
-//     this.enemiesInAttackRadius = new Phaser.Group(game, null, "enemiesInAttackRadius");
     this.enemiesInViewRadius = [];
     this.enemiesInAttackRadius = [];
     this.targetEnemy = null;
@@ -39,18 +36,8 @@ function Soldier(game, x, y, key) {
         soldier.die();
     }, this);
 
-    // this.bulletSplash = game.add.sprite(0, 0, 'bulletSplash');
-    // this.bulletSplash.anchor.setTo(0.5, 0.5);
-    // this.sprite.addChild(this.bulletSplash);
-    // this.bulletSplash.animations.add('bulletSplash');
-
     this.weaponCooldownDuration = 750;
     this.shootAnimation = {};
-
-    this.pathDebug = game.add.graphics(0, 0);
-    this.pathDebug.on = true;
-    this.currentPath = [];
-    this.tween = game.add.tween(this);
 };
 
 Soldier.prototype = Object.create(Body.prototype);
@@ -58,10 +45,6 @@ Soldier.prototype.constructor = Soldier;
 
 
 Soldier.prototype.shoot = function (enemy) {
-    // if (!this.bulletSplash) {
-    //     this.bulletSplash = game.add.sprite(0, 0, 'bulletSplash');
-    //     this.bulletSplash.animations.add('bulletSplash');
-    // }
     var radians = game.physics.arcade.angleBetween(this, enemy);
     this.direction = this.getDirection(radians);
 
@@ -114,10 +97,6 @@ Soldier.prototype.die = function () {
     }
     this.animations.stop();
     this.animations.play(this.key + '-die-' + deathDir);
-
-    this.body.immovable = true;
-    this.body.moves = false;
-
     game.time.events.add(7000, function () {  //remove from world in 7000 millis
         this.destroy();
     }, this);

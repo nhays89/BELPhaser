@@ -24,7 +24,7 @@ var loadState = {
         //load ui
         game.load.image('minimap_frame', 'assets/ui/minimap_silver.png');
         game.load.image('info_panel', 'assets/ui/info_panel_silver.png');
-        game.load.image('pause_menu', 'assets/ui/menu.png');
+        game.load.image('menu', 'assets/ui/menu.png');
         game.load.spritesheet('button', 'assets/ui/button_silver.png');
         game.load.image('minimap_image', 'assets/map/bel-map.png');
     },
