@@ -355,8 +355,7 @@ var playState = {
 
             var americanEvent = game.time.events.add(1000, function () {
                 var americans = game.world.getByName('americans');
-
-                playState.addToGroup(americans, 2, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
+                playState.addToGroup(americans, 1, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
             }, this);
 
         }
@@ -370,7 +369,6 @@ var playState = {
             americans.forEachAlive(function (american) {
                 american.update();
             }, this);
-            americans.sort();
         } else {
             //create more soon or game over
         }
@@ -379,7 +377,6 @@ var playState = {
                 // console.log(soviet.alive);
                 soviet.update();
             }, this);
-            soviets.sort();
         } else {
             //create more soon or game over
         }
@@ -454,11 +451,11 @@ var playState = {
     },
 
 
-    createGameObjects: function () {
+     createGameObjects: function () {
 
         this.clockTicks = 0;
-        this.spawnInterval = 40; //every so many seconds spawn soldiers
-        this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
+        this.spawnInterval = 60; //every so many seconds spawn soldiers
+        this.spawnSovietCount = 6; //this number + 1 is how many soldiers will spawn at each spawn interval
 
         this.level = 0;
         this.levelInterval = 60;
@@ -484,7 +481,7 @@ var playState = {
         this.createSpawnPoints();
         var scout = this.getSovietSpawnPoint();
 
-        this.addToGroup(americanGroup, 2, this.americanSpawnPoint.x, this.americanSpawnPoint.y, 4);
+        this.addToGroup(americanGroup, 6, this.americanSpawnPoint.x, this.americanSpawnPoint.y, 3);
         this.addToGroup(sovietGroup, 1, 800, 800, 1);
 
     },
@@ -539,26 +536,22 @@ var playState = {
         if (group) {
             if (game.input.mousePointer.leftButton.isDown) {
                 group.forEach(function (member) {
-                    var wasSelectedPreviously = member.selected;
-                    var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
+                    if(member.alive) {
 
-                    if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
-                        return;
-                    } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
-                        member.removeBodyRing();
-                    } else if (!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
-                        member.setBodyRing();
-                    }
+                        var wasSelectedPreviously = member.selected;
+                        var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
+
+                        if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
+                            return;
+                        } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
+                            member.removeBodyRing();
+                        } else if (!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
+                            member.setBodyRing();
+                        }
+                     }
                 }, this);
             }
         }
-    },
-
-    showGameOver: function() {
-        var minutes = Math.floor(this.elapsedTimer.seconds / 60);
-        var seconds = Math.floor(this.elapsedTimer.seconds % 60);
-
-        game.state.start('menu', true, false, 'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.');
     },
 
     onLeftButtonUp : function (pointer, mouseEvent) {

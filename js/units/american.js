@@ -43,16 +43,19 @@ American.prototype.constructor = American;
 //only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
 if(this.health <= 0) {
+    this.removeBodyRing();
+    console.log("in here outside");
     if(this.alive) {
+        console.log("in here");
         this.currentPath = [];
+        this.body.destroy();
         this.enemiesInAttackRadius = []; //clear
         this.enemiesInViewRadius = []; //clear
         this.ignoreEnemies = false;
-
         if(this.selected) {
             this.removeBodyRing();
         }
-
+        this.selected = false;
         this.alive = false;
         playState.numOfAmericans--;
         this.die(); //removed from group in 7000 millis
