@@ -43,7 +43,7 @@ American.prototype.constructor = American;
 //only objects that are 'alive' will be called in this function
 American.prototype.update = function() {
 if(this.health <= 0) {
-    if(!this.alive) {
+    if(this.alive) {
         this.currentPath = [];
         this.enemiesInAttackRadius = []; //clear
         this.enemiesInViewRadius = []; //clear
@@ -122,6 +122,14 @@ if(this.health <= 0) {
              }
                 this.step();
           } else {
+              if(this.targetEnemy) {
+                  if(this.currentPath.length > 0) {//if empty
+                  var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y)); // sets currentPath implictly
+                     if(path.length > 0) {//if there is a path -
+                        this.addPath(path); //add to currentPath
+                     }
+                  }
+              }
               this.step(); //keep moving or standing while on the lookout for enemies
           }
       }
