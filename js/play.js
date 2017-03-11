@@ -450,10 +450,10 @@ var playState = {
         sovietGroup.classType = Soviet;
         game.world.add(sovietGroup);
         this.createSpawnPoints();
-        //var scout = this.getSovietSpawnPoint();
+        var scout = this.getSovietSpawnPoint();
 
-        this.addToGroup(americanGroup, 4, game.world.centerX - 100, game.world.centerY, 4);
-        this.addToGroup(sovietGroup, 4, 800, 800, 1);
+        this.addToGroup(americanGroup, 8, game.world.centerX - 100, game.world.centerY, 4);
+        this.addToGroup(sovietGroup, 1, 800, 800, 1);
 
     },
 
