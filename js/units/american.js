@@ -44,9 +44,7 @@ American.prototype.constructor = American;
 American.prototype.update = function() {
 if(this.health <= 0) {
     this.removeBodyRing();
-    console.log("in here outside");
     if(this.alive) {
-        console.log("in here");
         this.currentPath = [];
         this.body.destroy();
         this.enemiesInAttackRadius = []; //clear
