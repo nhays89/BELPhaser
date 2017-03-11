@@ -44,9 +44,7 @@ American.prototype.constructor = American;
 American.prototype.update = function() {
 if(this.health <= 0) {
     this.removeBodyRing();
-    console.log("in here outside");
     if(this.alive) {
-        console.log("in here");
         this.currentPath = [];
         this.body.destroy();
         this.enemiesInAttackRadius = []; //clear
@@ -157,8 +155,10 @@ if(this.health <= 0) {
                  if(path.length > 0) {//if there is a path -
                     this.addPath(path); //add to currentPath
                   } 
+                } else {
+                    this.ignoreEnemies = false; //reset
                 }
-                this.ignoreEnemies = false; //reset
+                
 
             }   
             this.step(); //stand gaurd or keep running towards destination

@@ -26,7 +26,7 @@ function Soldier(game, x, y, key) {
     this.direction = 'south';
     this.currentSpeed;
     this.pixelsPerSecond = 100;
-    this.maxRetryDistance = 300;
+    this.maxRetryDistance = 40;
     this.cooldowns = {
         'weapon': false
     };
