@@ -1,7 +1,6 @@
 function Soviet(game, x, y) {
     Soldier.call(this, game, x, y, 'soviet');
     this.type = "Soviet";
-    this.viewRadius 
     this.animations.add('soviet-stand-north', ['soviet-stand-north'], 1, false, false);
     this.animations.add('soviet-stand-northwest', ['soviet-stand-northwest'], 1, false, false);
     this.animations.add('soviet-stand-west', ['soviet-stand-west'], 1, false, false);
@@ -36,7 +35,7 @@ function Soviet(game, x, y) {
     this.animations.add('soviet-die-east', Phaser.Animation.generateFrameNames('soviet-die-east', 0, 14), 14, false, false);
     this.animations.add('soviet-dead-east', Phaser.Animation.generateFrameNames('soviet-dead-east', 14, 14), 1, true, false);
 
-    this.viewRadius = 450;
+    this.viewRadius = 600;
     this.health = 100;
 }
 
@@ -50,7 +49,7 @@ if(this.health <= 0) {
         this.currentPath = [];
         this.enemiesInAttackRadius = []; //clear
         this.enemiesInViewRadius = []; //clear
-
+        this.body.destroy();
         this.alive = false;
         playState.numOfSoviets--;
         this.die(); //removed from group in 7000 millis

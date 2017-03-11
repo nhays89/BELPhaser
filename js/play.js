@@ -301,7 +301,8 @@ var playState = {
             var americanEvent = game.time.events.add(1000, function() {
                 var americans = game.world.getByName('americans');
                 
-                playState.addToGroup(americans, 2, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
+                playState.addToGroup(americans, 1, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
+               
             }, this);
 
         }
@@ -357,6 +358,12 @@ var playState = {
             this.quadTree.insert(soldier.body);
             soldier.name = soldier.key;
         }
+        if(soldier instanceof American) {
+
+        }
+
+
+
     },
 
     createMap: function () {
@@ -394,8 +401,8 @@ var playState = {
      createGameObjects: function () {
 
         this.clockTicks = 0;
-        this.spawnInterval = 40; //every so many seconds spawn soldiers
-        this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
+        this.spawnInterval = 60; //every so many seconds spawn soldiers
+        this.spawnSovietCount = 6; //this number + 1 is how many soldiers will spawn at each spawn interval
 
         this.level = 1;
         this.levelInterval = 300;
@@ -476,16 +483,19 @@ var playState = {
         if (group) {
             if (game.input.mousePointer.leftButton.isDown) {
                 group.forEach(function (member) {
-                    var wasSelectedPreviously = member.selected;
-                    var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
+                    if(member.alive) {
 
-                    if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
-                        return;
-                    } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
-                        member.removeBodyRing();
-                    } else if (!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
-                        member.setBodyRing();
-                    }
+                        var wasSelectedPreviously = member.selected;
+                        var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
+
+                        if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
+                            return;
+                        } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
+                            member.removeBodyRing();
+                        } else if (!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
+                            member.setBodyRing();
+                        }
+                     }
                 }, this);
             }
         }
