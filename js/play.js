@@ -90,7 +90,7 @@ var playState = {
 
     createGameTimer: function () {
         game.time.events.loop(1000, function () {    //fires every second until the game is over
-            // this.updateGameTimer();
+            this.updateGameTimer();
         }, this);
     },
 
@@ -427,7 +427,7 @@ var playState = {
     createGameObjects: function () {
 
         this.clockTicks = 0;
-        this.spawnInterval = 60; //every so many seconds spawn soldiers
+        this.spawnInterval = 40; //every so many seconds spawn soldiers
         this.spawnSovietCount = 2; //this number + 1 is how many soldiers will spawn at each spawn interval
 
         this.level = 1;
