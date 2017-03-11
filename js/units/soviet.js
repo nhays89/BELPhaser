@@ -71,6 +71,7 @@ if(this.health <= 0) {
 
     if(this.targetEnemy) {
         if(this.enemiesInAttackRadius.includes(this.targetEnemy)) {
+          this.currentPath = [];
           this.shoot(this.targetEnemy);
         } else if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
           this.currentPath = [];
