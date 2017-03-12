@@ -166,8 +166,8 @@ if(this.health <= 0) {
    }
 
    if(this.finalDestination) {//if we haven't reached our desination
-       if(this.currentPath.length === 0) {
-           if(!this.targetEnemy) {
+       if(this.currentPath.length === 0) {//but we have no coords on our stack
+           if(!this.targetEnemy) {//we don't have a target enemy
               if(Phaser.Math.distance(this.body.x, this.body.y, this.finalDestination.x, this.finalDestination.y) > this.maxRetryDistance) {
                  var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.finalDestination.x, this.finalDestination.y)); // sets currentPath implictly
                  if(path.length > 0) {//if there is a path -
