@@ -11,10 +11,12 @@ var playState = {
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },
 
+
     create: function () {
+        this.createAudio();
         this.createMap();
         this.createGameObjects();
-
+        
         this.setupUI();
         this.setupInput();
         this.setupPauseMenu();
@@ -26,6 +28,38 @@ var playState = {
         this.updateSelectionRect();
         this.updateSelectedGroup(game.world.getByName("americans"));
         this.updateGameObjects();
+    },
+
+    createAudio: function() {
+       this.audioClips = {};
+       this.audioClips['american-gun-shot'] = game.add.audio('american-gun-shot');
+       this.audioClips['american-gun-shot'].volume = .3;
+       this.audioClips['american-march'] = game.add.audio("american-march");
+       this.audioClips['american-march'].volume = .1;
+       this.audioClips['soviet-gun-shot'] = game.add.audio("soviet-gun-shot");
+       this.audioClips['soviet-gun-shot'].volume = .3;
+       this.audioClips.intro = game.add.audio("intro");
+       this.audioClips.bombs = game.add.audio("bombs");
+       this.audioClips['soviet-dying'] = game.add.audio('soviet-dying');
+       this.audioClips['soviet-dying'].volume = .2;
+       this.audioClips['american-dying'] = game.add.audio('american-dying');
+       this.audioClips['american-dying'].volume = 1;
+       this.audioClips['intro-dramatic-effect'] = game.add.audio('intro-dramatic-effect');
+       this.audioClips.moveBeep = game.add.audio("move-beep");
+       this.audioClips.killBeep = game.add.audio('kill-beep');
+       this.audioClips.roger = game.add.audio('roger');
+       this.audioClips['intro-dramatic-effect'].onDecoded.add(function() {
+           this.audioClips['intro-dramatic-effect'].play();
+           this.audioClips['intro-dramatic-effect'].onStop.add(function() {
+               this.audioClips.bombs.play(undefined, 0,1, true);
+           }, this);
+       },this);
+       this.audioClips.intro.onDecoded.add(function() {
+               this.audioClips.intro.play();
+       },this);
+      
+
+
     },
 
     setupUI: function () {
@@ -339,7 +373,8 @@ var playState = {
             ((levelSeconds > 9) ? ':' + levelSeconds : ':0' + levelSeconds);
 
         //every 'spawnInterval' seconds create a soviet
-        if (this.clockTicks % this.spawnInterval === 0) {//can be adjusted depending on when we want soldiers to arrive
+        if (this.clockTicks % this.spawnInterval === 0) {//can be adjusted depending on when we want soldiers to arrive'
+            this.audioClips.bombs.play();
             //spawn this event
             var sovietEvent = game.time.events.add(1000, function () {
 
@@ -365,6 +400,7 @@ var playState = {
 
         var americans = game.world.getByName("americans");
         var soviets = game.world.getByName("soviets");
+
         if (americans) {
             americans.forEachAlive(function (american) {
                 american.update();
@@ -381,18 +417,6 @@ var playState = {
             //create more soon or game over
         }
         game.input.mousePointer.rightButton.reset(); //resets to right button up after every update
-    },
-
-    //used to offset coords for groups (not needed atm)
-    resetCoords: function (groupName) {
-
-        game.world.getByName(groupName).children.forEach(function (child) {
-            child.x = child.x + this.spawnPoint.x; //reset relative to top left corner
-            child.y = child.y + this.spawnPoint.y; //reset relative to top left corner
-            child.body.x = child.x;
-            child.body.y = child.y;
-        }, this);
-
     },
 
     addToGroup: function (group, num, x, y, numCols) {
@@ -533,14 +557,17 @@ var playState = {
 
     //@param - Phaser.Group - each member of the group must have a physics body
     updateSelectedGroup: function (group) {
+
         if (group) {
+            
             if (game.input.mousePointer.leftButton.isDown) {
+                this.numSelected = 0;
                 group.forEach(function (member) {
                     if(member.alive) {
 
                         var wasSelectedPreviously = member.selected;
                         var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
-
+                        if(nowSelected) this.numSelected++;
                         if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
                             return;
                         } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
