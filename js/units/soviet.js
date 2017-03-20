@@ -37,6 +37,7 @@ function Soviet(game, x, y) {
 
     this.viewRadius = 600;
     this.health = 100;
+    this.fullHealth = 100;
 }
 
 
@@ -57,12 +58,20 @@ if(this.health <= 0) {
     
 } else {
 
-    this.updateNearbyEnemies(); //removes dead soldiers 
+    this.updateNearbyEnemies(); //removes dead soldiers and gets nearby enemies
 
      if(this.targetEnemy) {
         if(!(this.targetEnemy.alive)) {//if we had a targetEnemy but he is dead
             this.currentPath = []; //reset
             this.targetEnemy = null; //reset
+             if(this.isShooting) {//if we are shooting but our enemy is dead
+                if(playState.audioClips[this.key + '-gun-shot'].isPlaying) {
+                    playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
+                }
+               if(this.shootAnimation.isPlaying) {
+                    this.shootAnimation.stop();
+                }
+            }
         }
     }
 

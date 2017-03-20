@@ -2,7 +2,7 @@ function Soldier(game, x, y, key) {
     Body.call(this, game, x, y, key);
 
     this.game.physics.p2.enable(this);
-
+    this.gunReady = false;
     this.body.radius = 16;
     this.body.collideWorldBounds = true;
     this.body.setCircle(this.body.radius);
@@ -26,16 +26,11 @@ function Soldier(game, x, y, key) {
     this.direction = 'south';
     this.currentSpeed;
     this.pixelsPerSecond = 100;
-    this.maxRetryDistance = 150; //distance around destinationCoord to retry path algo if stuck
+    this.maxRetryDistance = 250; //distance around destinationCoord to retry path algo if stuck
     this.cooldowns = {
         'weapon': false
     };
-    this.events.onKilled.add(function (soldier) {
-        soldier.selected = false;
-        soldier.alive = false;
-        soldier.die();
-    }, this);
-
+    this.bodyRingColor;
     this.weaponCooldownDuration = 750;
     this.shootAnimation = {};
 };
@@ -49,7 +44,14 @@ Soldier.prototype.shoot = function (enemy) {
     this.direction = this.getDirection(radians);
 
     if (!this.cooldowns['weapon']) {
-        this.shootAnimation = this.animations.play(this.key + '-fire-' + this.direction, 6, true);
+            this.shootAnimation = this.animations.play(this.key + '-fire-' + this.direction, 6, true);
+            if(this.key === "american") {
+                playState.audioClips[this.key + "-gun-shot"].volume = .2;
+            } else {
+                playState.audioClips[this.key + "-gun-shot"].volume = .3;
+            }
+            playState.audioClips[this.key + "-gun-shot"].play();
+                    
         //enemy.bulletSplash.animations.play('bulletSplash');
 
         this.cooldowns['weapon'] = true;
@@ -63,7 +65,11 @@ Soldier.prototype.shoot = function (enemy) {
         }, this);
 
         enemy.health -= this.damage;
-    }
+    } 
+};
+
+Soldier.prototype.setGunReady = function() {
+    this.gunReady = true;
 };
 
 
@@ -97,6 +103,11 @@ Soldier.prototype.die = function () {
     }
     this.animations.stop();
     this.animations.play(this.key + '-die-' + deathDir);
+    playState.audioClips[this.key + "-dying"].play();
+    if(playState.audioClips[this.key + '-gun-shot'].isPlaying) {
+            playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
+    }
+
     game.time.events.add(7000, function () {  //remove from world in 7000 millis
         this.destroy();
     }, this);
@@ -123,11 +134,6 @@ Soldier.prototype.getDirection = function (radians) {
         return 'west';
     }
 };
-
-
-Soldier.prototype.updateClosestEnemy = function () {
-    this.closestEnemy = this.enemiesInAttackRadius.getClosestTo(this);
-}
 
 
 Soldier.prototype.updateNearbyEnemies = function () {
@@ -217,6 +223,7 @@ Soldier.prototype.generateRandCoord = function () {
 Soldier.prototype.stand = function () {
     this.currentPath = [];
     // this.animations.stop();
+   
     this.animations.play(this.key + '-stand-' + this.direction);
 };
 
@@ -258,7 +265,10 @@ Soldier.prototype.step = function () {
                 this.anchorCoord.direction = currentDirection;
             }
         }
-
+        if(!playState.audioClips['american-march'].isPlaying && this instanceof American) {
+            
+            playState.audioClips['american-march'].play();
+        }
         this.animations.play(this.key + '-run-' + this.anchorCoord.direction);
         if (this.anchorCoord.direction === 'north') {
             this.direction = 'north';

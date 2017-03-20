@@ -32,7 +32,7 @@ function American(game, x, y) {
 
     this.animations.add('american-die-west', Phaser.Animation.generateFrameNames('american-die-west', 0, 14), 14, false, false);
     this.animations.add('american-die-east', Phaser.Animation.generateFrameNames('american-die-east', 0, 14), 14, false, false);
-
+    this.fullHealth = 200;
     this.health = 200;
 }
 
@@ -66,9 +66,17 @@ if(this.health <= 0) {
             this.targetEnemy = null; //reset
             this.ignoreEnemies = false; //reset
             this.finalDestination = null;
+            if(this.isShooting) {//if we are shooting but our enemy is dead
+                if(playState.audioClips[this.key + '-gun-shot'].isPlaying) {
+                    playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
+                }
+                if(this.shootAnimation.isPlaying) {
+                    this.shootAnimation.stop();
+                }
+            }
         }
     }
-    if(this.currentPath.length === 0) {// we have reached our destination
+    if(this.currentPath.length === 0 && !this.finalDestination) {// we have reached our destination
         if(!this.targetEnemy) {
              this.ignoreEnemies = false;
         }
@@ -82,6 +90,7 @@ if(this.health <= 0) {
 
     if(game.input.mousePointer.rightButton.isDown) {//if user right clicked
         if(this.selected) {//and we are selected
+            this.maxRetryDistance = playState.numSelected * 40;
            // this.selected = false; //reset
             this.removeBodyRing(); //reset
             var destinationPoint;
@@ -89,9 +98,14 @@ if(this.health <= 0) {
             if(targetEnemyNearClick) {//if user clicked near enemy
                 this.targetEnemy = targetEnemyNearClick;
                 this.ignoreEnemies = true; //don't kill enemies along the way 
+                playState.audioClips.killBeep.volume = .5;
+                playState.audioClips.killBeep.play();
+                playState.audioClips.roger.play();
                 destinationPoint = new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y); //destination is the enemy soldier   
                // this.finalDestination = destinationPoint;       
             } else {//user clicked in space
+             playState.audioClips.moveBeep.volume = .5;
+                playState.audioClips.moveBeep.play();
                if(this.enemiesInAttackRadius.length > 0 || this.enemiesInViewRadius.length > 0) { //we are trying to retreat
                    this.ignoreEnemies = true;//don't attack enemies on our way out (sets back to false when we reach destination)
                } else {
@@ -104,9 +118,7 @@ if(this.health <= 0) {
             var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(destinationPoint.x, destinationPoint.y)); // sets currentPath implictly
                if(path.length > 0) {//if there is a path -
                 this.addPath(path);
-               } else {
-                //console.log("in rightButton is down user clicked in space");
-               }
+               } 
         }
     }   
 
@@ -147,6 +159,7 @@ if(this.health <= 0) {
     } else {//we are currently ignoring enemies
         if(this.targetEnemy && this.enemiesInAttackRadius.includes(this.targetEnemy)) {//if we have a targetEnemy and he is nearby
             this.finalDestination = null;
+            this.currentPath = [];//added
             this.shoot(this.targetEnemy); 
         } else { //our targetEnemy is not in our attack radius
             if (this.currentPath.length === 0) {//reached our destination

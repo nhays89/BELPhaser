@@ -13,6 +13,7 @@ var menuState = {
     preload: function () {
         //  Load the Google WebFont Loader script
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+        
     },
     create: function () {
         var nameLabel = game.add.text(80, 80, 'Behind Enemy Lines',
