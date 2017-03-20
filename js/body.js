@@ -17,7 +17,7 @@ function Body(game, x, y, key) {
 Body.prototype = Object.create(Phaser.Sprite.prototype);
 Body.prototype.constructor = Body;
 
-// @Alex - pulled his source code
+
 // @param - the selection rectangle to check against
 
 Body.prototype.isSelected = function(rect) {
@@ -43,51 +43,33 @@ Body.prototype.isSelected = function(rect) {
             this.selected = false;
         }
         return this.selected;
-        
-        //arcade anchor in top left
-//     var myLeft = this.body.x;
-//     var myRight = this.body.x + 50;
-//     var myTop = this.body.y;
-//     var myBottom = this.body.y + 50;
-
-//     var rectLeft = rect.x;
-//     var rectRight = rect.x + rect.width;
-//     var rectTop = rect.y;
-//     var rectBottom = rect.y + rect.height;
-
-        //if the selection rectangle covers my anchor x,y || I contain the selection's top left x,y
-//         if(myLeft >= rectLeft && myLeft <= rectRight && myTop >= rectTop && myTop <= rectBottom ||
-//         rectLeft >= myLeft && rectLeft <= myRight && rectTop >= myTop && rectTop <= myBottom) {
-//             this.selected = true;
-//         } else {
-//             this.selected = false;
-//         }
-//         return this.selected;
-            //revised for p2 anchor in center
-        
-
-        
-
-        
 }
     
 
-Body.prototype.toggleSelected = function() {
-    !(this.selected);
-}
-
 Body.prototype.setBodyRing = function() {
-
-    this.myGraphicsCanvas.lineStyle(1, 0x80ff00, 1);
-    // var scale = 1.25;
-    // var offsetPercent = .5;
-    // var widthoffset = this.width * offsetPercent;
-    // var heightoffset = this.height * offsetPercent;
+    this.setBodyRingColor();
+    this.myGraphicsCanvas.lineStyle(1, this.bodyRingColor, 1);
     this.myGraphicsCanvas.drawCircle(this.body.x, this.body.y, this.radius * 3);
     game.world.add(this.myGraphicsCanvas);
 
 }
 
+//sets color of body ring on the selected unit
+Body.prototype.setBodyRingColor = function() {
+    var maxHealth = this.fullHealth;
+    var percentHealthy = this.health /maxHealth;
+    if(percentHealthy === 1) {
+        this.bodyRingColor = 0x7fff00;
+    } else if(percentHealthy >= .75) {
+        this.bodyRingColor = 0xdfff00;
+    } else if(percentHealthy >= .5) {
+        this.bodyRingColor = 0xffff00;
+    } else if(percentHealthy >=.25) {
+        this.bodyRingColor = 0xff3333;
+    } else {
+        this.bodyRingColor = 0x8a0707;
+    }
+}
 
 Body.prototype.removeBodyRing = function() {
 
