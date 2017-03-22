@@ -2,31 +2,30 @@
 
 /*
 
-Any object that has a Phaser.Physics.Arcarde.Body
+Any object that has a Phaser.Physics.P2.Body
 
 */
 
 function Body(game, x, y, key) {
     Phaser.Sprite.call(this, game, x, y, key);
-    // game.add.existing(this);
     this.myGraphicsCanvas = new Phaser.Graphics(game, 0, 0);
-
-    this.radius = 15;
 }
 
-Body.prototype = Object.create(Phaser.Sprite.prototype);
+Body.prototype = Object.create(Phaser.Sprite.prototype); //body inherits from Phaser.Sprite
 Body.prototype.constructor = Body;
 
+/**
+    Determines if a body is 'selected' by checking if its bounds overlap a given rectangle's bounds.
 
-// @param - the selection rectangle to check against
-
+    @param rect - the selection rectangle to check this body against
+*/
 Body.prototype.isSelected = function(rect) {
         //p2 anchor in center
         
-        var myLeft = this.body.x - this.radius;
-        var myRight = this.body.x + this.radius;
-        var myTop = this.body.y - this.radius;
-        var myBottom = this.body.y + this.radius;
+        var myLeft = this.body.x - this.body.radius;
+        var myRight = this.body.x + this.body.radius;
+        var myTop = this.body.y - this.body.radius;
+        var myBottom = this.body.y + this.body.radius;
 
         var rectLeft = rect.x;
         var rectRight = rect.x + rect.width;
@@ -45,16 +44,20 @@ Body.prototype.isSelected = function(rect) {
         return this.selected;
 }
     
-
+/**
+    Sets the body ring around the body
+*/
 Body.prototype.setBodyRing = function() {
     this.setBodyRingColor();
     this.myGraphicsCanvas.lineStyle(1, this.bodyRingColor, 1);
-    this.myGraphicsCanvas.drawCircle(this.body.x, this.body.y, this.radius * 3);
+    this.myGraphicsCanvas.drawCircle(this.body.x, this.body.y, this.body.radius * 3);
     game.world.add(this.myGraphicsCanvas);
 
 }
 
-//sets color of body ring on the selected unit
+/**
+    Sets the color of body ring on the selected unit
+*/
 Body.prototype.setBodyRingColor = function() {
     var maxHealth = this.fullHealth;
     var percentHealthy = this.health /maxHealth;
@@ -70,6 +73,10 @@ Body.prototype.setBodyRingColor = function() {
         this.bodyRingColor = 0x8a0707;
     }
 }
+
+/**
+    Removes the body ring.
+*/
 
 Body.prototype.removeBodyRing = function() {
 

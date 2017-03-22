@@ -5,64 +5,78 @@ WebFontConfig = {
 };
 
 var text = null;
+/**
+    Main state to execute animation loop.
+*/
+
+
 var playState = {
-    preload: function () {
+    preload: function() {
         //  Load the Google WebFont Loader script
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     },
 
-
-    create: function () {
+    /**
+        Create all necessary game objects.
+    */
+    create: function() {
         this.createAudio();
         this.createMap();
         this.createGameObjects();
-        
         this.setupUI();
         this.setupInput();
         this.setupPauseMenu();
         this.createGameTimer();
     },
 
-    update: function () {
+    /**
+        Called every animation frame by Phaser.
+    */
+    update: function() {
         this.detectCameraMove();
         this.updateSelectionRect();
         this.updateSelectedGroup(game.world.getByName("americans"));
         this.updateGameObjects();
     },
 
+    /**
+        Loads the sound files into the game. 
+    */
     createAudio: function() {
-       this.audioClips = {};
-       this.audioClips['american-gun-shot'] = game.add.audio('american-gun-shot');
-       this.audioClips['american-gun-shot'].volume = .3;
-       this.audioClips['american-march'] = game.add.audio("american-march");
-       this.audioClips['american-march'].volume = .1;
-       this.audioClips['soviet-gun-shot'] = game.add.audio("soviet-gun-shot");
-       this.audioClips['soviet-gun-shot'].volume = .3;
-       this.audioClips.intro = game.add.audio("intro");
-       this.audioClips.bombs = game.add.audio("bombs");
-       this.audioClips['soviet-dying'] = game.add.audio('soviet-dying');
-       this.audioClips['soviet-dying'].volume = .2;
-       this.audioClips['american-dying'] = game.add.audio('american-dying');
-       this.audioClips['american-dying'].volume = 1;
-       this.audioClips['intro-dramatic-effect'] = game.add.audio('intro-dramatic-effect');
-       this.audioClips.moveBeep = game.add.audio("move-beep");
-       this.audioClips.killBeep = game.add.audio('kill-beep');
-       this.audioClips.roger = game.add.audio('roger');
-       this.audioClips['intro-dramatic-effect'].onDecoded.add(function() {
-           this.audioClips['intro-dramatic-effect'].play();
-           this.audioClips['intro-dramatic-effect'].onStop.add(function() {
-               this.audioClips.bombs.play(undefined, 0,1, true);
-           }, this);
-       },this);
-       this.audioClips.intro.onDecoded.add(function() {
-               this.audioClips.intro.play();
-       },this);
-      
-
+        this.audioClips = {};
+        this.audioClips['american-gun-shot'] = game.add.audio('american-gun-shot');
+        this.audioClips['american-gun-shot'].volume = .3;
+        this.audioClips['american-march'] = game.add.audio("american-march");
+        this.audioClips['american-march'].volume = .1;
+        this.audioClips['soviet-gun-shot'] = game.add.audio("soviet-gun-shot");
+        this.audioClips['soviet-gun-shot'].volume = .3;
+        this.audioClips.intro = game.add.audio("intro");
+        this.audioClips.bombs = game.add.audio("bombs");
+        this.audioClips['soviet-dying'] = game.add.audio('soviet-dying');
+        this.audioClips['soviet-dying'].volume = .2;
+        this.audioClips['american-dying'] = game.add.audio('american-dying');
+        this.audioClips['american-dying'].volume = 1;
+        this.audioClips['intro-dramatic-effect'] = game.add.audio('intro-dramatic-effect');
+        this.audioClips.moveBeep = game.add.audio("move-beep");
+        this.audioClips.killBeep = game.add.audio('kill-beep');
+        this.audioClips.roger = game.add.audio('roger');
+        this.audioClips['intro-dramatic-effect'].onDecoded.add(function() {
+            this.audioClips['intro-dramatic-effect'].play();
+            this.audioClips['intro-dramatic-effect'].onStop.add(function() {
+                this.audioClips.bombs.play(undefined, 0, 1, true);
+            }, this);
+        }, this);
+        this.audioClips.intro.onDecoded.add(function() {
+            this.audioClips.intro.play();
+        }, this);
 
     },
 
-    setupUI: function () {
+    /**
+        Creates the minimap, selection, time. 
+
+    */
+    setupUI: function() {
         var cameraViewPort = game.camera.view;
 
         this.minimap = game.add.sprite(-16, game.canvas.height + 14, 'minimap_frame');
@@ -70,14 +84,14 @@ var playState = {
         this.minimap.y = this.minimap.y - this.minimap.height;
         this.minimap.fixedToCamera = true;
 
-        this.select = {                                     //stores data about mouse events for the rectangle selection
-            "origin"  : new Phaser.Point(),                 //origin of mouse click
-            "current" : new Phaser.Point(),                 //current mouse position
-            "topLeft" : new Phaser.Point(),                 //top left mouse position
-            "width"   : 0,                                  //rectangle width
-            "height"  : 0,                                  //rectangle height
-            "isActive": false,                              //determines if a previous point was stored
-            "rect"    : new Phaser.Graphics(game, 0, 0)
+        this.select = { //stores data about mouse events for the rectangle selection
+            "origin": new Phaser.Point(), //origin of mouse click
+            "current": new Phaser.Point(), //current mouse position
+            "topLeft": new Phaser.Point(), //top left mouse position
+            "width": 0, //rectangle width
+            "height": 0, //rectangle height
+            "isActive": false, //determines if a previous point was stored
+            "rect": new Phaser.Graphics(game, 0, 0)
         };
 
         this.minimapImg = game.add.sprite(this.minimap.x + 26, this.minimap.y + 26, 'minimap_image');
@@ -93,7 +107,9 @@ var playState = {
         this.info_panel.fixedToCamera = true;
 
         var text_style = {
-            font           : 'bold 18px Roboto', fill: '#000000', align: 'center',
+            font: 'bold 18px Roboto',
+            fill: '#000000',
+            align: 'center',
             strokeThickness: 1
         };
 
@@ -125,9 +141,15 @@ var playState = {
         pKey.onDown.add(this.pauseGame, this);
     },
 
-    showGameOver: function () {
+    /**
+        Executes on game end.
+    */
+
+    showGameOver: function() {
         var text_style = {
-            font           : 'bold 18px Roboto', fill: '#000000', align: 'center',
+            font: 'bold 18px Roboto',
+            fill: '#000000',
+            align: 'center',
             strokeThickness: 1
         };
 
@@ -144,7 +166,7 @@ var playState = {
         var seconds = Math.floor(this.elapsedTimer.seconds % 60);
 
         this.game_over_text = game.add.text(this.game_over_dialog.x, this.game_over_dialog.y,
-         'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.', text_style);
+            'Game Over: \n You lasted ' + minutes + ' minutes and ' + seconds + ' seconds.', text_style);
         this.restart_game_button_text = game.add.text(0, 0, 'RESTART', text_style);
         this.restart_game_button_text.x = this.restart_button.x + this.game_over_dialog.x + 15;
         this.restart_game_button_text.y = this.restart_button.y + this.game_over_dialog.y + 37;
@@ -158,19 +180,25 @@ var playState = {
         game.paused = true;
     },
 
-    createGameTimer: function () {
+    /**
+        Starts the game clock.
+    */
+    createGameTimer: function() {
         this.elapsedTimer = game.time.create(false);
         this.elapsedTimer.start();
 
-        game.time.events.loop(1000, function () {    //fires every second until the game is over
+        game.time.events.loop(1000, function() { //fires every second until the game is over
             this.updateGameTimer();
         }, this);
     },
 
-    setupInput: function () {
+    /**
+        Set up for input handlers.
+    */
+    setupInput: function() {
 
         // prevent browser default context menu from appearing
-        game.canvas.oncontextmenu = function (e) {
+        game.canvas.oncontextmenu = function(e) {
             e.preventDefault();
         };
 
@@ -180,7 +208,10 @@ var playState = {
         game.input.mousePointer.rightButton.onUp.add(this.onRightButtonUp, this);
     },
 
-    updateSelectionRect: function () {
+    /**
+        Updates the soldier selection area.
+    */
+    updateSelectionRect: function() {
         var mousePointer = game.input.mousePointer;
 
         if (mousePointer.leftButton.isDown) {
@@ -227,14 +258,17 @@ var playState = {
         }
     },
 
-    getNearbySoviet: function (point) {
+    /**
+        Function to get soviets adjacent to a mouse click in the game world.
+    */
+    getNearbySoviet: function(point) {
 
         var triggerDistance = 100;
         var closestSovietInRange = null;
         var closestDistance = Number.MAX_SAFE_INTEGER;
         var soviets = game.world.getByName("soviets");
         if (soviets) {
-            soviets.forEachAlive(function (soviet) {
+            soviets.forEachAlive(function(soviet) {
                 var distance = Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y);
                 if (Phaser.Math.distance(soviet.x, soviet.y, point.x, point.y) <= triggerDistance) {
                     if (distance < closestDistance) {
@@ -247,10 +281,12 @@ var playState = {
         return closestSovietInRange;
     },
 
-    render: function () {
-    },
+    render: function() {},
 
-    pauseGame: function () {
+    /**
+        Pauses the game.
+    */
+    pauseGame: function() {
         if (game.paused) {
             game.paused = false;
             this.pause_group.visible = false;
@@ -264,7 +300,10 @@ var playState = {
         }
     },
 
-    setupPauseMenu: function () {
+    /**
+        Setup the pause menu.
+    */
+    setupPauseMenu: function() {
         this.pause_group = game.add.group();
         this.pause_group.visible = false;
         this.pause_menu = game.add.sprite(0, 0, 'menu');
@@ -283,7 +322,9 @@ var playState = {
         this.restart_button.x = -(this.restart_button.width / 2);
 
         var text_style = {
-            font           : 'bold 18px Roboto', fill: '#000000', align: 'center',
+            font: 'bold 18px Roboto',
+            fill: '#000000',
+            align: 'center',
             strokeThickness: 1
         };
         this.unpause_text = game.add.text(this.unpause_button.x + 12,
@@ -300,7 +341,10 @@ var playState = {
         game.input.mouse.mouseDownCallback = this.menuHandler;
     },
 
-    menuHandler: function (event) {
+    /**
+        Handles menu state.
+    */
+    menuHandler: function(event) {
 
         if (game.paused) {
             var unpause_bounds = playState.unpause_button.getBounds();
@@ -315,7 +359,10 @@ var playState = {
         }
     },
 
-    detectCameraMove: function () {
+    /**
+        Updates the camera and minimap within the game world.
+    */
+    detectCameraMove: function() {
         var tempCamera;
 
         if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
@@ -347,8 +394,11 @@ var playState = {
         }
     },
 
-    //called every second from the start of the game
-    updateGameTimer: function () {
+    /**
+        Primarily serves to spawn soldiers, and coordinate timing of game based events. 
+        Called every second from the start of the game.
+    */
+    updateGameTimer: function() {
 
         //after levelInterval seconds increase the level
         if (Math.floor(this.elapsedTimer.seconds) % this.levelInterval === 0) {
@@ -373,10 +423,10 @@ var playState = {
             ((levelSeconds > 9) ? ':' + levelSeconds : ':0' + levelSeconds);
 
         //every 'spawnInterval' seconds create a soviet
-        if (this.clockTicks % this.spawnInterval === 0) {//can be adjusted depending on when we want soldiers to arrive'
+        if (this.clockTicks % this.spawnInterval === 0) { //can be adjusted depending on when we want soldiers to arrive'
             this.audioClips.bombs.play();
             //spawn this event
-            var sovietEvent = game.time.events.add(1000, function () {
+            var sovietEvent = game.time.events.add(1000, function() {
 
                 var soviets = game.world.getByName("soviets");
                 var coord = playState.getSovietSpawnPoint();
@@ -388,7 +438,7 @@ var playState = {
             //...each level increase will increase the number of spawned soldiers at each spawn interval
             sovietEvent.repeatCount = this.spawnSovietCount * this.level;
 
-            var americanEvent = game.time.events.add(1000, function () {
+            var americanEvent = game.time.events.add(1000, function() {
                 var americans = game.world.getByName('americans');
                 playState.addToGroup(americans, 1, this.americanSpawnPoint.x, this.americanSpawnPoint.y);
             }, this);
@@ -396,20 +446,24 @@ var playState = {
         }
     },
 
-    updateGameObjects: function () {
+
+    /** 
+        Main game loop.
+    */
+    updateGameObjects: function() {
 
         var americans = game.world.getByName("americans");
         var soviets = game.world.getByName("soviets");
 
         if (americans) {
-            americans.forEachAlive(function (american) {
+            americans.forEachAlive(function(american) {
                 american.update();
             }, this);
         } else {
             //create more soon or game over
         }
         if (soviets) {
-            soviets.forEachAlive(function (soviet) {
+            soviets.forEachAlive(function(soviet) {
                 // console.log(soviet.alive);
                 soviet.update();
             }, this);
@@ -419,7 +473,15 @@ var playState = {
         game.input.mousePointer.rightButton.reset(); //resets to right button up after every update
     },
 
-    addToGroup: function (group, num, x, y, numCols) {
+    /**
+        Adds soldiers to a Phaser.Group.
+        @param group - a Phaser.Group object.
+        @param num - number of soldiers to add to the group.
+        @param x - the x coordinate of the group.
+        @param y = the y coordinate of the group.
+        @param numCols - the number of columns to arrange the soldiers.
+    */
+    addToGroup: function(group, num, x, y, numCols) {
         var soldier;
         num = num || 1;
         numCols = numCols || 1;
@@ -443,7 +505,11 @@ var playState = {
         }
     },
 
-    createMap: function () {
+    /**
+        Creates the background from a tilemap. Collision detection on P2 polygons,
+        and pathfinder object are also setup here.  
+    */
+    createMap: function() {
         this.map = game.add.tilemap('map');
 
         this.map.addTilesetImage('tiled_collision');
@@ -474,8 +540,10 @@ var playState = {
         game.camera.y = game.world.centerY - (game.camera.height / 2);
     },
 
-
-     createGameObjects: function () {
+    /**
+        Creates soldiers and game related entities. 
+    */
+    createGameObjects: function() {
 
         this.clockTicks = 0;
         this.spawnInterval = 60; //every so many seconds spawn soldiers
@@ -509,8 +577,10 @@ var playState = {
         this.addToGroup(sovietGroup, 1, 800, 800, 1);
 
     },
-
-    createSpawnPoints: function () {
+    /**
+        Random spawn points for Soviets.
+    */
+    createSpawnPoints: function() {
         this.sovietSpawnPoints = [
             new Phaser.Rectangle(48, 48, 40, 40),
             new Phaser.Rectangle(3184, 2608, 40, 40),
@@ -524,9 +594,13 @@ var playState = {
         ];
     },
 
-    //@ Fisher-Yates shuffle algo
-    shuffle: function (array) {
-        var currentIndex = array.length, temporaryValue, randomIndex;
+    /**
+        @ Fisher-Yates shuffle algo
+        @param array - the array to shuffle
+    */
+    shuffle: function(array) {
+        var currentIndex = array.length,
+            temporaryValue, randomIndex;
 
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
@@ -544,7 +618,10 @@ var playState = {
         return array;
     },
 
-    getSovietSpawnPoint: function () {
+    /** 
+        Gets a random spawn point not in camera bounds. 
+    */
+    getSovietSpawnPoint: function() {
         this.sovietSpawnPoints = this.shuffle(this.sovietSpawnPoints);
         for (var i = 0; i < this.sovietSpawnPoints.length; i++) {
             if (!Phaser.Rectangle.intersects(this.sovietSpawnPoints[i], game.camera.view)) {
@@ -555,50 +632,62 @@ var playState = {
         return new Phaser.Rectangle(3152, 48, 40, 40);
     },
 
-    //@param - Phaser.Group - each member of the group must have a physics body
-    updateSelectedGroup: function (group) {
+    /**
+        Updates the group members selected property.
+        @param - Phaser.Group - each member of the group must have a physics body
+    */
+    updateSelectedGroup: function(group) {
 
         if (group) {
-            
+
             if (game.input.mousePointer.leftButton.isDown) {
                 this.numSelected = 0;
-                group.forEach(function (member) {
-                    if(member.alive) {
+                group.forEach(function(member) {
+                    if (member.alive) {
 
                         var wasSelectedPreviously = member.selected;
                         var nowSelected = member.isSelected(this.select.rect.getLocalBounds());
-                        if(nowSelected) this.numSelected++;
-                        if (wasSelectedPreviously && nowSelected) {//then no need to set body ring again
+                        if (nowSelected) this.numSelected++;
+                        if (wasSelectedPreviously && nowSelected) { //then no need to set body ring again
                             return;
-                        } else if (wasSelectedPreviously && !(nowSelected)) {//then we need to remove the body ring
+                        } else if (wasSelectedPreviously && !(nowSelected)) { //then we need to remove the body ring
                             member.removeBodyRing();
-                        } else if (!(wasSelectedPreviously) && nowSelected) {//then we need to add body ring
+                        } else if (!(wasSelectedPreviously) && nowSelected) { //then we need to add body ring
                             member.setBodyRing();
                         }
-                     }
+                    }
                 }, this);
             }
         }
     },
 
-    onLeftButtonUp : function (pointer, mouseEvent) {
+    /**
+        Handles left button release.
+    */
+    onLeftButtonUp: function(pointer, mouseEvent) {
 
         this.updateSelectedGroup(game.world.getByName("americans"));
 
         this.select.isActive = false;
         this.select.origin.setTo(0, 0);
         this.select.current.setTo(0, 0);
-        this.select.topLeft.setTo(0, 0);    //top left of selection rect
-        this.select.width = 0;              //width of rect
-        this.select.height = 0;             //height of rect
+        this.select.topLeft.setTo(0, 0); //top left of selection rect
+        this.select.width = 0; //width of rect
+        this.select.height = 0; //height of rect
 
         this.select.rect.clear();
     },
-    onRightButtonUp: function (pointer) {
+
+    /**
+        Handles right button release.
+    */
+    onRightButtonUp: function(pointer) {
         //TO DO
     },
-
-    onRightButtonDown: function (pointer) {
+    /**
+        Handles right button press.
+    */
+    onRightButtonDown: function(pointer) {
         // TO DO
     },
 };

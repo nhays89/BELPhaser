@@ -1,8 +1,11 @@
+/**
+    Pre loads assets.
+*/
+
 var loadState = {
 
-    preload: function () {
-        var loadingLabel = game.add.text(200, 200, 'Loading...',
-            {font: '30px Courier', fill: '#000000'});
+    preload: function() {
+        var loadingLabel = game.add.text(200, 200, 'Loading...', { font: '30px Courier', fill: '#000000' });
 
         //sound
         game.load.audio('intro-dramatic-effect', 'assets/sound/intro-dramatic-effect.wav');
@@ -14,8 +17,8 @@ var loadState = {
         game.load.audio('soviet-dying', 'assets/sound/soviet-dying.wav');
         game.load.audio('bombs', 'assets/sound/bombs.wav');
         game.load.audio("roger", 'assets/sound/roger.wav');
-       game.load.audio('kill-beep', 'assets/sound/kill-beep.wav');
-       game.load.audio('move-beep', 'assets/sound/move-beep.wav');
+        game.load.audio('kill-beep', 'assets/sound/kill-beep.wav');
+        game.load.audio('move-beep', 'assets/sound/move-beep.wav');
 
 
         //map files
@@ -42,7 +45,7 @@ var loadState = {
         game.load.spritesheet('button', 'assets/ui/button_silver.png');
         game.load.image('minimap_image', 'assets/map/bel-map.png');
     },
-    create: function () {
+    create: function() {
         game.state.start('menu');
     }
 };

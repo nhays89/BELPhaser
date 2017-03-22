@@ -1,6 +1,6 @@
 
 /**
- *
+ * A* pathfinder 
  * @param grid a 2D array of tile map indexes
  * @param tileWidth width in pixels
  * @param tileHeight height in pixels

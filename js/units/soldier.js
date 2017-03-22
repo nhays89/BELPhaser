@@ -8,14 +8,14 @@ function Soldier(game, x, y, key) {
     this.body.setCircle(this.body.radius);
     this.body.damping = .999999999999;
     this.body.fixedRotation = true;
-    this.currentPath = [];
-    this.enemiesInViewRadius = [];
-    this.enemiesInAttackRadius = [];
-    this.targetEnemy = null;
-    this.currentCoord = {};
-    this.anchorCoord = {};
-    this.destinationCoord = {};
-    this.finalDestination = null;//
+    this.currentPath = []; //stack of coordinates used to move soldiers
+    this.enemiesInViewRadius = []; //enemies that are really close by
+    this.enemiesInAttackRadius = []; //enemies that are close
+    this.targetEnemy = null; //current enemy to attack
+    this.currentCoord = {}; //current coord of this soldier in world coordinates
+    this.anchorCoord = {}; //coord on currentPath from which you previously left
+    this.destinationCoord = {}; //next coord on currentPath to which you are headed towards
+    this.finalDestination = null; //we will rerun pathfinder if we get stuck and we are not 'maxRetryDistance' to destination.
     this.type = "Soldier";
     this.alive = true;
     this.selected = false;
@@ -24,7 +24,6 @@ function Soldier(game, x, y, key) {
     this.health = 100;
     this.damage = 20;
     this.direction = 'south';
-    this.currentSpeed;
     this.pixelsPerSecond = 100;
     this.maxRetryDistance = 250; //distance around destinationCoord to retry path algo if stuck
     this.cooldowns = {
@@ -38,42 +37,48 @@ function Soldier(game, x, y, key) {
 Soldier.prototype = Object.create(Body.prototype);
 Soldier.prototype.constructor = Soldier;
 
-
-Soldier.prototype.shoot = function (enemy) {
+/**
+    Soldier shoots an enemy only if his weapon is 'cooled down'.
+    @param enemy - the enemy soldier
+*/
+Soldier.prototype.shoot = function(enemy) {
     var radians = game.physics.arcade.angleBetween(this, enemy);
     this.direction = this.getDirection(radians);
 
     if (!this.cooldowns['weapon']) {
-            this.shootAnimation = this.animations.play(this.key + '-fire-' + this.direction, 6, true);
-            if(this.key === "american") {
-                playState.audioClips[this.key + "-gun-shot"].volume = .2;
-            } else {
-                playState.audioClips[this.key + "-gun-shot"].volume = .3;
-            }
-            playState.audioClips[this.key + "-gun-shot"].play();
-                    
-        //enemy.bulletSplash.animations.play('bulletSplash');
+        this.shootAnimation = this.animations.play(this.key + '-fire-' + this.direction, 6, true);
+        if (this.key === "american") {
+            playState.audioClips[this.key + "-gun-shot"].volume = .2;
+        } else {
+            playState.audioClips[this.key + "-gun-shot"].volume = .3;
+        }
+        playState.audioClips[this.key + "-gun-shot"].play();
 
         this.cooldowns['weapon'] = true;
         this.isShooting = true;
-        game.time.events.add(1000, function () {
+        game.time.events.add(1000, function() {
             this.isShooting = false;
         }, this);
 
-        game.time.events.add(this.weaponCooldownDuration, function () {
+        game.time.events.add(this.weaponCooldownDuration, function() {
             this.cooldowns['weapon'] = false;
         }, this);
 
         enemy.health -= this.damage;
-    } 
+    }
 };
 
+/**
+    Executed when the sound bites have finished loading.
+*/
 Soldier.prototype.setGunReady = function() {
     this.gunReady = true;
 };
 
-
-Soldier.prototype.die = function () {
+/**
+    Each soldier is removed from canvas after 7 seconds.
+*/
+Soldier.prototype.die = function() {
     var deathDir;
     switch (this.direction) {
         case "north":
@@ -104,16 +109,21 @@ Soldier.prototype.die = function () {
     this.animations.stop();
     this.animations.play(this.key + '-die-' + deathDir);
     playState.audioClips[this.key + "-dying"].play();
-    if(playState.audioClips[this.key + '-gun-shot'].isPlaying) {
-            playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
+    if (playState.audioClips[this.key + '-gun-shot'].isPlaying) {
+        playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
     }
 
-    game.time.events.add(7000, function () {  //remove from world in 7000 millis
+    game.time.events.add(7000, function() { //remove from world in 7000 millis
         this.destroy();
     }, this);
 };
 
-Soldier.prototype.getDirection = function (radians) {
+/**
+    Converts an angle in radians to a direction.
+
+    @param radians - expecting an angle in radians.
+*/
+Soldier.prototype.getDirection = function(radians) {
     var degrees = Phaser.Math.radToDeg(radians);
 
     if (degrees >= -22.5 && degrees < 22.5) {
@@ -135,8 +145,10 @@ Soldier.prototype.getDirection = function (radians) {
     }
 };
 
-
-Soldier.prototype.updateNearbyEnemies = function () {
+/**
+    Locates enemies nearby and updates soldier arrays accordingly.
+*/
+Soldier.prototype.updateNearbyEnemies = function() {
     var viewDiameter = this.viewRadius * 2;
     playState.viewSprite.centerOn(this.x, this.y);
     playState.viewSprite.resize(viewDiameter, viewDiameter);
@@ -158,7 +170,7 @@ Soldier.prototype.updateNearbyEnemies = function () {
     for (var i = 0; i < length; i++) {
         // if enemy
         if (found[i].alive && (this instanceof American && found[i] instanceof Soviet ||
-            this instanceof Soviet && found[i] instanceof American)) {
+                this instanceof Soviet && found[i] instanceof American)) {
             distance = Phaser.Math.distance(this.x, this.y,
                 found[i].x, found[i].y);
 
@@ -171,8 +183,14 @@ Soldier.prototype.updateNearbyEnemies = function () {
     }
 };
 
-//body must have x,y
-Soldier.prototype.getClosestIn = function (list) {
+/**
+
+    Gets the cloest enemy (in pixels) in a given list of enmeies.
+
+    @param list - the list of enemies to check this soldier against. 
+
+*/
+Soldier.prototype.getClosestIn = function(list) {
 
     var closestEnemy;
     var closestDistance;
@@ -204,8 +222,12 @@ Soldier.prototype.getClosestIn = function (list) {
     return closestEnemy;
 };
 
+/**
+    Generates a random coordinate used to spawn soviets.
 
-Soldier.prototype.generateRandCoord = function () {
+*/
+
+Soldier.prototype.generateRandCoord = function() {
 
     for (var i = 0; i < 10; i++) {
         var randx = game.rnd.integerInRange(0, 3200); //get coords off camera
@@ -219,33 +241,43 @@ Soldier.prototype.generateRandCoord = function () {
 
 };
 
+/**
+    Sets this soldier to stand facing current direction.
+*/
 
-Soldier.prototype.stand = function () {
+Soldier.prototype.stand = function() {
     this.currentPath = [];
     // this.animations.stop();
-   
+
     this.animations.play(this.key + '-stand-' + this.direction);
 };
 
 /*
- @param Phaser.Point(x,y)
+    Adds a path to soldiers currentPath stack. 
+     
+     @param Phaser.Point(x,y)
 
  */
-Soldier.prototype.addPath = function (path) {
+Soldier.prototype.addPath = function(path) {
     this.currentPath = path;
-    this.currentCoord = this.currentPath.shift();//get my current xy
-    this.anchorCoord = this.currentCoord;//set the anchor point to my xy
-    //this.body.x = this.anchorCoord.x;
-    //  this.body.y = this.anchorCoord.y;
+    this.currentCoord = this.currentPath.shift(); //get my current xy
+    this.anchorCoord = this.currentCoord; //set the anchor point to my xy
 
 };
 
-
-Soldier.prototype.generatePath = function (targetPoint, destinationPoint) {
+/**
+    Generates a path using pathfinder.js from soldiers current coordinate to destination coordinate.
+    Path returned will be a sequence of coordinate objects containing x,y locations and direction.
+*/
+Soldier.prototype.generatePath = function(targetPoint, destinationPoint) {
     return game.pathfinder.findPath(targetPoint.x, targetPoint.y, destinationPoint.x, destinationPoint.y); //get new path to destination
 };
 
-Soldier.prototype.step = function () {
+/**
+    Runs the animation loop forward on every soldier update. 
+
+*/
+Soldier.prototype.step = function() {
     var self = this;
     if (this.isShooting) {
         return;
@@ -254,19 +286,18 @@ Soldier.prototype.step = function () {
     var nextCoord = this.currentPath[0]; //destinationCoord
 
 
-    if (nextCoord && this.anchorCoord) {//if we have an anchorCoord and still have a destinationCoord
+    if (nextCoord && this.anchorCoord) { //if we have an anchorCoord and still have a destinationCoord
         var currentCoord = { x: this.body.x, y: this.body.y };
-        //console.log(Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y));
         var distance = Phaser.Math.distance(this.anchorCoord.x, this.anchorCoord.y, currentCoord.x, currentCoord.y);
         if ((distance >= this.anchorCoord.distance)) { //if we have arrived at destination coord or gone slightly past
             var currentDirection = this.anchorCoord.direction;
-            this.anchorCoord = this.currentPath.shift();//set our new anchorCoord = to the next coord
-            if (!this.anchorCoord.direction) {//reached final destinationCoord
+            this.anchorCoord = this.currentPath.shift(); //set our new anchorCoord = to the next coord
+            if (!this.anchorCoord.direction) { //reached final destinationCoord
                 this.anchorCoord.direction = currentDirection;
             }
         }
-        if(!playState.audioClips['american-march'].isPlaying && this instanceof American) {
-            
+        if (!playState.audioClips['american-march'].isPlaying && this instanceof American) {
+
             playState.audioClips['american-march'].play();
         }
         this.animations.play(this.key + '-run-' + this.anchorCoord.direction);
@@ -302,31 +333,31 @@ Soldier.prototype.step = function () {
 
 };
 
-Soldier.prototype.moveNorth = function (distance) {
+Soldier.prototype.moveNorth = function(distance) {
     this.body.moveUp(distance);
 };
-Soldier.prototype.moveNorthEast = function (distance) {
+Soldier.prototype.moveNorthEast = function(distance) {
     this.body.moveUp(distance);
     this.body.moveRight(distance);
 };
-Soldier.prototype.moveEast = function (distance) {
+Soldier.prototype.moveEast = function(distance) {
     this.body.moveRight(distance);
 };
-Soldier.prototype.moveSouthEast = function (distance) {
+Soldier.prototype.moveSouthEast = function(distance) {
     this.body.moveDown(distance);
     this.body.moveRight(distance);
 };
-Soldier.prototype.moveSouth = function (distance) {
+Soldier.prototype.moveSouth = function(distance) {
     this.body.moveDown(distance);
 };
-Soldier.prototype.moveSouthWest = function (distance) {
+Soldier.prototype.moveSouthWest = function(distance) {
     this.body.moveDown(distance);
     this.body.moveLeft(distance);
 };
-Soldier.prototype.moveWest = function (distance) {
+Soldier.prototype.moveWest = function(distance) {
     this.body.moveLeft(distance);
 };
-Soldier.prototype.moveNorthWest = function (distance) {
+Soldier.prototype.moveNorthWest = function(distance) {
     this.body.moveUp(distance);
     this.body.moveLeft(distance);
 

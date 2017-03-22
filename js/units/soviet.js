@@ -1,3 +1,8 @@
+
+/**
+  Soviet soldier.
+*/
+
 function Soviet(game, x, y) {
     Soldier.call(this, game, x, y, 'soviet');
     this.type = "Soviet";
@@ -41,139 +46,142 @@ function Soviet(game, x, y) {
 }
 
 
-Soviet.prototype = Object.create(Soldier.prototype);
+Soviet.prototype = Object.create(Soldier.prototype); //inherits from soldier
 Soviet.prototype.constructor = Soviet;
 
+/**
+    For each soviet in game this function will be called to update its state.
+*/
 Soviet.prototype.update = function() {
-if(this.health <= 0) {
-    if(this.alive) {
-        this.currentPath = [];
-        this.enemiesInAttackRadius = []; //clear
-        this.enemiesInViewRadius = []; //clear
-        this.body.destroy();
-        this.alive = false;
-        playState.numOfSoviets--;
-        this.die(); //removed from group in 7000 millis
-    }
-    
-} else {
+    if (this.health <= 0) {
+        if (this.alive) {
+            this.currentPath = [];
+            this.enemiesInAttackRadius = []; //clear
+            this.enemiesInViewRadius = []; //clear
+            this.body.destroy();
+            this.alive = false;
+            playState.numOfSoviets--;
+            this.die(); //removed from group in 7000 millis
+        }
 
-    this.updateNearbyEnemies(); //removes dead soldiers and gets nearby enemies
+    } else {
 
-     if(this.targetEnemy) {
-        if(!(this.targetEnemy.alive)) {//if we had a targetEnemy but he is dead
-            this.currentPath = []; //reset
-            this.targetEnemy = null; //reset
-             if(this.isShooting) {//if we are shooting but our enemy is dead
-                if(playState.audioClips[this.key + '-gun-shot'].isPlaying) {
-                    playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
-                }
-               if(this.shootAnimation.isPlaying) {
-                    this.shootAnimation.stop();
+        this.updateNearbyEnemies(); //removes dead soldiers and gets nearby enemies
+
+        if (this.targetEnemy) {
+            if (!(this.targetEnemy.alive)) { //if we had a targetEnemy but he is dead
+                this.currentPath = []; //reset
+                this.targetEnemy = null; //reset
+                if (this.isShooting) { //if we are shooting but our enemy is dead
+                    if (playState.audioClips[this.key + '-gun-shot'].isPlaying) {
+                        playState.audioClips[this.key + '-gun-shot'].fadeOut(100);
+                    }
+                    if (this.shootAnimation.isPlaying) {
+                        this.shootAnimation.stop();
+                    }
                 }
             }
         }
-    }
 
-    var newTargetEnemy;
+        var newTargetEnemy;
 
-    if(this.targetEnemy) {
-        if(this.enemiesInAttackRadius.includes(this.targetEnemy)) {
-          this.currentPath = [];
-          this.shoot(this.targetEnemy);
-        } else if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
-          this.currentPath = [];
-          this.targetEnemy = newTargetEnemy;
-          this.shoot(this.targetEnemy);
-        } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
-              if(newTargetEnemy !== this.targetEnemy) {
-                this.targetEnemy = newTargetEnemy;
-                var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
-                 if(path.length > 0) {//if there is a path -
-                    this.addPath(path);
-                   } 
-                 } else {
-                    if(this.currentPath.length === 0) {
-                      var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
-                      if(path.length > 0) {//if there is a path -
-                        this.addPath(path);
-                        } 
-
-                    }
-
-                 }
-            this.step();
-        } else {
-          this.step();
-        }
-
-
-
-    } else {//we don't have a target enemy
-          if(newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
+        if (this.targetEnemy) {
+            if (this.enemiesInAttackRadius.includes(this.targetEnemy)) {
+                this.currentPath = [];
+                this.shoot(this.targetEnemy);
+            } else if (newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
                 this.currentPath = [];
                 this.targetEnemy = newTargetEnemy;
                 this.shoot(this.targetEnemy);
-            } else if(newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
+            } else if (newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
+                if (newTargetEnemy !== this.targetEnemy) {
+                    this.targetEnemy = newTargetEnemy;
+                    var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
+                    if (path.length > 0) { //if there is a path -
+                        this.addPath(path);
+                    }
+                } else {
+                    if (this.currentPath.length === 0) {
+                        var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
+                        if (path.length > 0) { //if there is a path -
+                            this.addPath(path);
+                        }
+
+                    }
+
+                }
+                this.step();
+            } else {
+                this.step();
+            }
+
+
+
+        } else { //we don't have a target enemy
+            if (newTargetEnemy = this.getClosestIn(this.enemiesInAttackRadius)) {
+                this.currentPath = [];
+                this.targetEnemy = newTargetEnemy;
+                this.shoot(this.targetEnemy);
+            } else if (newTargetEnemy = this.getClosestIn(this.enemiesInViewRadius)) {
                 this.targetEnemy = newTargetEnemy;
                 var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(this.targetEnemy.body.x, this.targetEnemy.body.y));
-                 if(path.length > 0) {//if there is a path -
+                if (path.length > 0) { //if there is a path -
                     this.addPath(path);
-                   } 
-                 this.step();
+                }
+                this.step();
             } else {
-              if(this.currentPath.length === 0) {
-                  var rndCoord = this.generateRandCoord();
-                  var myCoord = new Phaser.Point(this.body.x, this.body.y);
-                  var path = this.generatePath(myCoord, rndCoord);
-                  if(path.length > 0) {//if there is a path -
-                       this.addPath(path);
-                  }
-               }
-               this.step(); //keep moving or standing while on the lookout for enemies
+                if (this.currentPath.length === 0) {
+                    var rndCoord = this.generateRandCoord();
+                    var myCoord = new Phaser.Point(this.body.x, this.body.y);
+                    var path = this.generatePath(myCoord, rndCoord);
+                    if (path.length > 0) { //if there is a path -
+                        this.addPath(path);
+                    }
+                }
+                this.step(); //keep moving or standing while on the lookout for enemies
             }
+        }
+
+
+
+
+
+
+
     }
 
 
 
+    //     if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
+    //           shoot(this.targetEnemy); //shoot him
+    //     } else {//we don't have a targetEnemy || he is outside our attack radius 
+    //           if (newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
+    //               this.currentPath = []; //reset
+    //               this.targetEnemy = newTargetEnemy;//assign as new target enemy
+    //               shoot(this.targetEnemy);//shoot him
+    //           } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
+    //             if(newTargetEnemy )
+    //              this.targetEnemy = newTargetEnemy;
+    //              var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
+    //              if(path.length > 0) {//if there is a path -
+    //                 this.addPath(path);
+    //                } 
+    //                this.step();
 
+    //           } else {
+    //               if(this.currentPath.length === 0) {
+    //                   var rndCoord = this.generateRandCoord();
+    //                   var myCoord = new Phaser.Point(this.body.x, this.body.y);
+    //                   var path = this.generatePath(myCoord, rndCoord);
+    //                   if(path.length > 0) {//if there is a path -
+    //                        this.addPath(path);
+    //                   }
+    //               }
+    //               this.step(); //keep moving or standing while on the lookout for enemies
+    //         }
+    //    }
 
-
-
-}
-
-
-
-//     if(this.targetEnemy && this.enemiesInAttackRadius.contains(this.targetEnemy)) {// we have a targetEnemy and he is nearby
-//           shoot(this.targetEnemy); //shoot him
-//     } else {//we don't have a targetEnemy || he is outside our attack radius 
-//           if (newTargetEnemy = this.enemiesInAttackRadius.getClosestTo(this)) {//someone else is in our attack radius
-//               this.currentPath = []; //reset
-//               this.targetEnemy = newTargetEnemy;//assign as new target enemy
-//               shoot(this.targetEnemy);//shoot him
-//           } else if(newTargetEnemy = this.enemiesInViewRadius.getClosestTo(this)) {//someone else in our view radius
-//             if(newTargetEnemy )
-//              this.targetEnemy = newTargetEnemy;
-//              var path = this.generatePath(new Phaser.Point(this.body.x, this.body.y), new Phaser.Point(newTargetEnemy.body.x, newTargetEnemy.body.y));
-//              if(path.length > 0) {//if there is a path -
-//                 this.addPath(path);
-//                } 
-//                this.step();
-
-//           } else {
-//               if(this.currentPath.length === 0) {
-//                   var rndCoord = this.generateRandCoord();
-//                   var myCoord = new Phaser.Point(this.body.x, this.body.y);
-//                   var path = this.generatePath(myCoord, rndCoord);
-//                   if(path.length > 0) {//if there is a path -
-//                        this.addPath(path);
-//                   }
-//               }
-//               this.step(); //keep moving or standing while on the lookout for enemies
-//         }
-//    }
-
-// }
+    // }
 
 
 
