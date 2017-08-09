@@ -11,28 +11,31 @@ you can last by following the link below.
 
 **Key bindings**
 
-'W' - move screen up
-'A'- move screen left
-'S' - move screen down
-'D' - move screen right
-left click - select/deselect 
-left drag - mulit select/deselect
-right click - move/attack/retreat
+```
+'w' - move screen up<br>
+'a'- move screen left<br>
+'s' - move screen down<br>
+'d' - move screen right<br>
+left click - select/deselect<br> 
+left drag - mulit select/deselect<br>
+right click - move/attack/retreat<br>
+```
+
 
 **Features**
 
-A* path finding
-collision detection
-2D sprite animations
-Tilemap layers
-P2 physics engine
-mini map
-web audio API
-autonomous detection system
-health status indicators
-multi agent select
+A* path finding<br>
+collision detection<br>
+2D sprite animations<br>
+Tilemap layers<br>
+P2 physics engine<br>
+mini map<br>
+web audio API<br>
+autonomous detection system<br>
+health status indicators<br>
+multi agent select<br>
 
-** Screenshots **
+**Screenshots**
 
 ![action-strategy](https://github.com/nhays89/BELPhaser/blob/master/screenshots/action-strategy.png)
 
