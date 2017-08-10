@@ -12,13 +12,13 @@ you can last by following the link below.
 **Key bindings**
 
 ```
-'w' - move screen up<br>
-'a'- move screen left<br>
-'s' - move screen down<br>
-'d' - move screen right<br>
-left click - select/deselect<br> 
-left drag - mulit select/deselect<br>
-right click - move/attack/retreat<br>
+'w' - move screen up
+'a'- move screen left
+'s' - move screen down
+'d' - move screen right
+left click - select/deselect
+left drag - mulit select/deselect
+right click - move/attack/retreat
 ```
 
 
