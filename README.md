@@ -24,16 +24,16 @@ right click - move/attack/retreat<br>
 
 **Features**
 
-A* path finding<br>
-collision detection<br>
-2D sprite animations<br>
-Tilemap layers<br>
-P2 physics engine<br>
-mini map<br>
-web audio API<br>
-autonomous detection system<br>
-health status indicators<br>
-multi agent select<br>
+A* path finding<
+collision detection
+2D sprite animations
+Tilemap layers
+P2 physics engine
+mini map
+web audio API
+autonomous detection system
+health status indicators
+multi agent select
 
 **Screenshots**
 
