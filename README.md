@@ -24,16 +24,16 @@ right click - move/attack/retreat
 
 **Features**
 
-A* path finding<
-collision detection
-2D sprite animations
-Tilemap layers
-P2 physics engine
-mini map
-web audio API
-autonomous detection system
-health status indicators
-multi agent select
+1. A* path finding
+2. collision detection
+3. 2D sprite animations
+4. Tilemap layers
+5. P2 physics engine
+6. mini map
+7. web audio API
+8. autonomous detection system
+9. health status indicators
+10. multi agent select
 
 **Screenshots**
 
